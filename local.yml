@@ -1,0 +1,42 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./docker/local/django/Dockerfile
+    image: kpi_notify_api
+    container_name: kpi_notify_api
+    volumes:
+      - ./api:/app:z
+      - ./api/staticfiles:/app/staticfiles
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./api/.envs/.env.django
+      - ./api/.envs/.env.postgres
+    depends_on:
+      - postgres
+    command: /start
+    networks:
+      - kpi_notify_nw
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./docker/local/postgres/Dockerfile
+    image: kpi_notify_postgres
+    container_name: kpi_notify_postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - kpi_notify_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./api/.envs/.env.postgres
+    networks:
+      - kpi_notify_nw
+
+networks:
+  kpi_notify_nw:
+    external: true
+
+volumes:
+  kpi_notify_postgres_data: { }

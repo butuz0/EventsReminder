@@ -1,0 +1,8 @@
+.git/
+*.pyo
+__pycache__/
+.idea
+venv/
+.venv/
+*.log
+api/.envs/*
