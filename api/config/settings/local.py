@@ -21,6 +21,7 @@ SITE_NAME = getenv('SITE_NAME')
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    '0.0.0.0',
 ]
 
 ADMIN_URL = getenv('DJANGO_ADMIN_URL')
