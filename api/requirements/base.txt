@@ -3,6 +3,7 @@ djangorestframework==3.15.1
 django-taggit==6.0.0
 django-filter==24.1
 django-phonenumber-field==8.0.0
+phonenumbers==8.13.30
 django-celery-email==3.0.0
 django-celery-beat==2.6.0
 python-dotenv==1.0.1
