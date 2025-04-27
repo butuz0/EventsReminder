@@ -75,6 +75,8 @@ services:
         depends_on:
             - redis
             - postgres
+        networks:
+            - kpi_notify_nw
 
     flower:
         <<: *api
@@ -87,6 +89,8 @@ services:
         depends_on:
             - redis
             - postgres
+        networks:
+            - kpi_notify_nw
 
 networks:
     kpi_notify_nw:

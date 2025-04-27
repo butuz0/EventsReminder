@@ -28,6 +28,6 @@ class JSONRenderer(BaseJSONRenderer):
         errors = data.get('errors', None)
 
         if errors is not None:
-            return super(JSONRenderer, self).render(data, accepted_media_type, context)
+            return super().render(data, accepted_media_type, renderer_context)
 
         return json.dumps({'status_code': status_code, object_label: data}).encode(self.charset)

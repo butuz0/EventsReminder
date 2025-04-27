@@ -24,4 +24,17 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+]
+
 ADMIN_URL = getenv('DJANGO_ADMIN_URL')
+
+
+# Email configuration
+EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
+EMAIL_HOST = getenv('EMAIL_HOST')
+EMAIL_PORT = getenv('EMAIL_PORT')
+DEFAULT_FROM_EMAIL = getenv('DEFAULT_FROM_EMAIL')
+DOMAIN = getenv('DOMAIN')

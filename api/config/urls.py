@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 
 schema_view = get_schema_view(
     openapi.Info(
-        title='KPI Remind',
+        title='KPI Notify',
         default_version='v1',
         description='Event planner and reminder app for KPI',
         contact=openapi.Contact(email='y.o.oryshchenko@gmail.com'),
@@ -22,5 +22,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='redoc'),
     path(settings.ADMIN_URL, admin.site.urls),
+    path('api/v1/auth/', include('djoser.urls')),
+    path('api/v1/auth/', include('apps.users.urls')),
     path('api/v1/units/', include('apps.units.urls')),
 ]
