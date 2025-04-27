@@ -39,11 +39,15 @@ RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
 
 COPY ./docker/local/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
-RUN chmod +x /entrypoint
 
 COPY ./docker/local/django/start /start
 RUN sed -i 's/\r$//g' /start
-RUN chmod +x /start
+
+COPY ./docker/local/django/celery/worker/start /start-celery-worker
+RUN sed -i 's/\r$//g' /start-celery-worker
+
+COPY ./docker/local/django/celery/flower/start /start-flower
+RUN sed -i 's/\r$//g' /start-flower
 
 COPY . ${APP_HOME}
 
