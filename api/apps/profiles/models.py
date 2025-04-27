@@ -16,9 +16,9 @@ class Profile(TimeStampedModel):
     
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, related_name='employees', null=True)
-    position = models.CharField(verbose_name=_('Position'), max_length=250)
+    position = models.CharField(verbose_name=_('Position'), max_length=250, null=True)
     gender = models.CharField(verbose_name=_('Gender'), max_length=10, choices=Gender.choices, default=Gender.OTHER)
-    phone_number = PhoneNumberField(verbose_name=_('Phone Number'), max_length=20, unique=True)
+    phone_number = PhoneNumberField(verbose_name=_('Phone Number'), max_length=20, unique=True, null=True)
     telegram_username = models.CharField(verbose_name=_('Telegram Username'), max_length=50, null=True, unique=True, blank=True)
     telegram_phone_number = PhoneNumberField(verbose_name=_('Telegram Phone Number'), max_length=20, null=True, unique=True, blank=True)
 

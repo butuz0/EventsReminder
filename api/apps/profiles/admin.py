@@ -19,12 +19,14 @@ class ProfileAdmin(admin.ModelAdmin):
     list_filter = ['department']
     search_fields = ['position']
     autocomplete_fields = ['department']
+    readonly_fields = ['user', 'created_at', 'updated_at']
 
     fieldsets = (
         (_('Personal Information'), {'fields': ['user', 'gender']}),
         (_('Position'), {'fields': ['department', 'position']}),
         (_('Contacts'), {'fields': ['phone_number']}),
         (_('Social Contacts'), {'fields': ['telegram_username', 'telegram_phone_number']}),
+        (_('Dates'), {'fields': ['created_at', 'updated_at']}),
     )
 
 
