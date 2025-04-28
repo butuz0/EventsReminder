@@ -4,7 +4,7 @@ from os import path, getenv
 from dotenv import load_dotenv
 
 
-local_env_file = path.join(BASE_DIR, '.envs', '.env.local')
+local_env_file = path.join(BASE_DIR, '.envs', '.env.django')
 
 if path.isfile(local_env_file):
     load_dotenv(local_env_file)
@@ -15,6 +15,9 @@ SECRET_KEY = getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = str(BASE_DIR / 'media')
 
 SITE_NAME = getenv('SITE_NAME')
 

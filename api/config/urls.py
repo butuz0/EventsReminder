@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from django.conf.urls.static import static
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework.permissions import IsAuthenticated
@@ -25,4 +26,5 @@ urlpatterns = [
     path('api/v1/auth/', include('djoser.urls')),
     path('api/v1/auth/', include('apps.users.urls')),
     path('api/v1/units/', include('apps.units.urls')),
-]
+    path('api/v1/events/', include('apps.events.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
