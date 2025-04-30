@@ -18,7 +18,7 @@ class RecurringEventInline(admin.StackedInline):
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     def assigned_users(self, obj: Event) -> str:
-        return ', '.join([user.get_full_name() or user.email for user in obj.assigned_to.all()])
+        return ', '.join([user.full_name or user.email for user in obj.assigned_to.all()])
     assigned_users.short_description = _('Assigned To')
 
     list_display = ['id', 'title', 'created_by', 'start_datetime', 'is_recurring', 'assigned_users']

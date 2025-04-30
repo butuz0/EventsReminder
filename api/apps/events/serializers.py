@@ -20,8 +20,7 @@ class RecurringEventSerializer(serializers.ModelSerializer):
 
 class EventSerializer(TaggitSerializer, serializers.ModelSerializer):
     created_by = CustomUserSerializer(read_only=True)
-    assigned_to_ids = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True, required=False, 
-                                                         write_only=True, source='assigned_to')
+    assigned_to_ids = serializers.ListField(child=serializers.UUIDField(), write_only=True)
     assigned_to = CustomUserSerializer(many=True, read_only=True)
     tags = TagListSerializerField(required=False)
     recurring_event = RecurringEventSerializer(required=False, allow_null=True)
@@ -42,8 +41,8 @@ class EventSerializer(TaggitSerializer, serializers.ModelSerializer):
             raise serializers.ValidationError('Event start time cannot be in the past.')
         return value
 
-    def validate_assigned_to(self, value):
-        if self.context['request'].user in value:
+    def validate_assigned_to_ids(self, value):
+        if self.context['request'].user.id in value:
             raise serializers.ValidationError('You cannot assign the event to yourself.')
         return value
 
@@ -73,7 +72,7 @@ class EventSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     def create(self, validated_data) -> Event:
         tags = validated_data.pop('tags', [])
-        assigned_to = validated_data.pop('assigned_to', [])
+        assigned_to = validated_data.pop('assigned_to_ids', [])
         recurring_event_data = validated_data.pop('recurring_event', None)  
         
         user = self.context['request'].user
