@@ -3,6 +3,7 @@
 staticfiles/
 api/.envs/*
 !api/.envs/.env.example
+api/media/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
