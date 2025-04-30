@@ -1,0 +1,59 @@
+{% extends 'emails/base.html' %}
+{% load i18n %}
+
+{% block title %}
+  {% trans 'Event Reminder' %}- {{ event.title }}
+{% endblock %}
+
+{% block content %}
+  <h2 style="color: #333;">🔔{% trans 'Reminder about your upcoming event' %}</h2>
+  <p>
+    {% blocktrans with name=user.full_name %}Hello {{ name }},{% endblocktrans %}
+  </p>
+  <p>
+    {% trans 'This is a reminder about your scheduled event.' %}
+  </p>
+  <hr style="margin: 20px 0;" />
+  <h3 style="color: #222;">📌 {{ event.title }}</h3>
+
+  {% if event.description %}
+    <p>
+      <strong>{% trans 'Description:' %}</strong><br />{{ event.description }}
+    </p>
+  {% endif %}
+
+  <p>
+    <strong>{% trans 'Start Time:' %}</strong> {{ event.start_datetime|date:'l, d M Y H:i' }}
+  </p>
+
+  {% if event.location %}
+    <p>
+      <strong>{% trans 'Location:' %}</strong> {{ event.location }}
+    </p>
+  {% endif %}
+
+  {% if event.link %}
+    <p>
+      <strong>{% trans 'Link:' %}</strong> <a href="{{ event.link }}" target="_blank">{{ event.link }}</a>
+    </p>
+  {% endif %}
+
+  {% if event.priority %}
+    <p>
+      <strong>{% trans 'Priority:' %}</strong> {{ event.get_priority_display }}
+    </p>
+  {% endif %}
+
+  {% if event.created_by != user %}
+    <p style="color: #888;">
+      {% blocktrans with creator=event.created_by.full_name %}This event was assigned to you by {{ creator }}{% endblocktrans %}.
+    </p>
+  {% endif %}
+
+  <hr style="margin: 20px 0;" />
+  <p style="font-size: 14px;">
+    {% blocktrans %}You can view full event details at:{% endblocktrans %}
+    <br />
+    <a href="{% url 'event-detail' event.id %}" target="_blank">{{ domain }}/events/{{ event.id }}/</a>
+  </p>
+{% endblock %}

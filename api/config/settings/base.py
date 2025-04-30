@@ -47,6 +47,7 @@ LOCAL_APPS = [
     'apps.units',
     'apps.profiles',
     'apps.events',
+    'apps.notifications',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -169,6 +170,8 @@ CELERY_RESULT_EXTENDED = True
 CELERY_RESULT_BACKEND_ALWAYS_RETRY = True
 CELERY_TASK_TIME_LIMIT = 5 * 60
 CELERY_TASK_SOFT_TIME_LIMIT = 60
+CELERY_TASK_REJECT_ON_WORKER_LOST = True
+CELERY_RESULT_EXPIRES = 300
 
 
 # Cookies JWT configuration

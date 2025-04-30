@@ -1,0 +1,33 @@
+{% load i18n %}
+
+{% blocktrans with name=user.get_full_name %}Hello {{ name }},{% endblocktrans %}
+
+{% trans "This is a reminder about your scheduled event." %}
+
+📌 {{ event.title }}
+
+{% if event.description %}
+Description:
+{{ event.description }}
+{% endif %}
+
+Start Time: {{ event.start_datetime|date:"l, d M Y H:i" }}
+
+{% if event.location %}
+Location: {{ event.location }}
+{% endif %}
+
+{% if event.link %}
+Link: {{ event.link }}
+{% endif %}
+
+{% if event.priority %}
+Priority: {{ event.get_priority_display }}
+{% endif %}
+
+{% if event.created_by != user %}
+Assigned by: {{ event.created_by.get_full_name }}
+{% endif %}
+
+{% blocktrans %}You can view full event details at:{% endblocktrans %}
+{{ domain }}/events/{{ event.id }}/
