@@ -42,8 +42,39 @@ class EventSerializer(TaggitSerializer, serializers.ModelSerializer):
         return value
 
     def validate_assigned_to_ids(self, value):
-        if self.context['request'].user.id in value:
+        user = self.context['request'].user
+        
+        if user in value:
             raise serializers.ValidationError('You cannot assign the event to yourself.')
+        
+        # Check if any user IDs are duplicates
+        user_ids = set(value)
+        if len(user_ids) != len(value):
+            raise serializers.ValidationError('Duplicate user IDs are not allowed.')
+
+        # Check if all users exist
+        existing_ids = set(
+            User.objects
+            .filter(id__in=user_ids)
+            .values_list('id', flat=True)
+        )
+        missing_ids = user_ids - existing_ids
+        if missing_ids:
+            raise serializers.ValidationError(f'Users with the following IDs do not exist: {list(missing_ids)}')
+
+        # Check if all users are members of the creator's teams
+        team_members = set(
+            User.objects
+            .filter(teams__created_by=user, id__in=user_ids)
+            .values_list('id', flat=True)
+        )
+        non_team_members = user_ids - team_members
+        if non_team_members:
+            raise serializers.ValidationError(
+                f'You can only assign events to users who are members '
+                f'of your team. Invalid IDs: {list(non_team_members)}'
+            )
+
         return value
 
     def validate(self, attrs):
