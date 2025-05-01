@@ -1,0 +1,28 @@
+{% extends 'emails/base.html' %}
+{% load i18n %}
+
+{% block title %}
+  {% trans "You've been invited to join a team" %}
+{% endblock %}
+
+{% block content %}
+  <h2>{% trans 'Hello' %} {{ user.first_name }},</h2>
+
+  <p>
+    {% blocktrans with team_name=invitation.team.name creator=invitation.created_by.full_name %}You have received an invitation to join the team "{{ team_name }}", created by {{ creator }}.{% endblocktrans %}
+  </p>
+
+  {% if invitation.team.description %}
+    <p>
+      <strong>{% trans 'Team Description' %}:</strong> {{ invitation.team.description }}
+    </p>
+  {% endif %}
+
+  <p>
+    {% trans 'To accept or reject the invitation, please visit your invitations page in the app.' %}
+  </p>
+
+  <p>
+    {% trans 'Thank you!' %}<br />{{ site_name }}
+  </p>
+{% endblock %}

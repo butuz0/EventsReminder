@@ -28,4 +28,5 @@ urlpatterns = [
     path('api/v1/units/', include('apps.units.urls')),
     path('api/v1/events/', include('apps.events.urls')),
     path('api/v1/notifications/', include('apps.notifications.urls')),
+    path('api/v1/teams/', include('apps.teams.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

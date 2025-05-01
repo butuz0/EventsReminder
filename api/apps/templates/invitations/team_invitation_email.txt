@@ -1,0 +1,15 @@
+{% load i18n %}
+{% blocktrans with team_name=invitation.team.name creator=invitation.created_by.full_name %}
+Hello {{ user.first_name }},
+
+You have received an invitation to join the team "{{ team_name }}", created by {{ creator }}.
+{% endblocktrans %}
+
+{% if invitation.team.description %}
+Team Description: {{ invitation.team.description }}
+{% endif %}
+
+To accept or reject the invitation, please visit your invitations page in the app.
+
+Thank you!
+{{ site_name }}
