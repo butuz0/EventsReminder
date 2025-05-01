@@ -66,9 +66,9 @@ class TeamDeleteAPIView(generics.DestroyAPIView):
 class TeamLeaveAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
-    def delete(self, request, team_id):
+    def delete(self, request, id):
         user = request.user
-        team = get_object_or_404(Team, id=team_id)
+        team = get_object_or_404(Team, id=id)
 
         if team.created_by == user:
             return Response({'detail': 'You cannot leave a team that you have created.'},

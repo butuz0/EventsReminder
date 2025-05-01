@@ -21,13 +21,21 @@ class TeamCreateSerializer(serializers.ModelSerializer):
     def validate_members_ids(self, value: list[str]) -> list[str]:
         if self.context['request'].user.id in value:
             raise serializers.ValidationError('You cannot add yourself to the team since you are the creator of it.')
+        
+        user_ids = set(value)
+        if len(user_ids) != len(value):
+            raise serializers.ValidationError('Duplicate user IDs are not allowed.')
+        
+        existing_ids = set(User.objects.filter(id__in=user_ids).values_list('id', flat=True))
+        missing_ids = user_ids - existing_ids
+        if missing_ids:
+            raise serializers.ValidationError(f'Users with the following IDs do not exist: {list(missing_ids)}')
+        
         return value
 
     def create(self, validated_data: dict) -> Team:
         user = self.context['request'].user
         members_ids = validated_data.pop('members_ids', [])
-        if len(set(members_ids)) != len(members_ids):
-            raise serializers.ValidationError('Duplicate user IDs are not allowed.')
 
         team = Team.objects.create(created_by=user, **validated_data)
 
