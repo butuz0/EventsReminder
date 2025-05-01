@@ -10,8 +10,8 @@ class NotificationAdmin(admin.ModelAdmin):
     ordering = ('-notification_datetime',)
     date_hierarchy = 'notification_datetime'
     list_per_page = 20
+    readonly_fields = ('event', 'created_by', 'celery_task_id', 'is_sent')
     
-
     fieldsets = (
         (None, {
             'fields': ('event', 'notification_method', 'notification_datetime', 'celery_task_id', 'is_sent')
