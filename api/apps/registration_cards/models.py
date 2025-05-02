@@ -14,13 +14,13 @@ class RegistrationCard(TimeStampedModel):
     
     # Legal Entity
     organization_name = models.CharField(max_length=255, verbose_name=_('Full Organization Name'))
-    edrpou_code = models.CharField(max_length=8, verbose_name=('EDRPOU Code'))
+    edrpou_code = models.CharField(max_length=8, verbose_name=_('EDRPOU Code'))
     region = models.CharField(max_length=100, blank=True, verbose_name=_('Region'))
     city = models.CharField(max_length=100, blank=True, verbose_name=_('City'))
 
     # Applicant
     full_name = EncryptedCharField(max_length=255, blank=True, verbose_name=_('Applicant Full Name'))
-    id_number = EncryptedCharField(max_length=20, blank=True, verbose_name='IPN or series/number of document')
+    id_number = EncryptedCharField(max_length=20, blank=True, verbose_name=_('IPN or series/number of document'))
     keyword_phrase = EncryptedCharField(max_length=255, blank=True, verbose_name=_('Keyword Phrase'))
     voice_phrase = EncryptedCharField(max_length=255, blank=True, verbose_name=_('Voice Phrase'))
 
@@ -32,7 +32,7 @@ class RegistrationCard(TimeStampedModel):
     electronic_seal_name = EncryptedCharField(max_length=255, blank=True, 
                                               verbose_name=_('Electronic Seal Name'))
     electronic_seal_keyword_phrase = EncryptedCharField(max_length=255, blank=True, 
-                                                        verbose_name=('Electronic Seal Keyword Phrase'))
+                                                        verbose_name=_('Electronic Seal Keyword Phrase'))
 
     class Meta:
         verbose_name = 'Registration Card'
