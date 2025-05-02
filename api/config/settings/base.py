@@ -39,6 +39,7 @@ THIRD_PARTY_APPS = [
     'djoser',
     'drf_yasg',
     'rest_framework_simplejwt.token_blacklist',
+    'encrypted_model_fields',
 ]
 
 LOCAL_APPS = [
@@ -49,6 +50,7 @@ LOCAL_APPS = [
     'apps.events',
     'apps.notifications',
     'apps.teams',
+    'apps.registration_cards'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -124,6 +126,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+FIELD_ENCRYPTION_KEY = getenv('FIELD_ENCRYPTION_KEY')
 
 
 # Internationalization
