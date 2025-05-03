@@ -97,7 +97,7 @@ class RecurringEvent(TimeStampedModel):
             - recurrence rule is unrecognized.
         '''
         if not self.last_occurrence:
-            return next_occurrence
+            return self.next_occurrence
 
         next_occurrence = None
         
