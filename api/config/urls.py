@@ -19,13 +19,13 @@ schema_view = get_schema_view(
     permission_classes=[IsAuthenticated],
 )
 
-
 urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='redoc'),
     path(settings.ADMIN_URL, admin.site.urls),
     path('api/v1/auth/', include('djoser.urls')),
     path('api/v1/auth/', include('apps.users.urls')),
     path('api/v1/units/', include('apps.units.urls')),
+    path('api/v1/profiles/', include('apps.profiles.urls')),
     path('api/v1/events/', include('apps.events.urls')),
     path('api/v1/notifications/', include('apps.notifications.urls')),
     path('api/v1/teams/', include('apps.teams.urls')),
