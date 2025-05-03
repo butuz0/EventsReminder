@@ -8,7 +8,11 @@ def delete_old_image_on_update(sender, instance, **kwargs):
     if not instance.id:
         return
 
-    old_image = Event.objects.only('image').get(id=instance.id).image
+    try:
+        old_image = Event.objects.only('image').get(pk=instance.pk).image
+    except Event.DoesNotExist:
+        return
+    
     new_image = instance.image
 
     if old_image and old_image != new_image:
