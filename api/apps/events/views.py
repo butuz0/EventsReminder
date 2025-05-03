@@ -1,9 +1,13 @@
 from django.shortcuts import get_object_or_404
 from apps.common.renderers import JSONRenderer
-from .models import Event
-from .serializers import EventSerializer
+from .models import Event, RecurringEvent
+from .serializers import (
+    EventSerializer, 
+    EventDetailSerializer, 
+    RecurringEventSerializer
+)
 from .permissions import IsOwner, IsOwnerOrAssignedTo
-from rest_framework import generics, status
+from rest_framework import generics, status, filters as drf_filters
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.pagination import PageNumberPagination
@@ -22,7 +26,7 @@ class MyEventsListAPIView(generics.ListAPIView):
     API view to retrieve a list of events created by 
     or assigned to the authenticated user.
     '''
-    serializer_class = EventSerializer
+    serializer_class = EventDetailSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrAssignedTo]
     pagination_class = StandardResultsSetPagination
     renderer_classes = [JSONRenderer]
@@ -36,7 +40,7 @@ class MyEventsListAPIView(generics.ListAPIView):
 
 class EventDetailAPIView(generics.RetrieveAPIView):
     queryset = Event.objects.all()
-    serializer_class = EventSerializer
+    serializer_class = EventDetailSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrAssignedTo]
     renderer_classes = [JSONRenderer]
     object_label = 'event'
@@ -87,3 +91,35 @@ class EventLeaveAPIView(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
 
         raise PermissionDenied('You cannot leave the event because you have never been assigned to it.')
+
+
+class RecurringEventCreateAPIView(generics.CreateAPIView):
+    serializer_class = RecurringEventSerializer
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [JSONRenderer]
+    object_label = 'recurring_event'
+
+    def perform_create(self, serializer):
+        event_id = self.kwargs['event_id']
+        event = Event.objects.get(id=event_id)
+        
+        if event.created_by != self.request.user:
+            raise PermissionDenied('Only event creator can create a recurring event.')
+        
+        event.is_recurring = True
+        event.save(update_fields=['is_recurring'])
+        
+        serializer.save(event=event)
+
+
+class RecurringEventUpdateAPIView(generics.UpdateAPIView):
+    queryset = RecurringEvent.objects.all()
+    serializer_class = RecurringEventSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
+    renderer_classes = [JSONRenderer]
+    object_label = 'recurring_event'
+    
+    def get_object(self):
+        event_id = self.kwargs['event_id']
+        event = get_object_or_404(Event, id=event_id)
+        return get_object_or_404(RecurringEvent, event=event)

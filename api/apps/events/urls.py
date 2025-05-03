@@ -5,7 +5,9 @@ from .views import (
     EventCreateAPIView, 
     EventUpdateAPIView, 
     EventDeleteAPIView, 
-    EventLeaveAPIView
+    EventLeaveAPIView,
+    RecurringEventCreateAPIView,
+    RecurringEventUpdateAPIView
 )
 
 urlpatterns = [
@@ -15,4 +17,6 @@ urlpatterns = [
     path('update/<uuid:id>/', EventUpdateAPIView.as_view(), name='event-update'),
     path('delete/<uuid:id>/', EventDeleteAPIView.as_view(), name='event-delete'),
     path('leave/<uuid:id>/', EventLeaveAPIView.as_view(), name='event-leave'),
+    path('<uuid:event_id>/recurring/create/', RecurringEventCreateAPIView.as_view(), name='recurring-create'),
+    path('<uuid:event_id>/recurring/update/', RecurringEventUpdateAPIView.as_view(), name='recurring-update'),
 ]
