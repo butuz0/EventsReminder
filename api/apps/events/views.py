@@ -7,6 +7,8 @@ from .serializers import (
     RecurringEventSerializer
 )
 from .permissions import IsOwner, IsOwnerOrAssignedTo
+from .filters import EventFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, status, filters as drf_filters
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
@@ -26,9 +28,13 @@ class MyEventsListAPIView(generics.ListAPIView):
     API view to retrieve a list of events created by 
     or assigned to the authenticated user.
     '''
+    queryset = Event.objects.all().prefetch_related('tags', 'assigned_to')
     serializer_class = EventDetailSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrAssignedTo]
     pagination_class = StandardResultsSetPagination
+    filter_backends = [DjangoFilterBackend, drf_filters.SearchFilter]
+    filterset_class = EventFilter
+    search_fields = ['title', 'description', 'location', 'tags__name']
     renderer_classes = [JSONRenderer]
     object_label = 'events'
 

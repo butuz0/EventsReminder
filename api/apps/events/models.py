@@ -33,11 +33,11 @@ def upload_to(instance, filename):
 
 
 class Event(TimeStampedModel):
-    class Priority(models.TextChoices):
-        LOW = 'low', _('Low')
-        MEDIUM = 'medium', _('Medium')
-        HIGH = 'high', _('High')
-        CRITICAL = 'critical', _('Critical')
+    class Priority(models.IntegerChoices):
+        LOW = 1, _('Low')
+        MEDIUM = 2, _('Medium')
+        HIGH = 3, _('High')
+        CRITICAL = 4, _('Critical')
 
     # Required fields
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_events', verbose_name=_('Created By'))
@@ -49,7 +49,7 @@ class Event(TimeStampedModel):
     description = models.TextField(blank=True, verbose_name=_('Description'))
     location = models.CharField(max_length=255, blank=True, verbose_name=_('Location'))
     link = models.URLField(blank=True, null=True, verbose_name=_('Event Link'))
-    priority = models.CharField(max_length=10, choices=Priority.choices, default=Priority.MEDIUM, verbose_name=_('Priority'))
+    priority = models.PositiveSmallIntegerField(choices=Priority.choices, default=Priority.MEDIUM, verbose_name=_('Priority'))
     image = models.ImageField(upload_to=upload_to, validators=[validate_image_type, validate_image_size], blank=True, null=True, verbose_name=_('Image'))
     tags = TaggableManager(blank=True, verbose_name=_('Tags'))
 
