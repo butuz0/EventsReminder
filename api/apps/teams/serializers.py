@@ -42,10 +42,8 @@ class TeamCreateSerializer(serializers.ModelSerializer):
 
         # Create invitation for each member
         members = User.objects.filter(id__in=members_ids)
-        Invitation.objects.bulk_create([
-            Invitation(created_by=user, team=team, sent_to=member) 
-            for member in members
-        ])
+        for member in members:
+            Invitation.objects.create(created_by=user, team=team, sent_to=member)
         
         return team
 
