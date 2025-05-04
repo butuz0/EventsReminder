@@ -35,13 +35,13 @@ class RecurringEventSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(TaggitSerializer, serializers.ModelSerializer):
-    assigned_to_ids = serializers.ListField(child=serializers.UUIDField(), write_only=True)
+    assigned_to_ids = serializers.ListField(child=serializers.UUIDField(), write_only=True, required=False)
     assigned_to = UserSerializer(many=True, read_only=True)
     tags = TagListSerializerField(required=False)
 
     class Meta:
         model = Event
-        fields = ['title', 'description', 'start_datetime', 
+        fields = ['id', 'title', 'description', 'start_datetime', 
                   'location', 'link', 'priority', 'image', 
                   'tags', 'assigned_to_ids', 'assigned_to',
                   'is_recurring']
