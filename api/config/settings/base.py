@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 APPS_DIR = BASE_DIR / 'apps'
 
-local_env_file = path.join(BASE_DIR, '.envs', '.env.local')
+local_env_file = path.join(BASE_DIR, '.envs', '.env.django')
 
 if path.isfile(local_env_file):
     load_dotenv(local_env_file)
@@ -50,7 +50,7 @@ LOCAL_APPS = [
     'apps.events',
     'apps.notifications',
     'apps.teams',
-    'apps.registration_cards'
+    'apps.registration_cards',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
