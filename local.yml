@@ -92,6 +92,19 @@ services:
         networks:
             - kpi_notify_nw
 
+    telegram_bot:
+        <<: *api
+        image: kpi_notify_telegram_bot
+        container_name: kpi_notify_telegram_bot
+        command: /start-telegram-bot
+        restart: unless-stopped
+        ports: []
+        depends_on:
+            - postgres
+            - redis
+        networks:
+            - kpi_notify_nw
+
 networks:
     kpi_notify_nw:
         external: true

@@ -231,3 +231,6 @@ DJOSER = {
         'current_user': 'apps.users.serializers.CustomUserSerializer',
     },
 }
+
+
+TELEGRAM_BOT_TOKEN = getenv('TELEGRAM_BOT_TOKEN')

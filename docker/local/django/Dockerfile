@@ -50,6 +50,9 @@ RUN sed -i 's/\r$//g' /start-celery-worker
 COPY ./docker/local/django/celery/flower/start /start-flower
 RUN sed -i 's/\r$//g' /start-flower
 
+COPY ./docker/local/django/start-telegram-bot /start-telegram-bot
+RUN sed -i 's/\r$//g' /start-telegram-bot
+
 COPY . ${APP_HOME}
 
 ENTRYPOINT [ "/entrypoint" ]
