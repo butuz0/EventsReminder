@@ -1,3 +1,4 @@
+from multiprocessing import Value
 from apps.units.models import Department
 from .models import Profile
 from rest_framework import serializers
@@ -62,6 +63,14 @@ class ProfileUpdateSerializer(BaseProfileSerializer):
     class Meta(BaseProfileSerializer.Meta):
         fields = BaseProfileSerializer.Meta.fields + ['gender', 'department']
 
+    def validate_telegram_username(self, value: str) -> str:
+        value = value.strip().replace('@', '')
+        
+        if len(value) < 5 or len(value) > 32:
+            raise serializers.ValidationError('Username must by 5-32 characters long.')
+        
+        return value
+        
     def update(self, instance: Profile, validated_data: dict) -> Profile:
         user_data = validated_data.pop('user', {})
         telegram_data = validated_data.pop('telegram', {})
