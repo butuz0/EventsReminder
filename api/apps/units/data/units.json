@@ -1,0 +1,651 @@
+[
+    {
+        "faculty_name": "Інститут спеціального зв'язку та захисту інформації",
+        "faculty_abbreviation": "ІСЗЗІ",
+        "departments": [
+            {
+                "department_name": "Спеціальна кафедра №1",
+                "department_abbreviation": "СП1"
+            },
+            {
+                "department_name": "Спеціальна кафедра №2",
+                "department_abbreviation": "СП2"
+            },
+            {
+                "department_name": "Спеціальна кафедра №3",
+                "department_abbreviation": "СП3"
+            },
+            {
+                "department_name": "Спеціальна кафедра №4",
+                "department_abbreviation": "СП4"
+            },
+            {
+                "department_name": "Спеціальна кафедра №5",
+                "department_abbreviation": "СП5"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Навчально-науковий видавничо-полiграфiчний інститут",
+        "faculty_abbreviation": "НН ВПІ",
+        "departments": [
+            {
+                "department_name": "Кафедра машин і агрегатiв полiграфiчного виробництва",
+                "department_abbreviation": "МАПВ"
+            },
+            {
+                "department_name": "Кафедра технологiї полiграфiчного виробництва",
+                "department_abbreviation": "ТПВ"
+            },
+            {
+                "department_name": "Кафедра видавничої справи і редагування",
+                "department_abbreviation": "ВСР"
+            },
+            {
+                "department_name": "Кафедра графiки",
+                "department_abbreviation": "КГ"
+            },
+            {
+                "department_name": "Кафедра репрографії",
+                "department_abbreviation": "КР"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Навчально-науковий інститут аерокосмічних технологій",
+        "faculty_abbreviation": "НН ІАТ",
+        "departments": [
+            {
+                "department_name": "Кафедра авіа- та ракетобудування",
+                "department_abbreviation": "АРБ"
+            },
+            {
+                "department_name": "кафедра систем керування літальними апаратами",
+                "department_abbreviation": "СКЛА"
+            },
+            {
+                "department_name": "Кафедра космічної інженерії",
+                "department_abbreviation": "КІ"
+            },
+            {
+                "department_name": "Міжгалузевий науково-дослідний центр “РИТМ”",
+                "department_abbreviation": "МНДЦ РИТМ"
+            },
+            {
+                "department_name": "Навчально-науковий центр космічної техніки та технологій",
+                "department_abbreviation": "ННЦКТТ"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Навчально-науковий інститут атомної та теплової енергетики",
+        "faculty_abbreviation": "ІАТЕ",
+        "departments": [
+            {
+                "department_name": "Кафедра автоматизації енергетичних процесів",
+                "department_abbreviation": "АЕП"
+            },
+            {
+                "department_name": "Кафедра атомної енергетики",
+                "department_abbreviation": "АЕ"
+            },
+            {
+                "department_name": "Кафедра інженерії програмного забезпечення в енергетиці",
+                "department_abbreviation": "ІПЗЕ"
+            },
+            {
+                "department_name": "Кафедра теплової та альтернативної енергетики",
+                "department_abbreviation": "ТАЕ"
+            },
+            {
+                "department_name": "Кафедра цифрових технологій в енергетиці",
+                "department_abbreviation": "ЦТЕ"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Навчально-науковий інститут енергозбереження та енергоменеджменту",
+        "faculty_abbreviation": "НН ІЕЕ",
+        "departments": [
+            {
+                "department_name": "Кафедра автоматизації електротехнічних та мехатронних комплексів",
+                "department_abbreviation": "АЕМК"
+            },
+            {
+                "department_name": "Кафедра геоінженерії",
+                "department_abbreviation": "ГІ"
+            },
+            {
+                "department_name": "Кафедра електропостачання",
+                "department_abbreviation": "ЕП"
+            },
+            {
+                "department_name": "Кафедра охорони працi, промислової та цивільної безпеки",
+                "department_abbreviation": "ОППЦБ"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Навчально-науковий інститут матеріалознавства та зварювання ім. Є.О. Патона",
+        "faculty_abbreviation": "НН ІМЗ",
+        "departments": [
+            {
+                "department_name": "Кафедра високотемпературних матерiалiв та порошкової металургiї",
+                "department_abbreviation": "ВТМПМ"
+            },
+            {
+                "department_name": "Кафедра зварювального виробництва",
+                "department_abbreviation": "ЗВ"
+            },
+            {
+                "department_name": "Кафедра лазерної техніки та фізико-технічних технологій",
+                "department_abbreviation": "ЛТФТТ"
+            },
+            {
+                "department_name": "Кафедра ливарного виробництва",
+                "department_abbreviation": "ЛВ"
+            },
+            {
+                "department_name": "Кафедра фізичного матеріалознавства та термічної обробки",
+                "department_abbreviation": "ФМТО"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Навчально-науковий інститут прикладного системного аналiзу",
+        "faculty_abbreviation": "НН ІПСА",
+        "departments": [
+            {
+                "department_name": "Кафедра математичних методів системного аналізу",
+                "department_abbreviation": "ММСА"
+            },
+            {
+                "department_name": "Кафедра системного проектування",
+                "department_abbreviation": "СП (САПР)"
+            },
+            {
+                "department_name": "Кафедра штучного інтелекту",
+                "department_abbreviation": "ШІ"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Навчально-науковий інститут телекомунiкацiйних систем",
+        "faculty_abbreviation": "НН ІТС",
+        "departments": [
+            {
+                "department_name": "Кафедра електронних комунікацій та інтернету речей",
+                "department_abbreviation": "ЕКІР"
+            },
+            {
+                "department_name": "Кафедра інформаційних технологій в телекомунікаціях",
+                "department_abbreviation": "ІТТ"
+            },
+            {
+                "department_name": "Кафедра телекомунiкацiй",
+                "department_abbreviation": "ТК"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Навчально-науковий механiко-машинобудiвний iнститут",
+        "faculty_abbreviation": "НН ММІ",
+        "departments": [
+            {
+                "department_name": "Кафедра динаміки і мiцностi машин та опору матерiалiв",
+                "department_abbreviation": "ДММОМ"
+            },
+            {
+                "department_name": "Кафедра конструювання машин",
+                "department_abbreviation": "КМ"
+            },
+            {
+                "department_name": "Кафедра технології машинобудування",
+                "department_abbreviation": "ТМММІ"
+            },
+            {
+                "department_name": "Кафедра технології виробництва літальних апаратів",
+                "department_abbreviation": "ТВЛА"
+            },
+            {
+                "department_name": "Кафедра прикладної гідроаеромеханіки і механотроніки",
+                "department_abbreviation": "ПГМ"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Навчально-науковий фiзико-технiчний iнститут",
+        "faculty_abbreviation": "НН ФТІ",
+        "departments": [
+            {
+                "department_name": "Кафедра інформаційної безпеки",
+                "department_abbreviation": "ІБ"
+            },
+            {
+                "department_name": "Кафедра математичних методів захисту інформації",
+                "department_abbreviation": "ММЗІ"
+            },
+            {
+                "department_name": "Кафедра математичного моделювання та аналізу даних",
+                "department_abbreviation": "ММАД"
+            },
+            {
+                "department_name": "Кафедра прикладної фізики",
+                "department_abbreviation": "ПФ"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Інженерно-хiмiчний факультет",
+        "faculty_abbreviation": "ІХФ",
+        "departments": [
+            {
+                "department_name": "Кафедра хiмiчного, полiмерного і силікатного машинобудування",
+                "department_abbreviation": "ХПСМ"
+            },
+            {
+                "department_name": "Кафедра технічних та програмних засобів автоматизації",
+                "department_abbreviation": "ТПЗА"
+            },
+            {
+                "department_name": "Кафедра машин і апаратiв хiмiчних та нафтопереробних виробництв",
+                "department_abbreviation": "МАХНВ"
+            },
+            {
+                "department_name": "Кафедра екології та технології рослинних полімерів",
+                "department_abbreviation": "ЕТРП"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Приладобудiвний факультет",
+        "faculty_abbreviation": "ПБФ",
+        "departments": [
+            {
+                "department_name": "Кафедра автоматизації та систем неруйнівного контролю",
+                "department_abbreviation": "АСНК"
+            },
+            {
+                "department_name": "Кафедра інформаційно-вимірювальних технологій",
+                "department_abbreviation": "ІВТ"
+            },
+            {
+                "department_name": "Кафедра комп'ютерно-інтегрованих оптичних та навігаційних систем",
+                "department_abbreviation": "КІОНС"
+            },
+            {
+                "department_name": "Кафедра комп'ютерно-інтегрованих технологій виробництва приладів",
+                "department_abbreviation": "КІТВП"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Радiотехнiчний факультет",
+        "faculty_abbreviation": "РТФ",
+        "departments": [
+            {
+                "department_name": "Кафедра прикладної радіоелектроніки",
+                "department_abbreviation": "РЕ"
+            },
+            {
+                "department_name": "Кафедра радіоінженерії",
+                "department_abbreviation": "РІ"
+            },
+            {
+                "department_name": "Кафедра радіотехнічних систем",
+                "department_abbreviation": "РТС"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Факультет біомедичної інженерії",
+        "faculty_abbreviation": "ФБМІ",
+        "departments": [
+            {
+                "department_name": "Кафедра біомедичної кібернетики",
+                "department_abbreviation": "БМК"
+            },
+            {
+                "department_name": "Кафедра біомедичної інженерії",
+                "department_abbreviation": "БМІ"
+            },
+            {
+                "department_name": "Кафедра біобезпеки і здоров'я людини",
+                "department_abbreviation": "ББЗЛ"
+            },
+            {
+                "department_name": "Кафедра трансляційної медичної біоінженерії",
+                "department_abbreviation": "ТМБ"
+            },
+            {
+                "department_name": "Кафедра загальної підготовки",
+                "department_abbreviation": "КЗП"
+            },
+            {
+                "department_name": "Кафедра технологій оздоровлення і спорту",
+                "department_abbreviation": "КТОС"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Факультет бiотехнологiї i бiотехнiки",
+        "faculty_abbreviation": "ФБТ",
+        "departments": [
+            {
+                "department_name": "Кафедра промислової біотехнології та біофармації",
+                "department_abbreviation": "ПБТБ"
+            },
+            {
+                "department_name": "Кафедра біоенергетики, біоінформатики та екобіотехнології",
+                "department_abbreviation": "КББЕ"
+            },
+            {
+                "department_name": "Кафедра біотехніки та інженерії",
+                "department_abbreviation": "БТІ"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Факультет електроенерготехнiки та автоматики",
+        "faculty_abbreviation": "ФЕА",
+        "departments": [
+            {
+                "department_name": "Кафедра електромеханіки",
+                "department_abbreviation": "ЕМ"
+            },
+            {
+                "department_name": "Кафедра автоматизації енергосистем",
+                "department_abbreviation": "АЕ"
+            },
+            {
+                "department_name": "Кафедра автоматизації електромеханічних систем та електроприводу",
+                "department_abbreviation": "АЕМCЕП"
+            },
+            {
+                "department_name": "Кафедра електричних мереж і систем",
+                "department_abbreviation": "ЕМС"
+            },
+            {
+                "department_name": "Кафедра відновлюваних джерел енергії",
+                "department_abbreviation": "ВДЕ"
+            },
+            {
+                "department_name": "Кафедра теоретичної електротехніки",
+                "department_abbreviation": "ТЕ"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Факультет електронiки",
+        "faculty_abbreviation": "ФЕЛ",
+        "departments": [
+            {
+                "department_name": "кафедра мікроелектроніки",
+                "department_abbreviation": "МЕ"
+            },
+            {
+                "department_name": "кафедра електронних пристроїв та систем",
+                "department_abbreviation": "ЕПС"
+            },
+            {
+                "department_name": "кафедра електронної інженерії",
+                "department_abbreviation": "ЕІ"
+            },
+            {
+                "department_name": "кафедра конструювання електронно-обчислювальної апаратури",
+                "department_abbreviation": "КЕОА"
+            },
+            {
+                "department_name": "Кафедра акустичних та мультимедійних електронних систем",
+                "department_abbreviation": "АМЕС"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Факультет iнформатики та обчислювальної технiки",
+        "faculty_abbreviation": "ФІОТ",
+        "departments": [
+            {
+                "department_name": "Кафедра інформатики та програмної інженерії",
+                "department_abbreviation": "ІПІ"
+            },
+            {
+                "department_name": "Кафедра інформаційних систем та технологій",
+                "department_abbreviation": "ІСТ"
+            },
+            {
+                "department_name": "Кафедра обчислювальної техніки",
+                "department_abbreviation": "ОТ"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Факультет лiнгвiстики",
+        "faculty_abbreviation": "ФЛ",
+
+        "departments": [
+            {
+                "department_name": "Кафедра теорії, практики та перекладу англійської мови (профілююча)",
+                "department_abbreviation": "КТППАМ"
+            },
+            {
+                "department_name": "Кафедра теорії, практики та перекладу французької мови (профілююча)",
+                "department_abbreviation": "КТППФМ"
+            },
+            {
+                "department_name": "Кафедра теорії, практики та перекладу німецької мови (профілююча)",
+                "department_abbreviation": "КТППНМ"
+            },
+            {
+                "department_name": "Кафедра англійської мови технічного спрямування № 1",
+                "department_abbreviation": "КАМТС1"
+            },
+            {
+                "department_name": "Кафедра англійської мови технічного спрямування № 2",
+                "department_abbreviation": "КАМТС2"
+            },
+            {
+                "department_name": "Кафедра англійської мови гуманітарного спрямування № 3",
+                "department_abbreviation": "КАМГС3"
+            },
+            {
+                "department_name": "Кафедра української мови, літератури та культури",
+                "department_abbreviation": "КУМЛК"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Факультет менеджменту та маркетингу",
+        "faculty_abbreviation": "ФММ",
+        "departments": [
+            {
+                "department_name": "Кафедра економіки і підприємництва",
+                "department_abbreviation": "КЕП"
+            },
+            {
+                "department_name": "Кафедра економічної кібернетики",
+                "department_abbreviation": "ЕК"
+            },
+            {
+                "department_name": "Кафедра менеджменту підприємств",
+                "department_abbreviation": "КМП"
+            },
+            {
+                "department_name": "Кафедра міжнародної економіки",
+                "department_abbreviation": "КМЕ"
+            },
+            {
+                "department_name": "Кафедра промислового маркетингу",
+                "department_abbreviation": "ПМФММ"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Факультет соціології і права",
+        "faculty_abbreviation": "ФСП",
+        "departments": [
+            {
+                "department_name": "Кафедра інтелектуальної власності та приватного права",
+                "department_abbreviation": "ІВПП"
+            },
+            {
+                "department_name": "Кафедра інформаційного, господарського та адміністративного права",
+                "department_abbreviation": "КІГАП"
+            },
+            {
+                "department_name": "Кафедра історiї",
+                "department_abbreviation": "КІ"
+            },
+            {
+                "department_name": "Кафедра психології та педагогіки",
+                "department_abbreviation": "ПП"
+            },
+            {
+                "department_name": "Кафедра соціології",
+                "department_abbreviation": "КС"
+            },
+            {
+                "department_name": "Кафедра теорії та практики управління",
+                "department_abbreviation": "КТПУ"
+            },
+            {
+                "department_name": "Кафедра фiлософiї",
+                "department_abbreviation": "КФ"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Факультет прикладної математики",
+        "faculty_abbreviation": "ФПМ",
+        "departments": [
+            {
+                "department_name": "Кафедра прикладної математики",
+                "department_abbreviation": "ПМА"
+            },
+            {
+                "department_name": "Кафедра системного програмування і спеціалізованих комп’ютерних систем",
+                "department_abbreviation": "СПСКС"
+            },
+            {
+                "department_name": "Кафедра програмного забезпечення комп'ютерних систем",
+                "department_abbreviation": "ПЗКС"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Фiзико-математичний факультет",
+        "faculty_abbreviation": "ФМФ",
+        "departments": [
+            {
+                "department_name": "Кафедра загальної фізики та моделювання фізичних процесів",
+                "department_abbreviation": "ЗФМФП"
+            },
+            {
+                "department_name": "Кафедра математичного аналiзу та теорiї ймовiрностей",
+                "department_abbreviation": "МАтаТЙ"
+            },
+            {
+                "department_name": "Кафедра загальної фізики",
+                "department_abbreviation": "КЗФ"
+            },
+            {
+                "department_name": "Кафедра математичної фізики та диференціальних рівнянь",
+                "department_abbreviation": "КМФДР"
+            },
+            {
+                "department_name": "кафедра нарисної геометрiї, iнженерної та комп'ютерної графiки",
+                "department_abbreviation": "НГІтаКГ"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Хiмiко-технологiчний факультет",
+        "faculty_abbreviation": "ХТФ",
+        "departments": [
+            {
+                "department_name": "Кафедра технології неорганічних речовин, водоочищення та загальної хімічної технології",
+                "department_abbreviation": "ТНР,В та ЗХТ"
+            },
+            {
+                "department_name": "Кафедра органічної хімії та технології органічних речовин",
+                "department_abbreviation": "ОХТОP"
+            },
+            {
+                "department_name": "Кафедра технології електрохімічних виробництв",
+                "department_abbreviation": "ТЕХВ"
+            },
+            {
+                "department_name": "Кафедра хімічної технології композиційних матеріалів",
+                "department_abbreviation": "ХТКМ"
+            },
+            {
+                "department_name": "Кафедра хімічної технології кераміки та скла",
+                "department_abbreviation": "ХТКС"
+            },
+            {
+                "department_name": "Кафедра фізичної хімії",
+                "department_abbreviation": "ФХ"
+            },
+            {
+                "department_name": "Кафедра загальної та неорганічної хімії",
+                "department_abbreviation": "ЗНХ"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Інститут післядипломної освіти",
+        "faculty_abbreviation": "ІПО",
+        "departments": [
+            {
+                "department_name": "Відділ наступної (другої) вищої освіти",
+                "department_abbreviation": "ВДВО"
+            },
+            {
+                "department_name": "Відділ підвищення кваліфікації (спеціалізації)",
+                "department_abbreviation": "ВПК"
+            },
+            {
+                "department_name": "Відділ технологій дистанційного навчання",
+                "department_abbreviation": "ВТДН"
+            },
+            {
+                "department_name": "Центр інноваційного підприємництва",
+                "department_abbreviation": "ЦІП"
+            },
+            {
+                "department_name": "Українсько-Китайський центр інженерних інновацій",
+                "department_abbreviation": "УКЦІІ"
+            },
+            {
+                "department_name": "Навчально-інноваційний центр протезування і реабілітації",
+                "department_abbreviation": "НІЦПР"
+            },
+            {
+                "department_name": "Центр підвищення кваліфікації в оборонній сфері",
+                "department_abbreviation": "ЦПКОВ"
+            }
+        ]
+    },
+    {
+        "faculty_name": "Центр інноваційного моніторингу якості освіти",
+        "faculty_abbreviation": "ЦІМЯО",
+        "departments": [
+            {
+                "department_name": "Відділ коригування та вдосконалення рівня знань",
+                "department_abbreviation": "ВКВРЗ"
+            },
+            {
+                "department_name": "Аналітичний відділ тестування та моніторингу знань",
+                "department_abbreviation": "АВТМЗ"
+            },
+            {
+                "department_name": "Відділ профорієнтації та підготовки до вступу в заклад вищої освіти",
+                "department_abbreviation": "ВППВЗ"
+            },
+            {
+                "department_name": "Навчально-наукова лабораторія моніторингу якості освіти",
+                "department_abbreviation": "ННЛМЯО"
+            }
+        ]
+    }
+]

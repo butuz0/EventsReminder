@@ -17,7 +17,7 @@ class Faculty(models.Model):
 class Department(models.Model):
     faculty = models.ForeignKey(Faculty, on_delete=models.SET_NULL, null=True, related_name='departments')
     department_name = models.CharField(verbose_name=_('Department Name'), max_length=250, unique=True)
-    department_abbreviation = models.CharField(verbose_name=_('Department Аbbreviation'), max_length=20, unique=True)
+    department_abbreviation = models.CharField(verbose_name=_('Department Аbbreviation'), max_length=20)
     
     class Meta:
         verbose_name = _('Department')
