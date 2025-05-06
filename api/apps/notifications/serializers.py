@@ -24,9 +24,8 @@ class NotificationSerializer(serializers.ModelSerializer):
         if not event:
             raise serializers.ValidationError('Event is required.')
 
-        event_obj = self.initial_data.get('event')
         try:
-            event = Event.objects.select_related('recurring_event').get(id=event_obj)
+            event = Event.objects.select_related('recurring_event').get(id=event)
         except Event.DoesNotExist:
             raise serializers.ValidationError('Event does not exist.')
 
@@ -52,7 +51,13 @@ class NotificationSerializer(serializers.ModelSerializer):
 
         if event.created_by != user and not event.assigned_to.filter(id=user.id).exists():
             raise serializers.ValidationError('You do not have permission to create notifications for this event.')
-
+        
+        if attrs.get('notification_method') == Notification.NotificationMethod.TELEGRAM and not user.profile.is_telegram_verified():
+            raise serializers.ValidationError('Your Telegram account is not connected yet.')
+        
+        print(attrs.get('notification_method'))
+        print(user.profile.is_telegram_verified)
+        
         return attrs
 
     def create(self, validated_data):
