@@ -1,4 +1,6 @@
 from aiogram.fsm.state import State, StatesGroup
 
-class AuthStates(StatesGroup):
-    waiting_for_phone = State()
+
+class VerificationStates(StatesGroup):
+    unverified = State()
+    verified = State()
