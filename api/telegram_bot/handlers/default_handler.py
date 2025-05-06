@@ -16,4 +16,4 @@ async def handle_message(message: Message, state: FSMContext):
         await message.reply(MESSAGES['already_verified'])
     else:
         await message.reply(MESSAGES['ask_verification'], reply_markup=verification_keyboard)
-    await state.set_state(VerificationStates.unverified)
+        await state.set_state(VerificationStates.unverified)
