@@ -71,7 +71,7 @@ services:
     container_name: kpi_notify_celery_worker
     command: /start-celery-worker
     restart: unless-stopped
-    ports: []
+    ports: [ ]
     depends_on:
       - redis
       - postgres
@@ -98,7 +98,7 @@ services:
     container_name: kpi_notify_telegram_bot
     command: /start-telegram-bot
     restart: unless-stopped
-    ports: []
+    ports: [ ]
     depends_on:
       - postgres
       - redis
@@ -119,14 +119,16 @@ services:
       - /app/node_modules
     depends_on:
       - api
+    environment:
+      - WATCHPACK_POLLING=true
     networks:
       - kpi_notify_nw
-
+ 
 networks:
   kpi_notify_nw:
     external: true
 
 volumes:
-  kpi_notify_postgres_data: {}
-  kpi_notify_mailpit_data: {}
-  kpi_notify_redis_data: {}
+  kpi_notify_postgres_data: { }
+  kpi_notify_mailpit_data: { }
+  kpi_notify_redis_data: { }
