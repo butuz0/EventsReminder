@@ -1,3 +1,5 @@
+.vscode/
+.idea/
 .git/
 *.pyo
 __pycache__/
@@ -6,3 +8,17 @@ venv/
 .venv/
 *.log
 api/.envs/*
+client/node_modules/
+client/.pnp
+client/.pnp.js
+client/coverage
+client/.next
+client/dist
+client/.env*
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+client/.pnpm-debug.log*
+client/.vercel
+client/*.tsbuildinfo
+client/next-env.d.ts

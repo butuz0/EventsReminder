@@ -1,115 +1,132 @@
 services:
-    api: &api
-        build:
-            context: .
-            dockerfile: ./docker/local/django/Dockerfile
-        image: kpi_notify_api
-        container_name: kpi_notify_api
-        restart: unless-stopped
-        volumes:
-            - ./api:/app:z
-            - ./api/staticfiles:/app/staticfiles
-        ports:
-            - "8000:8000"
-        env_file:
-            - ./api/.envs/.env.django
-            - ./api/.envs/.env.postgres
-        depends_on:
-            - postgres
-            - mailpit
-            - redis
-        command: /start
-        networks:
-            - kpi_notify_nw
+  api: &api
+    build:
+      context: .
+      dockerfile: ./docker/local/django/Dockerfile
+    image: kpi_notify_api
+    container_name: kpi_notify_api
+    restart: unless-stopped
+    volumes:
+      - ./api:/app:z
+      - ./api/staticfiles:/app/staticfiles
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./api/.envs/.env.django
+      - ./api/.envs/.env.postgres
+    depends_on:
+      - postgres
+      - mailpit
+      - redis
+    command: /start
+    networks:
+      - kpi_notify_nw
 
-    postgres:
-        build:
-            context: .
-            dockerfile: ./docker/local/postgres/Dockerfile
-        image: kpi_notify_postgres
-        container_name: kpi_notify_postgres
-        restart: unless-stopped
-        ports:
-            - "5432:5432"
-        volumes:
-            - kpi_notify_postgres_data:/var/lib/postgresql/data
-        env_file:
-            - ./api/.envs/.env.postgres
-        networks:
-            - kpi_notify_nw
+  postgres:
+    build:
+      context: .
+      dockerfile: ./docker/local/postgres/Dockerfile
+    image: kpi_notify_postgres
+    container_name: kpi_notify_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - kpi_notify_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./api/.envs/.env.postgres
+    networks:
+      - kpi_notify_nw
 
-    mailpit:
-        image: docker.io/axllent/mailpit:v1.15
-        container_name: kpi_notify_mailpit
-        restart: unless-stopped
-        ports:
-            - "8025:8025"
-            - "1025:1025"
-        volumes:
-            - kpi_notify_mailpit_data:/data
-        environment:
-            MP_MAX_MESSAGES: 5000
-            MP_DATA_FILE: /data/mailpit.db
-            MP_SMTP_AUTH_ACCEPT_ANY: 1
-            MP_SMTP_AUTH_ALLOW_INSECURE: 1
-        networks:
-            - kpi_notify_nw
+  mailpit:
+    image: docker.io/axllent/mailpit:v1.15
+    container_name: kpi_notify_mailpit
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    volumes:
+      - kpi_notify_mailpit_data:/data
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATA_FILE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    networks:
+      - kpi_notify_nw
 
-    redis:
-        image: redis:7.0-alpine3.19
-        command: redis-server --appendonly yes
-        container_name: kpi_notify_redis
-        restart: unless-stopped
-        volumes:
-            - kpi_notify_redis_data:/data
-        networks:
-            - kpi_notify_nw
+  redis:
+    image: redis:7.0-alpine3.19
+    command: redis-server --appendonly yes
+    container_name: kpi_notify_redis
+    restart: unless-stopped
+    volumes:
+      - kpi_notify_redis_data:/data
+    networks:
+      - kpi_notify_nw
 
-    celery_worker:
-        <<: *api
-        image: kpi_notify_celery_worker
-        container_name: kpi_notify_celery_worker
-        command: /start-celery-worker
-        restart: unless-stopped
-        ports: []
-        depends_on:
-            - redis
-            - postgres
-        networks:
-            - kpi_notify_nw
+  celery_worker:
+    <<: *api
+    image: kpi_notify_celery_worker
+    container_name: kpi_notify_celery_worker
+    command: /start-celery-worker
+    restart: unless-stopped
+    ports: []
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - kpi_notify_nw
 
-    flower:
-        <<: *api
-        image: kpi_notify_flower
-        container_name: kpi_notify_flower
-        restart: unless-stopped
-        ports:
-            - "5555:5555"
-        command: /start-flower
-        depends_on:
-            - redis
-            - postgres
-        networks:
-            - kpi_notify_nw
+  flower:
+    <<: *api
+    image: kpi_notify_flower
+    container_name: kpi_notify_flower
+    restart: unless-stopped
+    ports:
+      - "5555:5555"
+    command: /start-flower
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - kpi_notify_nw
 
-    telegram_bot:
-        <<: *api
-        image: kpi_notify_telegram_bot
-        container_name: kpi_notify_telegram_bot
-        command: /start-telegram-bot
-        restart: unless-stopped
-        ports: []
-        depends_on:
-            - postgres
-            - redis
-        networks:
-            - kpi_notify_nw
+  telegram_bot:
+    <<: *api
+    image: kpi_notify_telegram_bot
+    container_name: kpi_notify_telegram_bot
+    command: /start-telegram-bot
+    restart: unless-stopped
+    ports: []
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - kpi_notify_nw
+
+  client:
+    build:
+      context: .
+      dockerfile: ./docker/local/client/Dockerfile
+    image: kpi_notify_client
+    container_name: kpi_notify_client
+    ports:
+      - "3000:3000"
+    working_dir: /app
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    depends_on:
+      - api
+    networks:
+      - kpi_notify_nw
 
 networks:
-    kpi_notify_nw:
-        external: true
+  kpi_notify_nw:
+    external: true
 
 volumes:
-    kpi_notify_postgres_data: {}
-    kpi_notify_mailpit_data: {}
-    kpi_notify_redis_data: {}
+  kpi_notify_postgres_data: {}
+  kpi_notify_mailpit_data: {}
+  kpi_notify_redis_data: {}
