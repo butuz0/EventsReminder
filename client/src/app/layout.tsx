@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import React from "react";
 import "./globals.css";
+import {nunito, sourceSerif} from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: "KPI Notify",
@@ -12,7 +13,7 @@ export default function RootLayout({children,}: Readonly<{
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-    <body>
+    <body className={`${sourceSerif.variable} ${nunito.variable}`}>
       {children}
     </body>
     </html>
