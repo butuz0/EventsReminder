@@ -19,7 +19,8 @@ export default function NavbarLinks() {
             <Link
               href={link.href}
               className={clsx(
-                "flex h-full flex-row items-center justify-start gap-3 p-2 bg-gray-50 rounded-xl",
+                "flex h-full flex-row items-center justify-start gap-3 p-2 " +
+                "bg-gray-100 rounded-xl hover:bg-sky-100 hover:text-blue-600",
                 {"bg-sky-100 text-blue-600": pathname === link.href},
               )}>
               <LinkIcon className="w-8"/>

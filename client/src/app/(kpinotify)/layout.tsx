@@ -11,7 +11,7 @@ export default function AppLayout({children,}: Readonly<{
       <TopNavbar/>
       <div className="flex flex-row h-full p-4">
         <LeftNavbar/>
-        <div className="w-full">
+        <div className="w-full px-5">
           {children}
         </div>
       </div>
