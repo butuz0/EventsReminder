@@ -3,12 +3,10 @@ from .base import BASE_DIR
 from os import path, getenv
 from dotenv import load_dotenv
 
-
 local_env_file = path.join(BASE_DIR, '.envs', '.env.django')
 
 if path.isfile(local_env_file):
     load_dotenv(local_env_file)
-
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = getenv('DJANGO_SECRET_KEY')
@@ -28,12 +26,11 @@ ALLOWED_HOSTS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://127.0.0.1:8000',
-    'http://localhost:8000',
+    'http://127.0.0.1:8080',
+    'http://localhost:8080',
 ]
 
 ADMIN_URL = getenv('DJANGO_ADMIN_URL')
-
 
 # Email configuration
 EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'

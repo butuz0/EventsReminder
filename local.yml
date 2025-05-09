@@ -9,8 +9,8 @@ services:
     volumes:
       - ./api:/app:z
       - ./api/staticfiles:/app/staticfiles
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     env_file:
       - ./api/.envs/.env.django
       - ./api/.envs/.env.postgres
@@ -111,8 +111,8 @@ services:
       dockerfile: ./docker/local/client/Dockerfile
     image: kpi_notify_client
     container_name: kpi_notify_client
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     working_dir: /app
     volumes:
       - ./client:/app
@@ -123,7 +123,24 @@ services:
       - WATCHPACK_POLLING=true
     networks:
       - kpi_notify_nw
- 
+
+  nginx:
+    build:
+      context: ./docker/local/nginx
+      dockerfile: Dockerfile
+    image: kpi_notify_nginx
+    container_name: kpi_notify_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./api/staticfiles:/app/staticfiles
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - api
+    networks:
+      - kpi_notify_nw
+
 networks:
   kpi_notify_nw:
     external: true
@@ -132,3 +149,4 @@ volumes:
   kpi_notify_postgres_data: { }
   kpi_notify_mailpit_data: { }
   kpi_notify_redis_data: { }
+  nginx_logs: { }
