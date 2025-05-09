@@ -3,6 +3,7 @@ import React from "react";
 import "./globals.css";
 import {nunito, sourceSerif} from "@/lib/fonts";
 import ReduxProvider from "@/lib/redux/provider";
+import Toast from "@/components/shared/Toast";
 
 export const metadata: Metadata = {
   title: "KPI Notify",
@@ -15,6 +16,7 @@ export default function RootLayout({children,}: Readonly<{
   return (
     <html lang="en" suppressHydrationWarning>
     <body className={`${sourceSerif.variable} ${nunito.variable}`}>
+      <Toast/>
       <ReduxProvider>
         {children}
       </ReduxProvider>
