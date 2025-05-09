@@ -9,6 +9,8 @@ import React from "react";
 
 export default function NavbarLinks() {
   const pathname = usePathname();
+  const linkIsActive = (href: string) =>
+    pathname.includes(href) || pathname === href;
   
   return (
     <div className="flex flex-col gap-2">
@@ -21,7 +23,7 @@ export default function NavbarLinks() {
               className={clsx(
                 "flex h-full flex-row items-center justify-start gap-3 p-2 " +
                 "bg-gray-100 rounded-xl hover:bg-sky-100 hover:text-blue-600",
-                {"bg-sky-100 text-blue-600": pathname === link.href},
+                {"bg-sky-100 text-blue-600": linkIsActive(link.href)},
               )}>
               <LinkIcon className="w-8"/>
               <p className="w-full text-left">
