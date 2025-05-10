@@ -16,10 +16,10 @@ class BaseProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ['first_name', 'last_name', 'position',
                   'phone_number', 'telegram_username',
-                  'telegram_phone_number']
+                  'telegram_phone_number', 'avatar']
 
 
-class ProfileSerializer(BaseProfileSerializer):
+class ProfileRetrieveSerializer(BaseProfileSerializer):
     id = serializers.UUIDField(source='user.id', read_only=True)
     email = serializers.ReadOnlyField(source='user.email')
     gender = serializers.CharField(source='get_gender_display')

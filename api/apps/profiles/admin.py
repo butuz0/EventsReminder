@@ -8,7 +8,8 @@ class TelegramDataAdmin(admin.ModelAdmin):
     list_display = ['profile', 'telegram_username', 'telegram_phone_number']
     list_display_links = ['profile', 'telegram_username']
     list_filter = ['is_verified']
-    readonly_fields = ['telegram_user_id', 'telegram_chat_id', 'created_at', 'updated_at']
+    readonly_fields = ['telegram_user_id', 'telegram_chat_id', 
+                       'is_verified', 'created_at', 'updated_at']
 
 
 class TelegramDataInline(admin.StackedInline):
@@ -17,7 +18,8 @@ class TelegramDataInline(admin.StackedInline):
     extra = 0
     verbose_name = 'Telegram Data'
     verbose_name_plural = 'Telegram Data'
-    readonly_fields = ['telegram_user_id', 'telegram_chat_id', 'created_at', 'updated_at']
+    readonly_fields = ['telegram_user_id', 'telegram_chat_id', 
+                       'is_verified', 'created_at', 'updated_at']
 
 
 @admin.register(Profile)
@@ -40,7 +42,7 @@ class ProfileAdmin(admin.ModelAdmin):
     inlines = [TelegramDataInline]
 
     fieldsets = (
-        (_('Personal Information'), {'fields': ['user', 'gender']}),
+        (_('Personal Information'), {'fields': ['user', 'gender', 'avatar']}),
         (_('Position'), {'fields': ['department', 'position']}),
         (_('Contacts'), {'fields': ['phone_number']}),
         (_('Dates'), {'fields': ['created_at', 'updated_at']}),
