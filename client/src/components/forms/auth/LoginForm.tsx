@@ -9,10 +9,15 @@ import FormBase from "@/components/forms/FormBase";
 import FormField from "@/components/forms/FormField";
 import {AtSymbolIcon} from "@heroicons/react/24/outline";
 import {useLoginUserMutation} from "@/lib/redux/slices/auth/authApiSlice";
+import {useAppDispatch} from "@/lib/redux/hooks/reduxHooks";
+import {useRouter} from "next/navigation";
+import {setLogin} from "@/lib/redux/slices/auth/authSlice";
 
 
 export default function LoginForm() {
   const [loginUser, {isLoading}] = useLoginUserMutation();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   
   const form = useForm<TUserLoginSchema>({
     resolver: zodResolver(UserLoginSchema),
@@ -32,10 +37,14 @@ export default function LoginForm() {
           success: "Ви успішно увійшли в свій акаунт",
         }
       );
+      dispatch(setLogin());
+      router.push("/home");
+      form.reset();
     } catch (error) {
       toast.error(`При створенні Вашого акаунта сталась помилка: ${JSON.stringify(error)}`)
     }
   };
+  
   return (
     <FormBase
       form={form}
