@@ -26,7 +26,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
         />
         <VisibilityIcon
           onClick={toggleVisibility}
-          className="w-7"/>
+          className="w-7 hover:cursor-pointer"/>
       </div>
     );
   }
