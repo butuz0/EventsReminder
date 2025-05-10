@@ -8,7 +8,7 @@ import {CheckCircleIcon, ExclamationCircleIcon} from "@heroicons/react/24/outlin
 export default function Toast() {
   return (
     <ToastContainer
-      autoClose={3000}
+      autoClose={5000}
       icon={({type, theme}) => {
         switch (type) {
           case "success":
