@@ -11,12 +11,19 @@ class BaseProfileSerializer(serializers.ModelSerializer):
     phone_number = PhoneNumberField()
     telegram_username = serializers.CharField(source='telegram.telegram_username')
     telegram_phone_number = PhoneNumberField(source='telegram.telegram_phone_number')
+    avatar = serializers.ImageField(write_only=True, required=False)
+    avatar_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
         fields = ['first_name', 'last_name', 'position',
                   'phone_number', 'telegram_username',
-                  'telegram_phone_number', 'avatar']
+                  'telegram_phone_number', 'avatar', 'avatar_url']
+
+    def get_avatar_url(self, obj: Profile) -> str | None:
+        if obj.avatar:
+            return f"http://localhost:8080{obj.avatar.url}"
+        return None
 
 
 class ProfileRetrieveSerializer(BaseProfileSerializer):
@@ -31,8 +38,8 @@ class ProfileRetrieveSerializer(BaseProfileSerializer):
 
     class Meta(BaseProfileSerializer.Meta):
         fields = (BaseProfileSerializer.Meta.fields +
-                  ['is_telegram_verified', 'id', 'email', 'gender', 
-                   'department', 'department_abbreviation', 
+                  ['is_telegram_verified', 'id', 'email', 'gender',
+                   'department', 'department_abbreviation',
                    'faculty', 'faculty_abbreviation'])
 
     def get_department(self, obj: Profile) -> str:
@@ -65,12 +72,12 @@ class ProfileUpdateSerializer(BaseProfileSerializer):
 
     def validate_telegram_username(self, value: str) -> str:
         value = value.strip().replace('@', '')
-        
+
         if len(value) < 5 or len(value) > 32:
             raise serializers.ValidationError('Username must by 5-32 characters long.')
-        
+
         return value
-        
+
     def update(self, instance: Profile, validated_data: dict) -> Profile:
         user_data = validated_data.pop('user', {})
         telegram_data = validated_data.pop('telegram', {})

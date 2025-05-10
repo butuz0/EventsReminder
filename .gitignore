@@ -1,7 +1,7 @@
 .idea
 .vscode
 .DS_Store
-staticfiles/
+api/staticfiles/
 api/.envs/*
 !api/.envs/.env.example
 api/media/
@@ -23,6 +23,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!client/src/lib
 lib64/
 parts/
 sdist/
