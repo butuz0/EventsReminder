@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                 ('location', models.CharField(blank=True, max_length=255, verbose_name='Location')),
                 ('link', models.URLField(blank=True, null=True, verbose_name='Event Link')),
                 ('priority', models.CharField(choices=[('low', 'Low'), ('medium', 'Medium'), ('high', 'High'), ('critical', 'Critical')], default='medium', max_length=10, verbose_name='Priority')),
-                ('image', models.ImageField(blank=True, null=True, upload_to=apps.events.models.upload_to, validators=[apps.events.models.validate_image_type, apps.events.models.validate_image_size], verbose_name='Image')),
+                ('image', models.ImageField(blank=True, null=True, upload_to=apps.common.uploads.upload_event_image, validators=[], verbose_name='Image')),
                 ('is_recurring', models.BooleanField(default=False, verbose_name='Is Recurring')),
                 ('assigned_to', models.ManyToManyField(blank=True, related_name='assigned_events', to=settings.AUTH_USER_MODEL, verbose_name='Assigned To')),
                 ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='created_events', to=settings.AUTH_USER_MODEL, verbose_name='Created By')),

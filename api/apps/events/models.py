@@ -1,35 +1,14 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
 from apps.common.models import TimeStampedModel
+from apps.common.validators import image_validator
+from apps.common.uploads import upload_event_image
 from taggit.managers import TaggableManager
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta
-import magic
-import uuid
-import os
 
 User = get_user_model()
-
-ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif']
-MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5 MB
-
-
-def validate_image_type(value):
-    mime_type = magic.Magic(mime=True).from_buffer(value.read(2048))
-    if mime_type not in ALLOWED_IMAGE_TYPES:
-        raise ValidationError(_(f'Unsupported file type: {mime_type}. Your image must be one of the following: {", ".join(ALLOWED_IMAGE_TYPES)}.'))
-
-
-def validate_image_size(value):  
-    if value.size > MAX_IMAGE_SIZE:
-        raise ValidationError(_('File is too large. Max size: 5MB.'))
-
-
-def upload_to(instance, filename):
-    extension = os.path.splitext(filename)[1]
-    return os.path.join('event_images/', f'{uuid.uuid4()}{extension}')
 
 
 class Event(TimeStampedModel):
@@ -50,7 +29,7 @@ class Event(TimeStampedModel):
     location = models.CharField(max_length=255, blank=True, verbose_name=_('Location'))
     link = models.URLField(blank=True, null=True, verbose_name=_('Event Link'))
     priority = models.PositiveSmallIntegerField(choices=Priority.choices, default=Priority.MEDIUM, verbose_name=_('Priority'))
-    image = models.ImageField(upload_to=upload_to, validators=[validate_image_type, validate_image_size], blank=True, null=True, verbose_name=_('Image'))
+    image = models.ImageField(upload_to=upload_event_image, validators=[image_validator], blank=True, null=True, verbose_name=_('Image'))
     tags = TaggableManager(blank=True, verbose_name=_('Tags'))
 
     # If event is recurring, RecurringEvent model will be created
