@@ -141,3 +141,74 @@ export interface SetupProfileData {
   gender: string;
   department: number;
 }
+
+export interface Event {
+  id: string,
+  created_by: BaseUserResponse,
+  title: string,
+  description: string,
+  start_datetime: string,
+  location: string,
+  link: string,
+  priority: number,
+  image: string,
+  tags: string[],
+  assigned_to: BaseUserResponse[],
+  is_recurring: boolean,
+  recurring_event: {
+    id: string,
+    recurrence_rule: string,
+    recurrence_end_datetime: string,
+    created_at: string,
+    updated_at: string
+  }
+}
+
+export interface MyEventsResponse {
+  status_code: number,
+  events: {
+    count: number,
+    next: string,
+    previous: string,
+    results: Event[]
+  }
+}
+
+export interface EventDetailsResponse {
+  status_code: number,
+  event: Event
+}
+
+export interface CreateUpdateEventData {
+  title: string,
+  description: string,
+  start_datetime: string,
+  location: string,
+  link: string,
+  priority: number,
+  image: string,
+  tags: string[],
+  assigned_to: string,
+  is_recurring: boolean
+}
+
+export interface CreateUpdateEventResponse {
+  status_code: number,
+  event: Event
+}
+
+export interface CreateUpdateRecurringEventData {
+  recurrence_rule: string,
+  recurrence_end_datetime: string
+}
+
+export interface CreateUpdateRecurringEventResponse {
+  status_code: number,
+  recurring_event: {
+    id: string,
+    recurrence_rule: string,
+    recurrence_end_datetime: string,
+    created_at: string,
+    updated_at: string
+  }
+}
