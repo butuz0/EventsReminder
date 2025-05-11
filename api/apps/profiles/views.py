@@ -2,9 +2,11 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from apps.common.renderers import JSONRenderer
 from .models import Profile
-from .serializers import ProfileRetrieveSerializer, ProfileUpdateSerializer
+from .serializers import ProfileRetrieveSerializer, ProfileUpdateSerializer, ProfileSetupSerializer
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, generics
+from rest_framework import filters, generics, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 User = get_user_model()
 
@@ -53,3 +55,16 @@ class ProfileUpdateAPIView(generics.UpdateAPIView):
     def get_object(self) -> Profile:
         profile, _ = Profile.objects.get_or_create(user=self.request.user)
         return profile
+
+
+class ProfileSetupView(APIView):
+    def put(self, request):
+        profile = request.user.profile
+
+        serializer = ProfileSetupSerializer(profile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Profile set up successfully"},
+                            status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

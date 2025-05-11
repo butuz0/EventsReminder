@@ -93,3 +93,16 @@ class ProfileUpdateSerializer(BaseProfileSerializer):
         instance.telegram.save()
 
         return super().update(instance, validated_data)
+
+
+class ProfileSetupSerializer(serializers.ModelSerializer):
+    department = serializers.PrimaryKeyRelatedField(queryset=Department.objects.all())
+    gender = serializers.ChoiceField(choices=Profile.Gender.choices)
+
+    class Meta:
+        model = Profile
+        fields = [
+            "position",
+            "department",
+            "gender",
+        ]
