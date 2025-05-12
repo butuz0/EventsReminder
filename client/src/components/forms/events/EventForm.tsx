@@ -10,19 +10,26 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {toast} from "react-toastify";
 import {useCreateEventMutation} from "@/lib/redux/slices/events/eventsApiSlice";
-import {EventSchema, TEventSchema} from "@/lib/validationSchemas/EventSchema";
+import {useCreateNotificationMutation} from "@/lib/redux/slices/notifications/notificationsApiSlice";
+import {
+  EventWithNotificationsSchema,
+  TEventWithNotificationsSchema
+} from "@/lib/validationSchemas/EventSchema";
 import {MapPinIcon, CalendarIcon, PhotoIcon, LinkIcon, ClipboardDocumentListIcon} from "@heroicons/react/24/outline";
 import FormHeader from "@/components/forms/FormHeader";
 import objToFormData from "@/utils/objToFormData";
 import TagInputField from "@/components/forms/TagInputField";
+import NotificationsFieldArray from "@/components/forms/events/NotificationsFieldArray";
 
 
 export default function EventForm() {
   const router = useRouter();
   
   const [createEvent, {isLoading}] = useCreateEventMutation();
-  const form = useForm<TEventSchema>({
-    resolver: zodResolver(EventSchema),
+  const [createNotification] = useCreateNotificationMutation();
+  
+  const form = useForm<TEventWithNotificationsSchema>({
+    resolver: zodResolver(EventWithNotificationsSchema),
     mode: "all",
     defaultValues: {
       title: "",
@@ -34,25 +41,45 @@ export default function EventForm() {
       image: undefined,
       tags: [],
       assigned_to: [],
-      is_recurring: false
+      is_recurring: false,
+      notifications: []
     },
   });
   
-  const onSubmit = async (values: TEventSchema) => {
+  const onSubmit = async (values: TEventWithNotificationsSchema) => {
     try {
-      const hasImage = values.image instanceof File;
-      const data = hasImage
-        ? objToFormData(values)
-        : values;
+      const {notifications, ...eventValues} = values;
       
-      await toast.promise(
-        createEvent(data).unwrap(), {
-          pending: "Створюємо Вашу подію...",
-          success: "Подію було успішно створено!"
-        }).then((response) => {
-        router.push(`/events/${response.event.id}`);
-        form.reset();
-      })
+      // convert to FormData if an image was provided
+      const hasImage = eventValues.image instanceof File;
+      const data = hasImage
+        ? objToFormData(eventValues)
+        : eventValues;
+      
+      // create new event
+      const response = await toast.promise(
+        createEvent(data).unwrap(),
+        {
+          pending: "Створюємо подію...",
+          success: "Подію створено",
+        }
+      );
+      
+      // create notifications for a new event
+      if (notifications.length > 0) {
+        await Promise.all(
+          notifications.map((n) =>
+            createNotification({
+              ...n,
+              event: response.event.id,
+            }).unwrap()
+          )
+        );
+        toast.success("Нагадування створено");
+      }
+      
+      router.push(`/events/${response.event.id}`);
+      form.reset();
     } catch (error) {
       toast.error("При створенні події сталась помилка.")
     }
@@ -123,6 +150,10 @@ export default function EventForm() {
           label="Зображення"
           type="file"
           icon={<PhotoIcon className="w-7"/>}
+        />
+        <NotificationsFieldArray
+          form={form}
+          name="notifications"
         />
         <div className="flex justify-center">
           <Button

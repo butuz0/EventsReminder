@@ -1,4 +1,5 @@
 import * as z from "zod";
+import {NotificationSchema} from "@/lib/validationSchemas/NotificationSchema";
 
 export const EventSchema = z.object({
   title: z
@@ -48,4 +49,10 @@ export const EventSchema = z.object({
   is_recurring: z.boolean().optional(),
 });
 
+export const EventWithNotificationsSchema = EventSchema.extend({
+  notifications: z
+    .array(NotificationSchema)
+});
+
 export type TEventSchema = z.infer<typeof EventSchema>;
+export type TEventWithNotificationsSchema = z.infer<typeof EventWithNotificationsSchema>;

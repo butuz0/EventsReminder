@@ -212,3 +212,124 @@ export interface CreateUpdateRecurringEventResponse {
     updated_at: string
   }
 }
+
+export interface Team {
+  id: string,
+  name: string,
+  description: string,
+  created_by: BaseUserResponse,
+  members: BaseUserResponse[],
+  created_at: string,
+  updated_at: string
+}
+
+
+export interface MyTeamsResponse {
+  status_code: number,
+  teams: {
+    count: number,
+    next: string,
+    previous: string,
+    results: Team[]
+  }
+}
+
+export interface TeamDetailsResponse {
+  status_code: number,
+  team: Team
+}
+
+export interface GetSubordinatesResponse {
+  status_code: number,
+  next: null,
+  previous: null,
+  results: BaseUserResponse[]
+}
+
+export interface CreateTeamData {
+  name: string,
+  description?: string,
+  members_ids?: string[]
+}
+
+export interface UpdateTeamData {
+  name?: string,
+  description?: string,
+}
+
+export interface UpdateTeamResponse {
+  status_code: number,
+  team: {
+    name: string,
+    description: string,
+  }
+}
+
+export interface Invitation {
+  id: string,
+  created_by: BaseUserResponse,
+  team: Team,
+  sent_to: BaseUserResponse,
+  status: string,
+  created_at: string,
+  updated_at: string,
+}
+
+export interface MyInvitationsResponse {
+  status_code: number,
+  invitations: {
+    count: number,
+    next: string,
+    previous: string,
+    results: Invitation[]
+  }
+}
+
+export interface InvitationDetailsResponse {
+  status_code: number,
+  invitations: Invitation[]
+}
+
+export interface CreateInvitationData {
+  team: string,
+  sent_to: string,
+}
+
+export interface CreateInvitationResponse {
+  status_code: number,
+  invitations: Invitation
+}
+
+export interface RespondToInvitationData {
+  status: string,
+}
+
+export interface Notification {
+  id: number,
+  event: string,
+  notification_method: string,
+  created_by: string,
+  notification_datetime: string | Date,
+  is_sent: boolean,
+}
+
+export interface NotificationCreateData {
+  event: string,
+  notification_method: string,
+  notification_datetime: string | Date,
+}
+
+export interface NotificationResponse {
+  status_code: number,
+  notifications: Notification[]
+}
+
+export interface NotificationsListResponse {
+  status_code: number,
+  notifications: {
+    count: number,
+    next: string,
+    previous: string,
+    results: Notification[]
+  }
+}
