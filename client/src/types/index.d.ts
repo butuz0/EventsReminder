@@ -151,7 +151,7 @@ export interface Event {
   location: string,
   link: string,
   priority: number,
-  image: string,
+  image_url: string,
   tags: string[],
   assigned_to: BaseUserResponse[],
   is_recurring: boolean,
@@ -181,15 +181,15 @@ export interface EventDetailsResponse {
 
 export interface CreateUpdateEventData {
   title: string,
-  description: string,
-  start_datetime: string,
-  location: string,
-  link: string,
+  description?: string,
+  start_datetime: string | Date,
+  location?: string,
+  link?: string,
   priority: number,
-  image: string,
-  tags: string[],
-  assigned_to: string,
-  is_recurring: boolean
+  image?: string | File,
+  tags?: string[],
+  assigned_to?: string[],
+  is_recurring?: boolean
 }
 
 export interface CreateUpdateEventResponse {
@@ -199,7 +199,7 @@ export interface CreateUpdateEventResponse {
 
 export interface CreateUpdateRecurringEventData {
   recurrence_rule: string,
-  recurrence_end_datetime: string
+  recurrence_end_datetime?: string
 }
 
 export interface CreateUpdateRecurringEventResponse {

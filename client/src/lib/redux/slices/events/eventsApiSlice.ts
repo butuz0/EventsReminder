@@ -18,7 +18,7 @@ export const eventsApiSlice = baseApiSlice.injectEndpoints({
       query: (event_id) => `/events/${event_id}/`,
       providesTags: ["Events"],
     }),
-    createEvent: builder.mutation<CreateUpdateEventResponse, CreateUpdateEventData>({
+    createEvent: builder.mutation<CreateUpdateEventResponse, CreateUpdateEventData | FormData>({
       query: (data) => ({
         url: "/events/create/",
         method: "POST",
@@ -28,7 +28,7 @@ export const eventsApiSlice = baseApiSlice.injectEndpoints({
     }),
     updateEvent: builder.mutation<CreateUpdateEventResponse, {
       event_id: string,
-      data: CreateUpdateEventData
+      data: CreateUpdateEventData | FormData
     }>({
       query: ({event_id, data}) => ({
         url: `/events/update/${event_id}/`,

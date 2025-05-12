@@ -5,6 +5,9 @@ import EventsTable from "@/components/events/EventsTable";
 import PageTitle from "@/components/shared/PageTitle";
 import LoaderComponent from "@/components/shared/Loader";
 import React from "react";
+import Link from "next/link";
+import {Button} from "@/components/ui/button";
+import Search from "@/components/shared/Search";
 
 
 export default function EventsPage() {
@@ -29,11 +32,20 @@ export default function EventsPage() {
   return (
     <div>
       <PageTitle title="Ваші події"/>
-      <div className="container mx-auto">
-        <EventsTable
-          events={data?.events.results ?? []}
-        />
+      
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <Search placeholder="Пошук події..."/>
+        
+        <Button asChild>
+          <Link href={"/events/create"}>
+            Додати подію
+          </Link>
+        </Button>
       </div>
+      
+      <EventsTable
+        events={data?.events.results ?? []}
+      />
     </div>
   )
 }

@@ -65,6 +65,13 @@ export default function FormField<T extends FieldValues>(
                   className={className}
                   disabled={disabled}
                 />
+              ) : type === "file" ? (
+                <Input
+                  type="file"
+                  className={className}
+                  disabled={disabled}
+                  onChange={(e) => field.onChange(e.target.files?.[0])}
+                />
               ) : (
                 <Input
                   {...field}
