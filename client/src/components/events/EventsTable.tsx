@@ -4,6 +4,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import {Event} from "@/types";
 import PriorityBadge from "@/components/events/PriorityBadge";
+import {formatDateTime} from "@/utils/formatDateTime";
 
 
 interface EventsTableProps {
@@ -26,13 +27,6 @@ export default function EventsTable({events}: EventsTableProps) {
           const isFirst = i === 0;
           const isLast = i === events.length - 1;
           
-          const date = new Date(event.start_datetime);
-          
-          const formattedDate = date.toLocaleString("uk-UA", {
-            dateStyle: "medium",
-            timeStyle: "short",
-          });
-          
           return (
             <Link
               key={event.id}
@@ -48,7 +42,7 @@ export default function EventsTable({events}: EventsTableProps) {
             >
               <div>{event.title}</div>
               <div>{String(event.description).substring(0, 30) + "..."}</div>
-              <div>{formattedDate}</div>
+              <div>{formatDateTime(event.start_datetime)}</div>
               <div>
                 <PriorityBadge priority={event.priority}/>
               </div>
