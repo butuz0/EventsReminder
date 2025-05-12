@@ -7,9 +7,13 @@ export default function AppLayout({children,}: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col w-full h-screen">
+    <div
+      className="flex min-h-screen w-full flex-col
+      bg-gradient-to-br from-blue-50
+      via-white to-blue-100"
+    >
       <TopNavbar/>
-      <div className="flex flex-row h-full p-4">
+      <div className="flex h-full flex-row p-4">
         <LeftNavbar/>
         <div className="w-full px-5">
           {children}

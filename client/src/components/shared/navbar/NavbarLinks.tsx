@@ -22,8 +22,11 @@ export default function NavbarLinks() {
               href={link.href}
               className={clsx(
                 "flex h-full flex-row items-center justify-start gap-3 p-2 " +
-                "bg-gray-100 rounded-xl hover:bg-sky-100 hover:text-blue-600",
-                {"bg-sky-100 text-blue-600": linkIsActive(link.href)},
+                "border-1 border-blue-200 rounded-xl hover:bg-sky-100 hover:text-blue-600",
+                {
+                  "bg-sky-100 text-blue-600": linkIsActive(link.href),
+                  "bg-white": !linkIsActive(link.href),
+                },
               )}>
               <LinkIcon className="w-8"/>
               <p className="w-full text-left">
