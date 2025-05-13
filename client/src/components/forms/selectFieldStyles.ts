@@ -17,5 +17,9 @@ export const selectFieldStyles: StylesConfig = {
     ...base,
     color: "#6a7282",
     fontSize: "0.875rem",
-  })
+  }),
+  multiValue: (base) => ({
+    ...base,
+    backgroundColor: "#e0e7ff",
+  }),
 };

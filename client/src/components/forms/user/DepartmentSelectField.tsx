@@ -70,16 +70,17 @@ export default function DepartmentSelectField({form}: DepartmentSelectFieldProps
     <div className="space-y-5">
       <div className="space-y-1">
         <FormLabel>Факультет</FormLabel>
-        <ClientOnlyComponent>
-          <Select
-            options={facultyOptions}
-            isLoading={facultiesLoading}
-            onChange={(selected) => facultiesOnChange((selected as Option)?.value)}
-            value={facultyOptions.find((option) => option.value === selectedFaculty)}
-            placeholder="Оберіть Ваш факультет"
-            styles={selectFieldStyles}
-          />
-        </ClientOnlyComponent>
+        {/*<ClientOnlyComponent>*/}
+        <Select
+          options={facultyOptions}
+          isLoading={facultiesLoading}
+          isDisabled={facultiesLoading}
+          onChange={(selected) => facultiesOnChange((selected as Option)?.value)}
+          value={facultyOptions.find((option) => option.value === selectedFaculty)}
+          placeholder="Оберіть Ваш факультет"
+          styles={selectFieldStyles}
+        />
+        {/*</ClientOnlyComponent>*/}
       </div>
       <SelectFieldComponent
         form={form}
