@@ -10,6 +10,7 @@ import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import InfoBlock from "@/components/events/InfoBlock";
 import NotificationsList from "@/components/events/NotificationsList";
+import getGoogleCalendarLink from "@/utils/getGoogleCalendarLink";
 
 interface EventDetailProps {
   event_id: string;
@@ -130,6 +131,12 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
         <Button asChild>
           <Link href={`events/${event_id}/edit`}>
             Змінити
+          </Link>
+        </Button>
+        
+        <Button asChild>
+          <Link href={getGoogleCalendarLink(eventData.event)} target="_blank">
+            Додати до Google Calendar
           </Link>
         </Button>
         
