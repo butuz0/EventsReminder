@@ -22,6 +22,7 @@ class ProfileListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         return (self.queryset
+                .exclude(user=self.request.user)
                 .exclude(user__is_staff=True)
                 .exclude(user__is_superuser=True))
 
