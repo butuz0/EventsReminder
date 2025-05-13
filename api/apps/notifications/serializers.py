@@ -6,15 +6,18 @@ from .models import Notification
 
 class NotificationSerializer(serializers.ModelSerializer):
     event = serializers.UUIDField()
-    created_by = serializers.PrimaryKeyRelatedField(read_only=True)
+    created_by = serializers.SerializerMethodField()
 
     class Meta:
         model = Notification
         fields = [
             'id', 'event', 'notification_method', 'created_by',
-            'notification_datetime', 'celery_task_id', 'is_sent'
+            'notification_datetime', 'is_sent'
         ]
-        read_only_fields = ['id', 'created_by', 'celery_task_id', 'is_sent']
+        read_only_fields = ['id', 'created_by', 'is_sent']
+
+    def get_created_by(self, obj: Notification) -> str:
+        return str(obj.created_by.id)
 
     def validate_notification_datetime(self, value):
         if value < now():
@@ -43,7 +46,7 @@ class NotificationSerializer(serializers.ModelSerializer):
         if not Event.objects.filter(id=value).exists():
             raise serializers.ValidationError('Event does not exist.')
         return value
-    
+
     def validate(self, attrs):
         event_id = attrs.get('event')
         event = Event.objects.get(id=event_id)
@@ -51,19 +54,16 @@ class NotificationSerializer(serializers.ModelSerializer):
 
         if event.created_by != user and not event.assigned_to.filter(id=user.id).exists():
             raise serializers.ValidationError('You do not have permission to create notifications for this event.')
-        
-        if attrs.get('notification_method') == Notification.NotificationMethod.TELEGRAM and not user.profile.is_telegram_verified():
+
+        if (attrs.get('notification_method') == Notification.NotificationMethod.TELEGRAM
+                and not user.profile.is_telegram_verified()):
             raise serializers.ValidationError('Your Telegram account is not connected yet.')
-        
-        print(attrs.get('notification_method'))
-        print(user.profile.is_telegram_verified)
-        
+
         return attrs
 
     def create(self, validated_data):
         event_id = validated_data.pop('event')
         event = Event.objects.get(id=event_id)
         user = self.context['request'].user
-        
-        print(validated_data)
+
         return Notification.objects.create(event=event, created_by=user, **validated_data)
