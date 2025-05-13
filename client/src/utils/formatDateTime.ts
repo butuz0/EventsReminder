@@ -10,6 +10,13 @@ export function formatDateTime(dateString: string): string {
   })
 }
 
+export function formatDate(dateString: string): string {
+  const date = new Date(dateString)
+  return date.toLocaleString("uk-UA", {
+    dateStyle: "medium"
+  })
+}
+
 export function dateTimeDistanceToNow(dateString: string): string {
   const eventDate = new Date(dateString);
   return formatDistanceToNow(eventDate, {
