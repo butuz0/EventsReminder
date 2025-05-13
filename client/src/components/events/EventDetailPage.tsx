@@ -8,6 +8,8 @@ import React from "react";
 import LoaderComponent from "@/components/shared/Loader";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
+import InfoBlock from "@/components/events/InfoBlock";
+import NotificationsList from "@/components/events/NotificationsList";
 
 interface EventDetailProps {
   event_id: string;
@@ -15,7 +17,7 @@ interface EventDetailProps {
 
 
 export default function EventDetailPage({event_id}: EventDetailProps) {
-  const {data, isLoading, isError} = useGetEventDetailsQuery(event_id);
+  const {data: eventData, isLoading, isError} = useGetEventDetailsQuery(event_id);
   
   if (isLoading) {
     return <LoaderComponent
@@ -25,7 +27,7 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
     />
   }
   
-  if (isError || !data) {
+  if (isError || !eventData) {
     return (
       <div className="text-center font-medium text-red-600">
         Не вдалося завантажити подію. Спробуйте ще раз.
@@ -46,7 +48,7 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
     assigned_to,
     is_recurring,
     recurring_event
-  } = data.event;
+  } = eventData.event;
   
   return (
     <div className="mx-auto max-w-4xl rounded-xl bg-gray-100 p-5 shadow-md space-y-6">
@@ -68,6 +70,21 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
           }
         />
       </div>
+      
+      {tags?.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {tags.map(tag => (
+            <Badge
+              key={tag}
+              variant="secondary"
+              className="border border-blue-900 bg-sky-100 p-2 text-blue-900 text-md"
+            >
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      )}
+      
       {image_url && (
         <InfoBlock
           label="Зображення"
@@ -84,20 +101,6 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
             </div>
           )}
         />
-      )}
-      
-      {tags?.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {tags.map(tag => (
-            <Badge
-              key={tag}
-              variant="secondary"
-              className="border border-blue-900 bg-sky-100 p-2 text-blue-900 text-md"
-            >
-              {tag}
-            </Badge>
-          ))}
-        </div>
       )}
       
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -121,6 +124,8 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
         )}
       </div>
       
+      <NotificationsList eventId={event_id}/>
+      
       <div className="flex justify-between">
         <Button asChild>
           <Link href={`events/${event_id}/edit`}>
@@ -137,16 +142,6 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
           </Link>
         </Button>
       </div>
-    </div>
-  )
-}
-
-
-function InfoBlock({label, value}: { label: string; value: React.ReactNode }) {
-  return (
-    <div className="rounded-xl bg-white p-4 shadow-md">
-      <div className="text-sm text-gray-700">{label}</div>
-      <div className="text-lg font-medium">{value}</div>
     </div>
   )
 }
