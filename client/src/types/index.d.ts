@@ -239,7 +239,7 @@ export interface TeamDetailsResponse {
   team: Team
 }
 
-export interface GetSubordinatesResponse {
+export interface TeamsMembersResponse {
   status_code: number,
   next: null,
   previous: null,
@@ -250,6 +250,11 @@ export interface CreateTeamData {
   name: string,
   description?: string,
   members_ids?: string[]
+}
+
+export interface CreateTeamResponse {
+  status_code: number,
+  team: Team
 }
 
 export interface UpdateTeamData {
@@ -309,7 +314,7 @@ export interface Notification {
   event: string,
   notification_method: string,
   created_by: string,
-  notification_datetime: string | Date,
+  notification_datetime: string,
   is_sent: boolean,
 }
 
