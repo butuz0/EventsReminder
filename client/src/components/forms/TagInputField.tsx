@@ -20,11 +20,10 @@ type TagInputFieldProps<T extends FieldValues> = {
 };
 
 const KeyCodes = {
-  comma: 188,
   enter: 13,
 };
 
-const delimiters = [KeyCodes.comma, KeyCodes.enter];
+const delimiters = [KeyCodes.enter];
 
 
 export default function TagInputField<T extends FieldValues>(

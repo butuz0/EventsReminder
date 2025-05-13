@@ -31,13 +31,12 @@ export default function NotificationsFieldArray<T extends FieldValues>(
           className="flex flex-col gap-3 rounded-md
           border border-gray-200 bg-white p-2"
         >
-          <div className="flex flex-row gap-4">
+          <div className="grid md:grid-cols-[3fr_2fr_auto] gap-4 items-end">
             <FormField
               form={form}
               name={`${name}.${index}.notification_datetime` as any}
               type="datetime-local"
             />
-            
             <SelectFieldComponent
               form={form}
               name={`${name}.${index}.notification_method` as any}
@@ -45,8 +44,7 @@ export default function NotificationsFieldArray<T extends FieldValues>(
               placeholder="Метод нагадування"
             />
             <Button
-              type="button"
-              variant="secondary"
+              type="submit"
               className="border border-red-400 bg-red-100 text-red-600 hover:cursor-pointer hover:bg-red-200"
               onClick={() => remove(index)}
             >
