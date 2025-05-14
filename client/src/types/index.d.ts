@@ -55,6 +55,19 @@ export interface BaseUserResponse {
   id: string;
 }
 
+export interface User {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  full_name: string;
+  gender: string;
+  position: string;
+  phone_number: string;
+  telegram_username: string;
+  telegram_phone_number: string;
+}
+
 export interface ActivateUserData {
   uid: string;
   token: string;
@@ -77,21 +90,22 @@ export interface ResetPasswordConfirmData {
 }
 
 export interface Profile {
-  "first_name": string,
-  "last_name": string,
-  "position": string,
-  "phone_number": string,
-  "telegram_username": string,
-  "telegram_phone_number": string,
-  "avatar_url": string,
-  "is_telegram_verified": boolean,
-  "id": string,
-  "email": string,
-  "gender": string,
-  "department": string,
-  "department_abbreviation": string,
-  "faculty": string,
-  "faculty_abbreviation": string
+  first_name: string,
+  last_name: string,
+  position: string,
+  phone_number: string,
+  telegram_username: string,
+  telegram_phone_number: string,
+  avatar_url: string,
+  is_telegram_verified: boolean,
+  id: string,
+  email: string,
+  gender: string,
+  department: string,
+  department_name: string,
+  department_abbreviation: string,
+  faculty: string,
+  faculty_abbreviation: string
 }
 
 export interface MyProfileResponse {
@@ -101,11 +115,11 @@ export interface MyProfileResponse {
 
 export interface AllProfilesResponse {
   status_code: number;
-  results: {
+  profiles: {
     count: number;
     next: string | null;
     previous: string | null;
-    profiles: Profile[];
+    results: Profile[];
   }
 }
 
@@ -273,7 +287,8 @@ export interface UpdateTeamResponse {
 export interface Invitation {
   id: string,
   created_by: BaseUserResponse,
-  team: Team,
+  team_name: string,
+  team_description: string,
   sent_to: BaseUserResponse,
   status: string,
   created_at: string,
@@ -292,7 +307,7 @@ export interface MyInvitationsResponse {
 
 export interface InvitationDetailsResponse {
   status_code: number,
-  invitations: Invitation[]
+  invitations: Invitation
 }
 
 export interface CreateInvitationData {
