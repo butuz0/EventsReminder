@@ -8,7 +8,7 @@ import React from "react";
 import LoaderComponent from "@/components/shared/Loader";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
-import InfoBlock from "@/components/events/InfoBlock";
+import InfoBlock from "@/components/shared/InfoBlock";
 import NotificationsList from "@/components/events/NotificationsList";
 import getGoogleCalendarLink from "@/utils/getGoogleCalendarLink";
 
@@ -59,17 +59,18 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
       </div>
       
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <InfoBlock label="Дата та час"
-                   value={`${formatDateTime(start_datetime)} - ${dateTimeDistanceToNow(start_datetime)}`}/>
-        <InfoBlock
-          label="Пріоритет"
-          value={
-            <PriorityBadge
-              priority={priority}
-              className="text-lg"
-            />
-          }
-        />
+        <InfoBlock label="Дата та час">
+          <p>
+            {`${formatDateTime(start_datetime)} - ${dateTimeDistanceToNow(start_datetime)}`}
+          </p>
+        </InfoBlock>
+        
+        <InfoBlock label="Пріоритет">
+          <PriorityBadge
+            priority={priority}
+            className="text-lg"
+          />
+        </InfoBlock>
       </div>
       
       {tags?.length > 0 && (
@@ -87,50 +88,50 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
       )}
       
       {image_url && (
-        <InfoBlock
-          label="Зображення"
-          value={(
-            <div
-              className="w-full aspect-[3/2] overflow-hidden rounded-xl border
+        <InfoBlock label="Зображення">
+          <div
+            className="w-full aspect-[3/2] overflow-hidden rounded-xl border
               border-gray-300 shadow-md bg-white my-4">
-              <img
-                src={image_url}
-                alt={`Зображення події`}
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
-            </div>
-          )}
-        />
+            <img
+              src={image_url}
+              alt={`Зображення події`}
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        </InfoBlock>
       )}
       
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <InfoBlock label="Місце" value={location || "Не вказано"}/>
-        <InfoBlock
-          label="Повторювана подія"
-          value={
-            <div>
-              {is_recurring ? "Так" : "Ні"}
-            </div>
-          }/>
-        {link && (
-          <InfoBlock
-            label="Посилання"
-            value={
-              <a href={link} target="_blank" className="text-blue-600 underline">
+        <InfoBlock label="Місце">
+          <p>{location || "Не вказано"}</p>
+        </InfoBlock>
+        
+        <InfoBlock label="Повторювана подія">
+          <p>{is_recurring ? "Так" : "Ні"}</p>
+        </InfoBlock>
+        {
+          link && (
+            <InfoBlock label="Посилання">
+              <a href={link}
+                 target="_blank"
+                 className="text-blue-600 underline"
+              >
                 Відкрити
               </a>
-            }
-          />
-        )}
+            </InfoBlock>
+          )}
       </div>
       
       <NotificationsList eventId={event_id}/>
       
       <div className="flex justify-between">
-        <Button asChild>
-          <Link href={`events/${event_id}/edit`}>
-            Змінити
+        <Button
+          asChild
+          variant="destructive"
+        >
+          <Link href={`/events/${event_id}/delete`}>
+            Видалити
           </Link>
         </Button>
         
@@ -140,12 +141,9 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
           </Link>
         </Button>
         
-        <Button
-          asChild
-          className="bg-red-600 hover:bg-red-700"
-        >
-          <Link href={`events/${event_id}/delete`}>
-            Видалити
+        <Button asChild>
+          <Link href={`/events/${event_id}/edit`}>
+            Змінити
           </Link>
         </Button>
       </div>
