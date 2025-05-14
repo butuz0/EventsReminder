@@ -12,7 +12,7 @@ export default function TeamsList() {
   if (isLoading) {
     return <LoaderComponent
       size="lg"
-      text="Завантаження ваших подій..."
+      text="Завантаження ваших команд..."
       className="h-3/5"
     />
   }
