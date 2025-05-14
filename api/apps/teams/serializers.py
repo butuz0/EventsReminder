@@ -8,30 +8,30 @@ User = get_user_model()
 
 class TeamCreateSerializer(serializers.ModelSerializer):
     members_ids = serializers.ListField(child=serializers.UUIDField(), write_only=True, required=False)
-    
+
     class Meta:
         model = Team
         fields = [
-            'id', 'created_by', 'name', 'description', 'members_ids', 
+            'id', 'created_by', 'name', 'description', 'members_ids',
             'members', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_by', 'members', 'created_at', 'updated_at']
-        
+
     def validate_members_ids(self, value: list[str]) -> list[str]:
         if not value:
             return []
         if self.context['request'].user.id in value:
             raise serializers.ValidationError('You cannot add yourself to the team since you are the creator of it.')
-        
+
         user_ids = set(value)
         if len(user_ids) != len(value):
             raise serializers.ValidationError('Duplicate user IDs are not allowed.')
-        
+
         existing_ids = set(User.objects.filter(id__in=user_ids).values_list('id', flat=True))
         missing_ids = user_ids - existing_ids
         if missing_ids:
             raise serializers.ValidationError(f'Users with the following IDs do not exist: {list(missing_ids)}')
-        
+
         return value
 
     def create(self, validated_data: dict) -> Team:
@@ -44,7 +44,7 @@ class TeamCreateSerializer(serializers.ModelSerializer):
         members = User.objects.filter(id__in=members_ids)
         for member in members:
             Invitation.objects.create(created_by=user, team=team, sent_to=member)
-        
+
         return team
 
 
@@ -60,7 +60,7 @@ class TeamDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Team
-        fields = ['id', 'name', 'description', 'created_by', 
+        fields = ['id', 'name', 'description', 'created_by',
                   'members', 'created_at', 'updated_at']
         read_only_fields = fields
 
@@ -68,27 +68,27 @@ class TeamDetailSerializer(serializers.ModelSerializer):
 class InvitationCreateSerializer(serializers.ModelSerializer):
     team = serializers.UUIDField()
     sent_to = serializers.UUIDField()
-    
+
     class Meta:
         model = Invitation
-        fields = ['id', 'team', 'created_by', 'sent_to', 
+        fields = ['id', 'team', 'created_by', 'sent_to',
                   'status', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_by']
-    
+
     def validate_team(self, value: str) -> Team:
         try:
             team = Team.objects.get(id=value)
         except Team.DoesNotExist:
             raise serializers.ValidationError('Team does not exist.')
         return team
-    
+
     def validate_sent_to(self, value: str):
         try:
             user = User.objects.get(id=value)
         except User.DoesNotExist:
             raise serializers.ValidationError('User does not exist.')
         return user
-    
+
     def validate(self, attrs: dict) -> dict:
         user = self.context['request'].user
         team = attrs.get('team')
@@ -112,23 +112,19 @@ class InvitationCreateSerializer(serializers.ModelSerializer):
 class InvitationDetailSerializer(serializers.ModelSerializer):
     team_name = serializers.CharField(source='team.name')
     team_description = serializers.CharField(source='team.description')
-    status = serializers.SerializerMethodField()
     sent_to = UserSerializer()
     created_by = UserSerializer()
 
-    def get_status(self, obj: Invitation) -> str:
-        return obj.get_status_display()
-
     class Meta:
         model = Invitation
-        fields = ['id', 'sent_to', 'created_by', 'team_name', 
-                  'team_description', 'status', 
+        fields = ['id', 'sent_to', 'created_by', 'team_name',
+                  'team_description', 'status',
                   'created_at', 'updated_at']
 
 
 class InvitationRespondSerializer(serializers.ModelSerializer):
     status = serializers.ChoiceField(choices=Invitation.Status.choices)
-    
+
     class Meta:
         model = Invitation
         fields = ['status']
@@ -138,10 +134,10 @@ class InvitationRespondSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Invitation already responded.')
 
         instance.status = validated_data.pop('status', None)
-        
+
         if not instance.status:
             raise serializers.ValidationError('Status is required.')
-        
+
         instance.save()
 
         if instance.status == Invitation.Status.ACCEPTED:

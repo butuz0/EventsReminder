@@ -109,6 +109,14 @@ class InvitationListCreateAPIView(generics.ListCreateAPIView):
     renderer_classes = [JSONRenderer]
     object_label = 'invitations'
 
+
+class InvitationListAPIView(generics.ListCreateAPIView):
+    queryset = Invitation.objects.all()
+    serializer_class = InvitationDetailSerializer
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [JSONRenderer]
+    object_label = 'invitations'
+
     def get_queryset(self):
         user = self.request.user
         return self.queryset.filter(Q(created_by=user) | Q(sent_to=user))
