@@ -21,8 +21,11 @@ export const usersApiSlice = baseApiSlice.injectEndpoints({
       query: () => "/profiles/my-profile/",
       providesTags: ["User"],
     }),
-    getAllProfiles: builder.query<AllProfilesResponse, void>({
-      query: () => "/profiles/",
+    getAllProfiles: builder.query<AllProfilesResponse, Record<string, any>>({
+      query: (params) => ({
+        url: "/profiles/",
+        params,
+      }),
       providesTags: ["User"],
     }),
     updateProfile: builder.mutation<UpdateProfileResponse, UpdateProfileData>({
