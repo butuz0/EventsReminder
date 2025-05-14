@@ -13,6 +13,11 @@ export interface Department {
   num_employees: number;
 }
 
+export interface DepartmentDetailsResponse {
+  id: number;
+  department: Department;
+}
+
 export interface FacultyDetailsResponse {
   id: number;
   faculty_name: string;

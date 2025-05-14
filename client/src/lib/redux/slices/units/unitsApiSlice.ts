@@ -1,5 +1,10 @@
 import {baseApiSlice} from "@/lib/redux/slices/baseApiSlice";
-import {DepartmentsListResponse, FacultiesListResponse, FacultyDetailsResponse} from "@/types";
+import {
+  DepartmentDetailsResponse,
+  DepartmentsListResponse,
+  FacultiesListResponse,
+  FacultyDetailsResponse
+} from "@/types";
 
 export const unitsApiSlice = baseApiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -8,6 +13,9 @@ export const unitsApiSlice = baseApiSlice.injectEndpoints({
     }),
     getAllDepartments: builder.query<DepartmentsListResponse, void>({
       query: () => "/units/all-departments/"
+    }),
+    getDepartmentDetails: builder.query<DepartmentDetailsResponse, number>({
+      query: (department_id) => `/units/department/${department_id}/`
     }),
     getFacultyDetails: builder.query<FacultyDetailsResponse, number>({
       query: (faculty_id) => `/units/faculty/${faculty_id}/`
@@ -21,6 +29,7 @@ export const unitsApiSlice = baseApiSlice.injectEndpoints({
 export const {
   useGetAllFacultiesQuery,
   useGetAllDepartmentsQuery,
+  useGetDepartmentDetailsQuery,
   useGetFacultyDetailsQuery,
   useGetFacultyDepartmentsQuery,
 } = unitsApiSlice;

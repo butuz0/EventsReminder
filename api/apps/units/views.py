@@ -30,6 +30,16 @@ class DepartmentListAPIView(generics.ListAPIView):
     object_label = 'departments'
 
 
+class DepartmentDetailAPIView(generics.RetrieveAPIView):
+    serializer_class = DepartmentsSerializer
+    queryset = Department.objects.all()
+    permission_classes = [permissions.AllowAny]
+    renderer_classes = [JSONRenderer]
+    object_label = 'department'
+    lookup_url_kwarg = 'department_id'
+    lookup_field = 'id'
+
+
 class DepartmentsByFacultyAPIView(generics.ListAPIView):
     serializer_class = DepartmentsSerializer
     permission_classes = [permissions.AllowAny]
