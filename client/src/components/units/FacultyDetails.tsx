@@ -2,41 +2,17 @@
 
 import Link from "next/link";
 import clsx from "clsx";
-import {useGetFacultyDetailsQuery} from "@/lib/redux/slices/units/unitsApiSlice";
-import PageTitle from "@/components/shared/PageTitle";
-
+import {Department} from "@/types";
 
 interface FacultyDetailsProps {
-  facultyId: number;
+  departments: Department[];
 }
 
 
-export default function FacultyDetails({facultyId}: FacultyDetailsProps) {
-  const {data, isLoading} = useGetFacultyDetailsQuery(facultyId);
-  
-  if (isLoading) {
-    return (
-      <p className="w-full text-center text-4xl">
-        Завантаження
-      </p>
-    )
-  }
-  
-  if (data?.departments.length === 0) {
-    return (
-      <p className="w-full text-center text-4xl">
-        Факультету із id={facultyId} не існує.
-      </p>
-    )
-  }
-  
-  const departments = data?.departments;
-  
+export default function FacultyDetails({departments}: FacultyDetailsProps) {
   return (
     <div>
-      <PageTitle title={data?.faculty_name}/>
-      
-      <div className="rounded-xl bg-gray-100 p-2 shadow-lg">
+      <div className="rounded-xl bg-gray-100 p-2 shadow-lg border border-gray-200">
         <div className="grid rounded-t-xl px-4 py-5 font-semibold grid-cols-[1fr_4fr_1fr]">
           <div>Кафедра</div>
           <div>Повна назва</div>
