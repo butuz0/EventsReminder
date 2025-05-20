@@ -14,6 +14,7 @@ from .views import (
     InvitationDeleteAPIView,
     MySubordinatesListAPIView,
     TeamMembersListAPIView,
+    TeamEventsListAPIView
 )
 
 urlpatterns = [
@@ -24,6 +25,7 @@ urlpatterns = [
     path('<uuid:id>/delete/', TeamDeleteAPIView.as_view(), name='team-delete'),
     path('<uuid:id>/leave/', TeamLeaveAPIView.as_view(), name='team-leave'),
     path('<uuid:team_id>/members/', TeamMembersListAPIView.as_view(), name='team-members'),
+    path('<uuid:team_id>/events/', TeamEventsListAPIView.as_view(), name='team-events'),
     path('<uuid:team_id>/remove-member/<uuid:user_id>/', RemoveTeamMemberView.as_view(), name='team-remove-member'),
     path('invitations/', InvitationListAPIView.as_view(), name='invitation-list'),
     path('invitations/create/', InvitationListCreateAPIView.as_view(), name='invitation-create'),

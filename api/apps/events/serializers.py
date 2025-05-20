@@ -1,6 +1,7 @@
 from django.utils.timezone import now
 from django.contrib.auth import get_user_model
 from .models import Event, RecurringEvent
+from apps.teams.models import Team
 from rest_framework import serializers
 from taggit.serializers import TagListSerializerField, TaggitSerializer
 from djoser.serializers import UserSerializer
@@ -34,7 +35,7 @@ class RecurringEventSerializer(serializers.ModelSerializer):
         return data
 
 
-class EventSerializer(TaggitSerializer, serializers.ModelSerializer):
+class BaseEventSerializer(TaggitSerializer, serializers.ModelSerializer):
     assigned_to_ids = serializers.ListField(child=serializers.UUIDField(), write_only=True, required=False)
     assigned_to = UserSerializer(many=True, read_only=True)
     tags = TagListSerializerField(required=False)
@@ -54,7 +55,7 @@ class EventSerializer(TaggitSerializer, serializers.ModelSerializer):
     def validate_assigned_to_ids(self, value: list[str]) -> list[str]:
         user = self.context['request'].user
 
-        if user in value:
+        if user.id in value:
             raise serializers.ValidationError('You cannot assign the event to yourself.')
 
         # Check if any user IDs are duplicates
@@ -72,33 +73,61 @@ class EventSerializer(TaggitSerializer, serializers.ModelSerializer):
         if missing_ids:
             raise serializers.ValidationError(f'Users with the following IDs do not exist: {list(missing_ids)}')
 
-        # Check if all users are members of the creator's teams
-        team_members = set(
-            User.objects
-            .filter(teams__created_by=user, id__in=user_ids)
-            .values_list('id', flat=True)
-        )
-        non_team_members = user_ids - team_members
-        if non_team_members:
-            raise serializers.ValidationError(
-                f'You can only assign events to users who are members '
-                f'of your team. Invalid IDs: {list(non_team_members)}'
-            )
+        return value
+
+
+class EventCreateSerializer(BaseEventSerializer):
+    team = serializers.UUIDField(required=False)
+
+    class Meta(BaseEventSerializer.Meta):
+        fields = BaseEventSerializer.Meta.fields + ['team']
+
+    def validate_team(self, value: str) -> str:
+        try:
+            team = Team.objects.get(id=value)
+        except Team.DoesNotExist:
+            raise serializers.ValidationError('Team does not exist.')
+
+        if self.context['request'].user != team.created_by:
+            raise serializers.ValidationError('Only team owner can create events.')
 
         return value
+
+    def validate(self, attrs: dict) -> dict:
+        team_id = attrs.get('team')
+        if not team_id:
+            return attrs
+
+        # Check if all users are members of the provided team
+        team = Team.objects.get(id=team_id)
+
+        assigned_to_ids = set(attrs.get('assigned_to_ids'))
+        team_member_ids = set(team.members.values_list('id', flat=True))
+
+        if not assigned_to_ids.issubset(team_member_ids):
+            invalid_ids = assigned_to_ids - team_member_ids
+            raise serializers.ValidationError(
+                f'The following users are not members of the selected team: {list(invalid_ids)}'
+            )
+        return attrs
 
     def create(self, validated_data: dict) -> Event:
         tags = validated_data.pop('tags', [])
         assigned_to = validated_data.pop('assigned_to_ids', [])
+        team_id = validated_data.pop('team', None)
+        team = Team.objects.get(id=team_id) if team_id else None
         user = self.context['request'].user
 
-        event = Event.objects.create(created_by=user, **validated_data)
+        event = Event.objects.create(created_by=user, team=team, **validated_data)
+        event.assigned_to.set(User.objects.filter(id__in=assigned_to))
         event.tags.set(tags)
 
-        assigned_to_users = User.objects.filter(id__in=assigned_to)
-        event.assigned_to.set(assigned_to_users)
-
         return event
+
+
+class EventUpdateSerializer(BaseEventSerializer):
+    class Meta(BaseEventSerializer.Meta):
+        fields = BaseEventSerializer.Meta.fields
 
     def update(self, instance: Event, validated_data: dict) -> Event:
         tags = validated_data.pop('tags', None)
@@ -121,27 +150,34 @@ class EventSerializer(TaggitSerializer, serializers.ModelSerializer):
         if assigned_to is not None:
             assigned_to_users = User.objects.filter(id__in=assigned_to)
             instance.assigned_to.set(assigned_to_users)
-            instance.assigned_to.set(assigned_to_users)
 
         return instance
 
 
 class EventDetailSerializer(serializers.ModelSerializer):
-    priority = serializers.CharField(source='get_priority_display', read_only=True)
     tags = TagListSerializerField()
     created_by = UserSerializer(read_only=True)
     assigned_to = UserSerializer(many=True, read_only=True)
     recurring_event = RecurringEventSerializer(read_only=True)
     image_url = serializers.SerializerMethodField()
+    team = serializers.SerializerMethodField()
 
     class Meta:
         model = Event
         fields = ['id', 'created_by', 'title', 'description',
                   'start_datetime', 'location', 'link',
                   'priority', 'image_url', 'tags', 'assigned_to',
-                  'is_recurring', 'recurring_event']
+                  'is_recurring', 'recurring_event', 'team']
+
+    def get_team(self, obj: Event) -> dict | None:
+        if obj.team:
+            return {
+                'id': str(obj.team.id),
+                'name': obj.team.name
+            }
+        return None
 
     def get_image_url(self, obj: Event) -> str | None:
         if obj.image:
-            return f"http://localhost:8080{obj.image.url}"
+            return f'http://localhost:8080{obj.image.url}'
         return None

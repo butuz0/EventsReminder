@@ -2,6 +2,8 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from apps.common.renderers import JSONRenderer
+from apps.events.models import Event
+from apps.events.serializers import EventDetailSerializer
 from .permissions import IsOwner, IsOwnerOrMember
 from .models import Team, Invitation
 from .serializers import (
@@ -175,3 +177,21 @@ class TeamMembersListAPIView(generics.ListAPIView):
         team = get_object_or_404(Team, id=self.kwargs['team_id'],
                                  created_by=self.request.user)
         return team.members.all()
+
+
+class TeamEventsListAPIView(generics.ListAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventDetailSerializer
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [JSONRenderer]
+    object_label = 'events'
+
+    def get_queryset(self):
+        team_id = self.kwargs['team_id']
+        team = get_object_or_404(Team, id=team_id)
+
+        permission = IsOwnerOrMember()
+        if not permission.has_object_permission(self.request, self, team):
+            raise PermissionDenied(detail=permission.message)
+
+        return Event.objects.filter(team=team)
