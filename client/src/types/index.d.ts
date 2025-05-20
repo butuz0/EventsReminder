@@ -358,3 +358,51 @@ export interface NotificationsListResponse {
     results: Notification[]
   }
 }
+
+export interface RegistrationCard {
+  id: string,
+  created_at: string,
+  updated_at: string,
+  organization_name: string,
+  edrpou_code: string,
+  region: string,
+  city: string,
+  full_name: string,
+  id_number: string,
+  keyword_phrase: string,
+  voice_phrase: string,
+  email: string,
+  phone_number: string,
+  electronic_seal_name: string,
+  electronic_seal_keyword_phrase: string,
+}
+
+export interface CreateUpdateRegistrationCardData {
+  organization_name: string,
+  edrpou_code?: string,
+  region?: string,
+  city?: string,
+  full_name?: string,
+  id_number?: string,
+  keyword_phrase?: string,
+  voice_phrase?: string,
+  email?: string,
+  phone_number?: string,
+  electronic_seal_name?: string,
+  electronic_seal_keyword_phrase?: string,
+}
+
+export interface CreateRegistrationCardResponse {
+  status_code: number,
+  registration_card: RegistrationCard
+}
+
+export interface RegistrationCardsListResponse {
+  status_code: number,
+  registration_cards: {
+    count: number,
+    next: string,
+    previous: string,
+    results: RegistrationCard[]
+  }
+}
