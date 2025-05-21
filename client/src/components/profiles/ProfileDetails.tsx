@@ -5,9 +5,9 @@ import LoaderComponent from "@/components/shared/Loader";
 import InfoBlock from "@/components/shared/InfoBlock";
 import {PencilIcon} from "@heroicons/react/24/outline";
 import {UserCircleIcon} from "@heroicons/react/24/solid";
-import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
+import TelegramInfoBlock from "@/components/profiles/TelegramInfoBlock";
 
 
 export default function ProfileDetails() {
@@ -108,26 +108,11 @@ export default function ProfileDetails() {
         </InfoBlock>
       </div>
       
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <InfoBlock label="Ім'я користувача Telegram">
-          <p>
-            @{telegram_username || "Не вказано"}
-            {is_telegram_verified && (
-              <Badge
-                variant="secondary"
-                className="ml-2 border-green-600 bg-green-100 text-green-800"
-              >
-                Підтверджено
-              </Badge>
-            )}
-          </p>
-        </InfoBlock>
-        <InfoBlock label="Номер Telegram">
-          <p>
-            {telegram_phone_number || "Не вказано"}
-          </p>
-        </InfoBlock>
-      </div>
+      <TelegramInfoBlock
+        username={telegram_username}
+        phoneNumber={telegram_phone_number}
+        isVerified={is_telegram_verified}
+      />
       
       <div className="flex justify-end">
         <Button asChild>
