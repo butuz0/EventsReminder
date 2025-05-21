@@ -21,16 +21,10 @@ class EventFilter(django_filters.FilterSet):
     team = django_filters.UUIDFilter(field_name='team__id')
 
     ordering = django_filters.OrderingFilter(
-        fields=(
-            ('start_datetime', 'start'),
-            ('-start_datetime', 'start_desc'),
-            ('priority', 'priority'),
-            ('-priority', 'priority_desc'),
-            ('title', 'title'),
-            ('-title', 'title_desc'),
-        )
+        fields=['start_datetime', 'priority', 'title']
     )
 
     class Meta:
         model = Event
         fields = ['priority', 'tags', 'from_date', 'to_date', 'is_recurring', 'team']
+        ordering = ['start_datetime']

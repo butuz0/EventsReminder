@@ -45,7 +45,7 @@ class Event(TimeStampedModel):
     class Meta:
         verbose_name = _('Event')
         verbose_name_plural = _('Events')
-        ordering = ['-start_datetime']
+        ordering = ['start_datetime']
 
     def __str__(self) -> str:
         return self.title

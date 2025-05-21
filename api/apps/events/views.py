@@ -42,7 +42,7 @@ class MyEventsListAPIView(generics.ListAPIView):
     def get_queryset(self):
         created_events = Event.objects.filter(created_by=self.request.user)
         assigned_events = Event.objects.filter(assigned_to=self.request.user)
-        return (created_events | assigned_events).distinct().order_by('-start_datetime')
+        return (created_events | assigned_events).distinct().order_by('start_datetime')
 
 
 class EventDetailAPIView(generics.RetrieveAPIView):
