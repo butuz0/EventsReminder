@@ -12,9 +12,9 @@ from .views import (
     InvitationDetailAPIView,
     InvitationRespondAPIView,
     InvitationDeleteAPIView,
-    MySubordinatesListAPIView,
     TeamMembersListAPIView,
-    TeamEventsListAPIView
+    TeamEventsListAPIView,
+    TeamInvitationsListAPIView,
 )
 
 urlpatterns = [
@@ -26,11 +26,11 @@ urlpatterns = [
     path('<uuid:id>/leave/', TeamLeaveAPIView.as_view(), name='team-leave'),
     path('<uuid:team_id>/members/', TeamMembersListAPIView.as_view(), name='team-members'),
     path('<uuid:team_id>/events/', TeamEventsListAPIView.as_view(), name='team-events'),
+    path('<uuid:team_id>/invitations/', TeamInvitationsListAPIView.as_view(), name='team-invitations'),
     path('<uuid:team_id>/remove-member/<uuid:user_id>/', RemoveTeamMemberView.as_view(), name='team-remove-member'),
     path('invitations/', InvitationListAPIView.as_view(), name='invitation-list'),
     path('invitations/create/', InvitationListCreateAPIView.as_view(), name='invitation-create'),
     path('invitations/<uuid:id>/', InvitationDetailAPIView.as_view(), name='invitation-detail'),
     path('invitations/<uuid:id>/respond/', InvitationRespondAPIView.as_view(), name='invitation-respond'),
     path('invitations/<uuid:id>/delete/', InvitationDeleteAPIView.as_view(), name='invitation-delete'),
-    path('my-subordinates/', MySubordinatesListAPIView.as_view(), name='my-subordinates'),
 ]

@@ -6,7 +6,9 @@ import {
   CreateTeamData,
   CreateTeamResponse,
   UpdateTeamResponse,
-  UpdateTeamData
+  UpdateTeamData,
+  EventDetailsResponse,
+  MyEventsResponse
 } from "@/types";
 
 export const teamsApiSlice = baseApiSlice.injectEndpoints({
@@ -23,9 +25,9 @@ export const teamsApiSlice = baseApiSlice.injectEndpoints({
       query: (teamId) => `/teams/${teamId}/members/`,
       providesTags: ["Teams"]
     }),
-    getMySubordinates: builder.query<TeamsMembersResponse, void>({
-      query: () => "/teams/my-subordinates/",
-      providesTags: ["Teams"]
+    getTeamEvents: builder.query<MyEventsResponse, string>({
+      query: (teamId) => `/teams/${teamId}/events/`,
+      providesTags: ["Teams", "Events"]
     }),
     createTeam: builder.mutation<CreateTeamResponse, CreateTeamData>({
       query: (data) => ({
@@ -71,7 +73,7 @@ export const {
   useGetMyTeamsQuery,
   useGetTeamDetailsQuery,
   useGetTeamMembersQuery,
-  useGetMySubordinatesQuery,
+  useGetTeamEventsQuery,
   useCreateTeamMutation,
   useUpdateTeamMutation,
   useDeleteTeamMutation,

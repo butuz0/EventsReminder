@@ -33,7 +33,7 @@ class TeamListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return self.queryset.filter(Q(created_by=user) | Q(members=user))
+        return self.queryset.filter(Q(created_by=user) | Q(members=user)).distinct()
 
 
 class TeamCreateAPIView(generics.CreateAPIView):
@@ -159,16 +159,6 @@ class InvitationDeleteAPIView(generics.DestroyAPIView):
         return self.queryset.filter(created_by=user)
 
 
-class MySubordinatesListAPIView(generics.ListAPIView):
-    serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        return User.objects.filter(
-            teams__created_by=self.request.user
-        ).distinct()
-
-
 class TeamMembersListAPIView(generics.ListAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
@@ -195,3 +185,21 @@ class TeamEventsListAPIView(generics.ListAPIView):
             raise PermissionDenied(detail=permission.message)
 
         return Event.objects.filter(team=team)
+
+
+class TeamInvitationsListAPIView(generics.ListAPIView):
+    queryset = Invitation.objects.all()
+    serializer_class = InvitationDetailSerializer
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [JSONRenderer]
+    object_label = 'invitations'
+
+    def get_queryset(self):
+        team_id = self.kwargs['team_id']
+        team = get_object_or_404(Team, id=team_id)
+
+        permission = IsOwner()
+        if not permission.has_object_permission(self.request, self, team):
+            raise PermissionDenied(detail=permission.message)
+
+        return Invitation.objects.filter(team=team)

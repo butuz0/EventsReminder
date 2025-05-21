@@ -12,6 +12,10 @@ export const invitationsApiSlice = baseApiSlice.injectEndpoints({
       query: () => "/teams/invitations/",
       providesTags: ["Invitations"]
     }),
+    getTeamInvitations: builder.query<MyInvitationsResponse, string>({
+      query: (teamId) => `/teams/${teamId}/invitations/`,
+      providesTags: ["Invitations"]
+    }),
     getInvitationDetails: builder.query<InvitationDetailsResponse, string>({
       query: (invitationId) => `/teams/invitations/${invitationId}/`,
       providesTags: ["Invitations"]
@@ -28,7 +32,7 @@ export const invitationsApiSlice = baseApiSlice.injectEndpoints({
       query: ({invitationId, status}) => ({
         url: `/teams/invitations/${invitationId}/respond/`,
         method: "PATCH",
-        body: status
+        body: {"status": status}
       }),
       invalidatesTags: ["Invitations"]
     }),
@@ -44,6 +48,7 @@ export const invitationsApiSlice = baseApiSlice.injectEndpoints({
 
 export const {
   useGetMyInvitationsQuery,
+  useGetTeamInvitationsQuery,
   useGetInvitationDetailsQuery,
   useCreateInvitationMutation,
   useRespondToInvitationMutation,
