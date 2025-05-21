@@ -52,7 +52,7 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
   } = eventData.event;
   
   return (
-    <div className="mx-auto max-w-4xl rounded-xl bg-gray-100 p-5 shadow-md space-y-6">
+    <div className="mx-auto max-w-4xl rounded-xl bg-gray-100 p-5 shadow-md space-y-6 border border-gray-200">
       <div className="rounded-xl bg-white p-6 shadow-md space-y-4">
         <h1 className="text-2xl font-bold">{title}</h1>
         {description && <p className="text-gray-800">{description}</p>}

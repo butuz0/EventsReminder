@@ -5,7 +5,8 @@ import clsx from "clsx";
 import {Event} from "@/types";
 import PriorityBadge from "@/components/events/PriorityBadge";
 import {formatDateTime} from "@/utils/formatDateTime";
-
+import {useSearchParams, usePathname, useRouter} from "next/navigation";
+import {ChevronDownIcon, ChevronUpIcon} from "@heroicons/react/24/solid";
 
 interface EventsTableProps {
   events: Event[]
@@ -13,13 +14,56 @@ interface EventsTableProps {
 
 
 export default function EventsTable({events}: EventsTableProps) {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  
+  const ordering = searchParams.get("ordering") || "";
+  
+  const toggleOrdering = (field: string) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    const current = ordering === field ? `-${field}` : field;
+    
+    newParams.set("ordering", current);
+    router.push(`${pathname}?${newParams.toString()}`);
+  };
+  
+  const orderingIndicator = (field: string) => {
+    if (ordering === field) return <ChevronDownIcon className="ml-1 inline-block w-4"/>;
+    if (ordering === `-${field}`) return <ChevronUpIcon className="ml-1 inline-block w-4"/>;
+    return null;
+  };
+  
   return (
-    <div className="rounded-xl bg-gray-100 p-2 shadow-lg">
-      <div className="grid grid-cols-[1fr_2fr_2fr_1fr] rounded-t-xl px-4 py-5 font-semibold">
-        <div>Назва</div>
+    <div className="rounded-xl border border-gray-200 bg-gray-100 p-2 shadow-lg">
+      <div className="grid rounded-t-xl px-4 py-5 font-semibold grid-cols-[1fr_2fr_2fr_1fr]">
+        <div>
+          <button
+            onClick={() => toggleOrdering("title")}
+            className="text-left hover:cursor-pointer"
+          >
+            Назва {orderingIndicator("title")}
+          </button>
+        </div>
+        
         <div>Опис</div>
-        <div>Дата і час</div>
-        <div>Пріоритет</div>
+        <div>
+          <button
+            onClick={() => toggleOrdering("start_datetime")}
+            className="text-left hover:cursor-pointer"
+          >
+            Дата і час {orderingIndicator("start_datetime")}
+          </button>
+        </div>
+        
+        <div>
+          <button
+            onClick={() => toggleOrdering("priority")}
+            className="text-left hover:cursor-pointer"
+          >
+            Пріоритет {orderingIndicator("priority")}
+          </button>
+        </div>
       </div>
       
       <div className="divide-y-2 divide-gray-100 text-sm">
