@@ -12,7 +12,11 @@ class DepartmentsSerializer(serializers.ModelSerializer):
                   'faculty', 'num_employees']
 
     def get_num_employees(self, obj: Department) -> int:
-        return Profile.objects.filter(department=obj).count()
+        return (Profile.objects
+                .filter(department=obj)
+                .exclude(user__is_staff=True)
+                .exclude(user__is_superuser=True)
+                .count())
 
 
 class FacultySerializer(serializers.ModelSerializer):
@@ -33,4 +37,8 @@ class FacultyListSerializer(serializers.ModelSerializer):
                   'num_employees']
 
     def get_num_employees(self, obj: Faculty) -> int:
-        return Profile.objects.filter(department__faculty=obj).count()
+        return (Profile.objects
+                .filter(department__faculty=obj)
+                .exclude(user__is_staff=True)
+                .exclude(user__is_superuser=True)
+                .count())
