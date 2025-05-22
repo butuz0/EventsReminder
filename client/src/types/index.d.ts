@@ -68,9 +68,9 @@ export interface User {
   full_name: string;
   gender: string;
   position: string;
+  department: string;
+  faculty: string;
   phone_number: string;
-  telegram_username: string;
-  telegram_phone_number: string;
 }
 
 export interface ActivateUserData {
@@ -240,8 +240,8 @@ export interface Team {
   id: string,
   name: string,
   description: string,
-  created_by: BaseUserResponse,
-  members: BaseUserResponse[],
+  created_by: User,
+  members: User[],
   created_at: string,
   updated_at: string
 }
@@ -295,10 +295,10 @@ export interface UpdateTeamResponse {
 
 export interface Invitation {
   id: string,
-  created_by: BaseUserResponse,
+  created_by: User,
   team_name: string,
   team_description: string,
-  sent_to: BaseUserResponse,
+  sent_to: User,
   status: string,
   created_at: string,
   updated_at: string,

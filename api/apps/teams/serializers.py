@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from .models import Team, Invitation
+from apps.users.serializers import CustomUserSerializer
 from rest_framework import serializers
 from djoser.serializers import UserSerializer
 
@@ -55,8 +56,8 @@ class TeamUpdateSerializer(serializers.ModelSerializer):
 
 
 class TeamDetailSerializer(serializers.ModelSerializer):
-    created_by = UserSerializer(read_only=True)
-    members = UserSerializer(many=True, read_only=True)
+    created_by = CustomUserSerializer(read_only=True)
+    members = CustomUserSerializer(many=True, read_only=True)
 
     class Meta:
         model = Team
@@ -112,8 +113,8 @@ class InvitationCreateSerializer(serializers.ModelSerializer):
 class InvitationDetailSerializer(serializers.ModelSerializer):
     team_name = serializers.CharField(source='team.name')
     team_description = serializers.CharField(source='team.description')
-    sent_to = UserSerializer()
-    created_by = UserSerializer()
+    sent_to = CustomUserSerializer()
+    created_by = CustomUserSerializer()
 
     class Meta:
         model = Invitation

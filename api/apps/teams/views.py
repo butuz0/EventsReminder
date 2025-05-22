@@ -121,7 +121,7 @@ class InvitationListAPIView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return self.queryset.filter(Q(created_by=user) | Q(sent_to=user))
+        return self.queryset.filter(sent_to=user)
 
 
 class InvitationDetailAPIView(generics.RetrieveAPIView):
