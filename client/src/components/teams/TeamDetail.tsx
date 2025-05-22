@@ -39,6 +39,7 @@ export default function TeamDetail({team, isTeamCreator = false}: TeamDetailPage
       <InfoBlock label="Учасники">
         {team.members.length > 0 ? (
           <TeamMembersTable
+            teamId={team.id}
             members={team.members}
             showAction={isTeamCreator}
           />

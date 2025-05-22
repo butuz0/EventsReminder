@@ -1,13 +1,14 @@
 import {User} from "@/types";
-import {UserMinusIcon} from "@heroicons/react/24/outline";
+import RemoveTeamMemberButton from "@/components/teams/RemoveTeamMemberButton";
 
 interface TeamMembersTableProps {
+  teamId: string;
   members: User[];
   showAction: boolean;
 }
 
 
-export default function TeamMembersTable({members, showAction}: TeamMembersTableProps) {
+export default function TeamMembersTable({teamId, members, showAction}: TeamMembersTableProps) {
   return (
     <div className="mt-2 rounded-lg border border-gray-200">
       <div
@@ -36,8 +37,10 @@ export default function TeamMembersTable({members, showAction}: TeamMembersTable
             {user.department}, {user.faculty}
           </div>
           {showAction && (
-            <UserMinusIcon
-              className="w-6 cursor-pointer text-red-600 hover:text-red-800"
+            <RemoveTeamMemberButton
+              teamId={teamId}
+              memberId={user.id}
+              memberName={`${user.last_name} ${user.first_name}`}
             />
           )}
         </div>
