@@ -36,7 +36,7 @@ export default function UpdateEventPage({params}: PageProps) {
   return (
     <div className="mx-auto max-w-4xl">
       <PageTitle
-        title="Змініть подію"
+        title={eventData.event.title}
       />
       <EventUpdateForm event={eventData.event}/>
     </div>

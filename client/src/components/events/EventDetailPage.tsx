@@ -12,6 +12,8 @@ import InfoBlock from "@/components/shared/InfoBlock";
 import NotificationsList from "@/components/events/NotificationsList";
 import getGoogleCalendarLink from "@/utils/getGoogleCalendarLink";
 import TeamMembersTable from "@/components/teams/TeamMembersTable";
+import {useGetCurrentUserQuery} from "@/lib/redux/slices/auth/authApiSlice";
+import EventDeleteLeaveButton from "@/components/events/EventDeleteLeaveButton";
 
 interface EventDetailProps {
   event_id: string;
@@ -20,6 +22,7 @@ interface EventDetailProps {
 
 export default function EventDetailPage({event_id}: EventDetailProps) {
   const {data: eventData, isLoading, isError} = useGetEventDetailsQuery(event_id);
+  const {data: user} = useGetCurrentUserQuery();
   
   if (isLoading) {
     return <LoaderComponent
@@ -52,6 +55,8 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
     is_recurring,
     recurring_event
   } = eventData.event;
+  
+  const isCreator = user?.id === created_by.id;
   
   return (
     <div className="mx-auto max-w-4xl rounded-xl border border-gray-200 bg-gray-100 p-5 shadow-md space-y-6">
@@ -102,7 +107,10 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
       
       {assigned_to.length > 0 && (
         <InfoBlock label="Призначено для">
-          <TeamMembersTable members={assigned_to} showAction={false}/>
+          <TeamMembersTable
+            members={assigned_to}
+            showAction={false}
+          />
         </InfoBlock>
       )}
       
@@ -144,14 +152,10 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
       <NotificationsList eventId={event_id}/>
       
       <div className="flex justify-between">
-        <Button
-          asChild
-          variant="destructive"
-        >
-          <Link href={`/events/${event_id}/delete`}>
-            Видалити
-          </Link>
-        </Button>
+        <EventDeleteLeaveButton
+          eventId={event_id}
+          isTeamCreator={isCreator}
+        />
         
         <Button asChild>
           <Link href={getGoogleCalendarLink(eventData.event)} target="_blank">
@@ -159,11 +163,14 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
           </Link>
         </Button>
         
-        <Button asChild>
-          <Link href={`/events/${event_id}/update`}>
-            Змінити
-          </Link>
-        </Button>
+        {isCreator && (
+          <Button asChild>
+            <Link href={`/events/${event_id}/update`}>
+              Змінити
+            </Link>
+          </Button>
+        )}
+      
       </div>
     </div>
   )
