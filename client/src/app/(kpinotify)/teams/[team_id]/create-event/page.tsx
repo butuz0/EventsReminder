@@ -1,6 +1,6 @@
 "use client";
 
-import EventForm from "@/components/forms/events/EventForm";
+import EventCreateForm from "@/components/forms/events/EventCreateForm";
 import {useGetTeamDetailsQuery} from "@/lib/redux/slices/teams/teamsApiSlice";
 import {useGetCurrentUserQuery} from "@/lib/redux/slices/auth/authApiSlice";
 import LoaderComponent from "@/components/shared/Loader";
@@ -42,7 +42,7 @@ export default function CreateTeamEventPage({params}: CreateEventPageProps) {
   return (
     <div className="w-full flex flex-col items-center">
       <PageTitle title={team.team.name}/>
-      <EventForm teamId={team.team.id}/>
+      <EventCreateForm teamId={team.team.id}/>
     </div>
   )
 }

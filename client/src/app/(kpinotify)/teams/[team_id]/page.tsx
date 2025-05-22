@@ -12,6 +12,7 @@ import TeamInvitationsTable from "@/components/teams/TeamInvitationsTable";
 import {Button} from "@/components/ui/button";
 import Search from "@/components/shared/Search";
 import Link from "next/link";
+import TeamDetail from "@/components/teams/TeamDetail";
 
 interface TeamDetails {
   params: {
@@ -86,7 +87,10 @@ export default function TeamDetails({params}: TeamDetails) {
         </TabsContent>
         
         <TabsContent value="info">
-          <p>{JSON.stringify(team?.team)}</p>
+          <TeamDetail
+            team={team?.team}
+            isTeamCreator={isTeamCreator}
+          />
         </TabsContent>
         
         {isTeamCreator && (
