@@ -11,6 +11,7 @@ import Link from "next/link";
 import InfoBlock from "@/components/shared/InfoBlock";
 import NotificationsList from "@/components/events/NotificationsList";
 import getGoogleCalendarLink from "@/utils/getGoogleCalendarLink";
+import TeamMembersTable from "@/components/teams/TeamMembersTable";
 
 interface EventDetailProps {
   event_id: string;
@@ -101,20 +102,7 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
       
       {assigned_to.length > 0 && (
         <InfoBlock label="Призначено для">
-          {assigned_to.map(user => (
-            <div key={user.id} className="grid grid-cols-2 gap-2 mt-2">
-              <p>
-                {user.last_name} {user.first_name}
-              </p>
-              <Link
-                href={`mailto:${user.email}`}
-                target="_blank"
-                className="text-gray-800 hover:text-blue-600"
-              >
-                {user.email}
-              </Link>
-            </div>
-          ))}
+          <TeamMembersTable members={assigned_to} showAction={false}/>
         </InfoBlock>
       )}
       
