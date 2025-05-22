@@ -9,6 +9,8 @@ import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import Search from "@/components/shared/Search";
 import {useSearchParams} from "next/navigation";
+import {useGetCurrentUserQuery} from "@/lib/redux/slices/auth/authApiSlice";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 
 
 export default function EventsPage() {
@@ -20,6 +22,7 @@ export default function EventsPage() {
   }), [searchParams]);
   
   const {data, isLoading, isError} = useGetMyEventsQuery(params);
+  const {data: currentUser} = useGetCurrentUserQuery();
   
   if (isLoading) {
     return <LoaderComponent
@@ -37,6 +40,22 @@ export default function EventsPage() {
     )
   }
   
+  const events = data?.events.results;
+  const now = new Date();
+  
+  const upcomingEvents = events.filter(event =>
+    new Date(event.start_datetime) > now && event.created_by.id === currentUser?.id
+  );
+  
+  const assignedEvents = events.filter(event =>
+    new Date(event.start_datetime) > now &&
+    event.assigned_to.some(user => user.id === currentUser?.id)
+  );
+  
+  const pastEvents = events.filter(event =>
+    new Date(event.start_datetime) < now
+  );
+  
   return (
     <div>
       <PageTitle title="Ваші події"/>
@@ -51,9 +70,31 @@ export default function EventsPage() {
         </Button>
       </div>
       
-      <EventsTable
-        events={data?.events.results ?? []}
-      />
+      <Tabs defaultValue="upcoming" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="upcoming">
+            Майбутні
+          </TabsTrigger>
+          <TabsTrigger value="assigned">
+            Призначені мені
+          </TabsTrigger>
+          <TabsTrigger value="past">
+            Минулі
+          </TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="upcoming">
+          <EventsTable events={upcomingEvents}/>
+        </TabsContent>
+        
+        <TabsContent value="assigned">
+          <EventsTable events={assignedEvents}/>
+        </TabsContent>
+        
+        <TabsContent value="past">
+          <EventsTable events={pastEvents}/>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

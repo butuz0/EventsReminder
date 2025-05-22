@@ -7,6 +7,7 @@ import PriorityBadge from "@/components/events/PriorityBadge";
 import {formatDateTime} from "@/utils/formatDateTime";
 import {useSearchParams, usePathname, useRouter} from "next/navigation";
 import {ChevronDownIcon, ChevronUpIcon} from "@heroicons/react/24/solid";
+import {Badge} from "@/components/ui/badge";
 
 interface EventsTableProps {
   events: Event[]
@@ -14,6 +15,14 @@ interface EventsTableProps {
 
 
 export default function EventsTable({events}: EventsTableProps) {
+  if (events.length === 0) {
+    return (
+      <div className="text-center text-gray-600 font-medium">
+        Подій не знайдено
+      </div>
+    )
+  }
+  
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -36,7 +45,7 @@ export default function EventsTable({events}: EventsTableProps) {
   
   return (
     <div className="rounded-xl border border-gray-200 bg-gray-100 p-2 shadow-lg">
-      <div className="grid rounded-t-xl px-4 py-5 font-semibold grid-cols-[1fr_2fr_2fr_1fr]">
+      <div className="grid rounded-t-xl px-4 py-5 font-semibold grid-cols-[2fr_4fr_2fr_1fr]">
         <div>
           <button
             onClick={() => toggleOrdering("title")}
@@ -76,7 +85,7 @@ export default function EventsTable({events}: EventsTableProps) {
               key={event.id}
               href={`/events/${event.id}`}
               className={clsx(
-                "grid grid-cols-[1fr_2fr_2fr_1fr] bg-white " +
+                "grid grid-cols-[2fr_4fr_2fr_1fr] bg-white " +
                 "px-4 py-5 transition-colors hover:bg-gray-200",
                 {
                   "rounded-t-md": isFirst,
@@ -84,8 +93,28 @@ export default function EventsTable({events}: EventsTableProps) {
                 }
               )}
             >
-              <div>{event.title}</div>
-              <div>{String(event.description).substring(0, 30) + "..."}</div>
+              <div className="font-semibold">
+                {event.title}
+              </div>
+              <div className="space-x-1 flex items-center">
+                {event.tags.slice(0, 2).map((tag) => (
+                  <Badge
+                    key={tag}
+                    variant="secondary"
+                    className="border border-blue-900 bg-sky-100 text-blue-900"
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+                {event.tags.length > 2 && (
+                  <p className="text-gray-500 text-xs">
+                    +{event.tags.length - 2}
+                  </p>
+                )}
+                <p>
+                  {String(event.description).substring(0, 30) + "..."}
+                </p>
+              </div>
               <div>{formatDateTime(event.start_datetime)}</div>
               <div>
                 <PriorityBadge priority={event.priority}/>
