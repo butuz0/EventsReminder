@@ -9,94 +9,68 @@ import {useRouter} from "next/navigation";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {toast} from "react-toastify";
-import {useCreateEventMutation} from "@/lib/redux/slices/events/eventsApiSlice";
-import {useCreateNotificationMutation} from "@/lib/redux/slices/notifications/notificationsApiSlice";
-import {
-  EventWithNotificationsSchema,
-  TEventWithNotificationsSchema
-} from "@/lib/validationSchemas/EventSchema";
 import {MapPinIcon, CalendarIcon, PhotoIcon, LinkIcon, ClipboardDocumentListIcon} from "@heroicons/react/24/outline";
 import FormHeader from "@/components/forms/FormHeader";
 import objToFormData from "@/utils/objToFormData";
 import TagInputField from "@/components/forms/TagInputField";
-import NotificationsFieldArray from "@/components/forms/events/NotificationsFieldArray";
 import AssignToSelectField from "@/components/teams/AssignToSelectField";
+import {useUpdateEventMutation} from "@/lib/redux/slices/events/eventsApiSlice";
+import {TEventSchema, EventSchema} from "@/lib/validationSchemas/EventSchema";
+import {Event} from "@/types";
 
-interface EventFormProps {
-  teamId?: string;
+interface EventUpdateFormProps {
+  event: Event;
 }
 
 
-export default function EventForm({teamId = undefined}: EventFormProps) {
+export default function EventUpdateForm({event}: EventUpdateFormProps) {
   const router = useRouter();
+  const [updateEvent, {isLoading}] = useUpdateEventMutation();
   
-  const [createEvent, {isLoading}] = useCreateEventMutation();
-  const [createNotification] = useCreateNotificationMutation();
-  
-  const form = useForm<TEventWithNotificationsSchema>({
-    resolver: zodResolver(EventWithNotificationsSchema),
+  const form = useForm<TEventSchema>({
+    resolver: zodResolver(EventSchema),
     mode: "all",
     defaultValues: {
-      title: "",
-      description: undefined,
-      start_datetime: undefined,
-      location: undefined,
-      link: undefined,
-      priority: 2,
+      title: event.title,
+      description: event.description ?? undefined,
+      start_datetime: event.start_datetime.slice(0, 16),
+      location: event.location ?? undefined,
+      link: event.link ?? undefined,
+      priority: event.priority,
       image: undefined,
-      tags: [],
-      team: teamId ?? undefined,
-      assigned_to_ids: [],
-      is_recurring: false,
-      notifications: []
-    },
+      tags: event.tags,
+      team: event.team?.id,
+      assigned_to_ids: event.assigned_to.map((user) => user.id),
+      is_recurring: event.is_recurring,
+    }
   });
   
-  const onSubmit = async (values: TEventWithNotificationsSchema) => {
+  const onSubmit = async (values: TEventSchema) => {
     try {
-      const {notifications, ...eventValues} = values;
-      
-      // convert to FormData if an image was provided
-      const hasImage = eventValues.image instanceof File;
+      const hasImage = values.image instanceof File;
       const data = hasImage
-        ? objToFormData(eventValues)
-        : eventValues;
+        ? objToFormData(values)
+        : values;
       
-      // create new event
-      const response = await toast.promise(
-        createEvent(data).unwrap(),
+      await toast.promise(
+        updateEvent({event_id: event.id, data: data}).unwrap(),
         {
-          pending: "Створюємо подію...",
-          success: "Подію створено",
+          pending: "Оновлення події...",
+          success: "Подію оновлено!",
         }
       );
       
-      // create notifications for a new event
-      if (notifications.length > 0) {
-        await Promise.all(
-          notifications.map((n) =>
-            createNotification({
-              ...n,
-              event: response.event.id,
-            }).unwrap()
-          )
-        );
-        toast.success("Нагадування створено");
-      }
-      
-      router.push(`/events/${response.event.id}`);
-      form.reset();
-    } catch (error) {
-      toast.error("При створенні події сталась помилка.")
+      router.push(`/events/${event.id}`);
+    } catch (err) {
+      toast.error("Помилка під час оновлення події.");
     }
-  }
+  };
   
   return (
-    <div className="w-full max-w-3xl bg-white p-5 rounded-xl
+    <div className="w-full bg-white p-5 rounded-xl
     border border-sky-200 shadow-md flex flex-col justify-center">
-      <FormHeader
-        title="Створіть нову подію"
-      />
+      <FormHeader title="Оновіть подію"/>
+      
       <FormBase
         form={form}
         onSubmit={onSubmit}
@@ -107,16 +81,18 @@ export default function EventForm({teamId = undefined}: EventFormProps) {
           form={form}
           name="title"
           label="Назва події"
-          placeholder="Назва нової події"
+          placeholder="Введіть нову назву"
           icon={<ClipboardDocumentListIcon className="w-7"/>}
         />
+        
         <FormField
           form={form}
           name="description"
           label="Опис"
-          placeholder="Додатковий опис події"
+          placeholder="Оновлений опис події"
           isTextarea
         />
+        
         <FormField
           form={form}
           name="start_datetime"
@@ -124,32 +100,37 @@ export default function EventForm({teamId = undefined}: EventFormProps) {
           type="datetime-local"
           icon={<CalendarIcon className="w-7"/>}
         />
+        
         <SelectFieldComponent
           form={form}
           name="priority"
           label="Пріоритет"
           options={PriorityOptions}
-          placeholder="Оберіть пріоритет події"
+          placeholder="Оберіть новий пріоритет"
         />
+        
         <TagInputField
           form={form}
           name="tags"
           label="Теги"
         />
+        
         <FormField
           form={form}
           name="location"
           label="Місце"
-          placeholder="Місце події"
+          placeholder="Оновлене місце"
           icon={<MapPinIcon className="w-7"/>}
         />
+        
         <FormField
           form={form}
           name="link"
           label="Посилання"
-          placeholder="Посилання для події"
+          placeholder="Оновлене посилання"
           icon={<LinkIcon className="w-7"/>}
         />
+        
         <FormField
           form={form}
           name="image"
@@ -157,29 +138,27 @@ export default function EventForm({teamId = undefined}: EventFormProps) {
           type="file"
           icon={<PhotoIcon className="w-7"/>}
         />
-        {teamId && (
+        
+        {event.team && (
           <AssignToSelectField
             form={form}
             name="assigned_to_ids"
-            teamId={teamId}
-            label="Призначити подію"
-            placeholder="Оберіть кому призначити цю подію"
+            teamId={event.team.id}
+            label="Призначити"
+            placeholder="Оновіть призначення"
           />
         )}
-        <NotificationsFieldArray
-          form={form}
-          name="notifications"
-        />
+        
         <div className="flex justify-center">
           <Button
             type="submit"
             disabled={isLoading}
             className="text-md hover:cursor-pointer"
           >
-            Підтвердити
+            Зберегти зміни
           </Button>
         </div>
       </FormBase>
     </div>
-  )
+  );
 }

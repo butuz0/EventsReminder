@@ -1,10 +1,10 @@
-import EventForm from "@/components/forms/events/EventForm";
+import EventCreateForm from "@/components/forms/events/EventCreateForm";
 
 
 export default function CreateEventPage() {
   return (
     <div className="w-full flex justify-center">
-      <EventForm/>
+      <EventCreateForm/>
     </div>
   )
 }

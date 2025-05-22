@@ -172,7 +172,7 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
         </Button>
         
         <Button asChild>
-          <Link href={`/events/${event_id}/edit`}>
+          <Link href={`/events/${event_id}/update`}>
             Змінити
           </Link>
         </Button>

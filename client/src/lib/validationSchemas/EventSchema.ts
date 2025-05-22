@@ -11,12 +11,13 @@ export const EventSchema = z.object({
     .trim()
     .optional(),
   start_datetime: z
-    .coerce
-    .date({message: "Оберіть дату та час події"})
-    .refine(
-      (date) => date.getTime() >= Date.now(),
-      {message: "Подія має бути у майбутньому"}
-    ),
+    .string()
+    .refine(val => !isNaN(Date.parse(val)), {
+      message: "Невірний формат дати",
+    })
+    .refine(val => new Date(val).getTime() >= Date.now(), {
+      message: "Подія має бути у майбутньому",
+    }),
   location: z
     .string()
     .trim()

@@ -76,7 +76,7 @@ export default function EventsPage() {
             Майбутні
           </TabsTrigger>
           <TabsTrigger value="assigned">
-            Призначені мені
+            Призначені
           </TabsTrigger>
           <TabsTrigger value="past">
             Минулі
