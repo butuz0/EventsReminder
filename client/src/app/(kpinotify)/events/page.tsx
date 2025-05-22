@@ -4,14 +4,22 @@ import {useGetMyEventsQuery} from "@/lib/redux/slices/events/eventsApiSlice"
 import EventsTable from "@/components/events/EventsTable";
 import PageTitle from "@/components/shared/PageTitle";
 import LoaderComponent from "@/components/shared/Loader";
-import React from "react";
+import React, {useMemo} from "react";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import Search from "@/components/shared/Search";
+import {useSearchParams} from "next/navigation";
 
 
 export default function EventsPage() {
-  const {data, isLoading, isError} = useGetMyEventsQuery();
+  const searchParams = useSearchParams();
+  const params = useMemo(() => ({
+    search: searchParams.get("search") || undefined,
+    ordering: searchParams.get("ordering") || undefined,
+    page: Number(searchParams.get("page") || 1),
+  }), [searchParams]);
+  
+  const {data, isLoading, isError} = useGetMyEventsQuery(params);
   
   if (isLoading) {
     return <LoaderComponent

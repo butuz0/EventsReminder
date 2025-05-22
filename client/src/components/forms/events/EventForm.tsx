@@ -20,9 +20,14 @@ import FormHeader from "@/components/forms/FormHeader";
 import objToFormData from "@/utils/objToFormData";
 import TagInputField from "@/components/forms/TagInputField";
 import NotificationsFieldArray from "@/components/forms/events/NotificationsFieldArray";
+import AssignToSelectField from "@/components/teams/AssignToSelectField";
+
+interface EventFormProps {
+  teamId?: string;
+}
 
 
-export default function EventForm() {
+export default function EventForm({teamId = undefined}: EventFormProps) {
   const router = useRouter();
   
   const [createEvent, {isLoading}] = useCreateEventMutation();
@@ -40,7 +45,8 @@ export default function EventForm() {
       priority: 2,
       image: undefined,
       tags: [],
-      assigned_to: [],
+      team: teamId ?? undefined,
+      assigned_to_ids: [],
       is_recurring: false,
       notifications: []
     },
@@ -151,6 +157,15 @@ export default function EventForm() {
           type="file"
           icon={<PhotoIcon className="w-7"/>}
         />
+        {teamId && (
+          <AssignToSelectField
+            form={form}
+            name="assigned_to_ids"
+            teamId={teamId}
+            label="Призначити подію"
+            placeholder="Оберіть кому призначити цю подію"
+          />
+        )}
         <NotificationsFieldArray
           form={form}
           name="notifications"

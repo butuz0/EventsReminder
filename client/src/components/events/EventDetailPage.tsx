@@ -46,13 +46,14 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
     priority,
     tags,
     created_by,
+    team,
     assigned_to,
     is_recurring,
     recurring_event
   } = eventData.event;
   
   return (
-    <div className="mx-auto max-w-4xl rounded-xl bg-gray-100 p-5 shadow-md space-y-6 border border-gray-200">
+    <div className="mx-auto max-w-4xl rounded-xl border border-gray-200 bg-gray-100 p-5 shadow-md space-y-6">
       <div className="rounded-xl bg-white p-6 shadow-md space-y-4">
         <h1 className="text-2xl font-bold">{title}</h1>
         {description && <p className="text-gray-800">{description}</p>}
@@ -87,6 +88,36 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
         </div>
       )}
       
+      {team && (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <InfoBlock label="Команда">
+            <p>{team.name}</p>
+          </InfoBlock>
+          <InfoBlock label="Створено">
+            <p>{created_by.last_name} {created_by.first_name}</p>
+          </InfoBlock>
+        </div>
+      )}
+      
+      {assigned_to.length > 0 && (
+        <InfoBlock label="Призначено для">
+          {assigned_to.map(user => (
+            <div key={user.id} className="grid grid-cols-2 gap-2 mt-2">
+              <p>
+                {user.last_name} {user.first_name}
+              </p>
+              <Link
+                href={`mailto:${user.email}`}
+                target="_blank"
+                className="text-gray-800 hover:text-blue-600"
+              >
+                {user.email}
+              </Link>
+            </div>
+          ))}
+        </InfoBlock>
+      )}
+      
       {image_url && (
         <InfoBlock label="Зображення">
           <div
@@ -110,17 +141,16 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
         <InfoBlock label="Повторювана подія">
           <p>{is_recurring ? "Так" : "Ні"}</p>
         </InfoBlock>
-        {
-          link && (
-            <InfoBlock label="Посилання">
-              <a href={link}
-                 target="_blank"
-                 className="text-blue-600 underline"
-              >
-                Відкрити
-              </a>
-            </InfoBlock>
-          )}
+        {link && (
+          <InfoBlock label="Посилання">
+            <a href={link}
+               target="_blank"
+               className="text-blue-600 underline"
+            >
+              Відкрити
+            </a>
+          </InfoBlock>
+        )}
       </div>
       
       <NotificationsList eventId={event_id}/>

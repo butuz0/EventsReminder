@@ -172,6 +172,10 @@ export interface Event {
   priority: number,
   image_url: string,
   tags: string[],
+  team: {
+    id: string,
+    name: string
+  }
   assigned_to: BaseUserResponse[],
   is_recurring: boolean,
   recurring_event: {

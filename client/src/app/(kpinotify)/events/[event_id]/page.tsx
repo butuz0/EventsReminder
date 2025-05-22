@@ -7,15 +7,13 @@ interface PageProps {
 
 
 export default async function EventDetail({params}: PageProps) {
-  const {event_id} = await params;
-  
   return (
     <div className="h-full">
       <PageTitle
         title="Деталі події"
       />
       
-      <EventDetailPage event_id={event_id}/>
+      <EventDetailPage event_id={params.event_id}/>
     </div>
   )
 }

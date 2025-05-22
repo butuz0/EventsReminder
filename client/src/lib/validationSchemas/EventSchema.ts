@@ -40,7 +40,11 @@ export const EventSchema = z.object({
         .max(30, "Тег повинен містити не більше 30 символів")
     )
     .optional(),
-  assigned_to: z
+  team: z
+    .string()
+    .uuid()
+    .optional(),
+  assigned_to_ids: z
     .array(
       z.string()
         .trim()
