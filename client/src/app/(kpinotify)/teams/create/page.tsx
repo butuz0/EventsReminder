@@ -1,4 +1,4 @@
-import TeamForm from "@/components/forms/teams/TeamForm";
+import TeamCreateForm from "@/components/forms/teams/TeamCreateForm";
 import FormHeader from "@/components/forms/FormHeader";
 import PageTitle from "@/components/shared/PageTitle";
 
@@ -15,7 +15,7 @@ export default function CreateEventPage() {
             linkText="Повернутись до моїх команд"
             linkHref="/teams"
           />
-          <TeamForm/>
+          <TeamCreateForm/>
         </div>
       </div>
     </div>

@@ -12,7 +12,7 @@ import {useRouter} from "next/navigation";
 import MembersSelectField from "@/components/forms/teams/MembersSelectField";
 
 
-export default function TeamForm() {
+export default function TeamCreateForm() {
   const [createTeam, {isLoading}] = useCreateTeamMutation();
   const router = useRouter();
   

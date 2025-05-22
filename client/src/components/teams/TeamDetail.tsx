@@ -5,6 +5,7 @@ import {formatDate} from "@/utils/formatDateTime";
 import TeamMembersTable from "@/components/teams/TeamMembersTable";
 import {Button} from "../ui/button";
 import TeamDeleteLeaveButton from "@/components/teams/TeamDeleteLeaveButton";
+import Link from "next/link";
 
 interface TeamDetailPageProps {
   team: Team
@@ -56,8 +57,13 @@ export default function TeamDetail({team, isTeamCreator = false}: TeamDetailPage
           isTeamCreator={isTeamCreator}
         />
         {isTeamCreator && (
-          <Button className="hover:cursor-pointer">
-            Змінити
+          <Button
+            asChild
+            className="hover:cursor-pointer"
+          >
+            <Link href={`/teams/${team.id}/update`}>
+              Змінити
+            </Link>
           </Button>
         )}
       </div>

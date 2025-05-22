@@ -23,7 +23,7 @@ export default function MembersSelectField<T extends FieldValues>(
     label,
     placeholder = "Оберіть користувачів"
   }: MembersSelectFieldProps<T>) {
-  const {data, isLoading} = useGetAllProfilesQuery();
+  const {data, isLoading} = useGetAllProfilesQuery({});
   
   const getLabel = (profile: Profile) => {
     const name = `${profile.last_name} ${profile.first_name}`;
