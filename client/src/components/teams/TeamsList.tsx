@@ -5,9 +5,13 @@ import LoaderComponent from "@/components/shared/Loader";
 import React from "react";
 import {TeamCard} from "@/components/teams/TeamCard";
 
+interface TeamsListProps {
+  teamParams?: Record<string, any>;
+}
 
-export default function TeamsList() {
-  const {data, isLoading, isError} = useGetMyTeamsQuery();
+
+export default function TeamsList({teamParams = {}}: TeamsListProps) {
+  const {data, isLoading, isError} = useGetMyTeamsQuery(teamParams);
   
   if (isLoading) {
     return <LoaderComponent

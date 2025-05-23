@@ -1,3 +1,5 @@
+"use client";
+
 import PageTitle from "@/components/shared/PageTitle";
 import TeamsList from "@/components/teams/TeamsList";
 import {Button} from "@/components/ui/button";
@@ -10,9 +12,17 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 import InvitationsTable from "@/components/teams/InvitationsTable";
+import {useSearchParams} from "next/navigation";
+import {useMemo} from "react";
 
 
 export default function Teams() {
+  const searchParams = useSearchParams();
+  const teamParams = useMemo(() => ({
+    search: searchParams.get("search") || undefined,
+    page: Number(searchParams.get("page") || 1),
+  }), [searchParams]);
+  
   return (
     <div>
       <PageTitle title="Ваші команди"/>
@@ -30,7 +40,7 @@ export default function Teams() {
               </Link>
             </Button>
           </div>
-          <TeamsList/>
+          <TeamsList teamParams={teamParams}/>
         </TabsContent>
         <TabsContent value="invitations">
           <InvitationsTable/>

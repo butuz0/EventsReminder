@@ -31,6 +31,8 @@ class TeamListAPIView(generics.ListAPIView):
     queryset = Team.objects.all()
     serializer_class = TeamDetailSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [drf_filters.SearchFilter]
+    search_fields = ['name', 'description', 'created_by__first_name', 'created_by__last_name']
     renderer_classes = [JSONRenderer]
     object_label = 'teams'
 

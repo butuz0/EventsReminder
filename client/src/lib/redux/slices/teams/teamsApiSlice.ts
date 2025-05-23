@@ -7,14 +7,16 @@ import {
   CreateTeamResponse,
   UpdateTeamResponse,
   UpdateTeamData,
-  EventDetailsResponse,
   MyEventsResponse
 } from "@/types";
 
 export const teamsApiSlice = baseApiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getMyTeams: builder.query<MyTeamsResponse, void>({
-      query: () => "/teams/",
+    getMyTeams: builder.query<MyTeamsResponse, Record<string, any>>({
+      query: (params) => ({
+        url: "/teams/",
+        params
+      }),
       providesTags: ["Teams"]
     }),
     getTeamDetails: builder.query<TeamDetailsResponse, string>({
