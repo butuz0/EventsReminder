@@ -2,7 +2,7 @@ import {User} from "@/types";
 import RemoveTeamMemberButton from "@/components/teams/RemoveTeamMemberButton";
 
 interface TeamMembersTableProps {
-  teamId: string;
+  teamId?: string;
   members: User[];
   showAction: boolean;
 }
@@ -38,7 +38,7 @@ export default function TeamMembersTable({teamId, members, showAction}: TeamMemb
           </div>
           {showAction && (
             <RemoveTeamMemberButton
-              teamId={teamId}
+              teamId={teamId!}
               memberId={user.id}
               memberName={`${user.last_name} ${user.first_name}`}
             />

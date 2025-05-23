@@ -2,12 +2,14 @@
 
 import {Profile} from "@/types";
 import {UserCircleIcon} from "@heroicons/react/24/solid";
+import {UserPlusIcon} from "@heroicons/react/24/outline";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle
 } from "@/components/ui/card";
+import InviteUserDialog from "@/components/teams/InviteUserDialog";
 
 interface ProfileCardProps {
   profile: Profile;
@@ -21,8 +23,13 @@ export default function ProfileCard({profile}: ProfileCardProps) {
   const position = profile.position;
   
   return (
-    <Card className="flex flex-col items-center bg-white
+    <Card className="relative flex flex-col items-center bg-white
     shadow-md rounded-xl p-4 border border-gray-200">
+      <InviteUserDialog
+        user={profile}
+        className="absolute top-3 right-3"
+      />
+      
       <CardHeader className="flex items-center justify-center p-0 gap-0">
         {profile.avatar_url ? (
           <img
