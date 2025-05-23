@@ -14,6 +14,7 @@ import getGoogleCalendarLink from "@/utils/getGoogleCalendarLink";
 import TeamMembersTable from "@/components/teams/TeamMembersTable";
 import {useGetCurrentUserQuery} from "@/lib/redux/slices/auth/authApiSlice";
 import EventDeleteLeaveButton from "@/components/events/EventDeleteLeaveButton";
+import {RecurrenceRuleOptions} from "@/constants";
 
 interface EventDetailProps {
   event_id: string;
@@ -135,8 +136,18 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
         </InfoBlock>
         
         <InfoBlock label="Повторювана подія">
-          <p>{is_recurring ? "Так" : "Ні"}</p>
+          <p>
+            {is_recurring
+              ? RecurrenceRuleOptions.find(option =>
+                option.value === recurring_event.recurrence_rule)?.label
+              : "Ні"
+            }
+            {is_recurring && recurring_event.recurrence_end_datetime && (
+              ` до ${formatDateTime(recurring_event.recurrence_end_datetime)}`
+            )}
+          </p>
         </InfoBlock>
+        
         {link && (
           <InfoBlock label="Посилання">
             <a href={link}

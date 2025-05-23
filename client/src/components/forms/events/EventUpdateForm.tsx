@@ -2,7 +2,7 @@
 
 import FormBase from "@/components/forms/FormBase";
 import SelectFieldComponent from "@/components/forms/SelectFieldComponent";
-import {PriorityOptions} from "@/constants";
+import {PriorityOptions, RecurrenceRuleOptions} from "@/constants";
 import FormField from "@/components/forms/FormField";
 import {Button} from "@/components/ui/button";
 import {useRouter} from "next/navigation";
@@ -14,9 +14,15 @@ import FormHeader from "@/components/forms/FormHeader";
 import objToFormData from "@/utils/objToFormData";
 import TagInputField from "@/components/forms/TagInputField";
 import AssignToSelectField from "@/components/teams/AssignToSelectField";
-import {useUpdateEventMutation} from "@/lib/redux/slices/events/eventsApiSlice";
+import {
+  useCreateRecurringEventMutation,
+  useUpdateEventMutation,
+  useUpdateRecurringEventMutation
+} from "@/lib/redux/slices/events/eventsApiSlice";
 import {TEventSchema, EventSchema} from "@/lib/validationSchemas/EventSchema";
 import {Event} from "@/types";
+import {RecurringEventSchema, TRecurringEventSchema} from "@/lib/validationSchemas/RecurringEventSchema";
+import CheckboxField from "@/components/forms/CheckboxField";
 
 interface EventUpdateFormProps {
   event: Event;
@@ -26,6 +32,8 @@ interface EventUpdateFormProps {
 export default function EventUpdateForm({event}: EventUpdateFormProps) {
   const router = useRouter();
   const [updateEvent, {isLoading}] = useUpdateEventMutation();
+  const [createRecurringEvent] = useCreateRecurringEventMutation();
+  const [updateRecurringEvent] = useUpdateRecurringEventMutation();
   
   const form = useForm<TEventSchema>({
     resolver: zodResolver(EventSchema),
@@ -45,6 +53,19 @@ export default function EventUpdateForm({event}: EventUpdateFormProps) {
     }
   });
   
+  const recurringForm = useForm<TRecurringEventSchema>({
+    resolver: zodResolver(RecurringEventSchema),
+    mode: "all",
+    defaultValues: {
+      recurrence_rule: event.recurring_event?.recurrence_rule ?? "w",
+      recurrence_end_datetime: event.recurring_event?.recurrence_end_datetime?.slice(0, 16) ?? undefined,
+    }
+  })
+  
+  const eventAlreadyRecurring = event.recurring_event !== null;
+  
+  const isRecurring = form.watch("is_recurring");
+  
   const onSubmit = async (values: TEventSchema) => {
     try {
       const hasImage = values.image instanceof File;
@@ -56,9 +77,17 @@ export default function EventUpdateForm({event}: EventUpdateFormProps) {
         updateEvent({event_id: event.id, data: data}).unwrap(),
         {
           pending: "Оновлення події...",
-          success: "Подію оновлено!",
         }
       );
+      
+      if (isRecurring && eventAlreadyRecurring) {
+        await updateRecurringEvent({event_id: event.id, data: recurringForm.getValues()}).unwrap();
+      } else if (isRecurring && !eventAlreadyRecurring) {
+        await createRecurringEvent({event_id: event.id, data: recurringForm.getValues()}).unwrap();
+      }
+      
+      toast.success("Подію оновлено!");
+      
       
       router.push(`/events/${event.id}`);
     } catch (err) {
@@ -147,6 +176,29 @@ export default function EventUpdateForm({event}: EventUpdateFormProps) {
             label="Призначити"
             placeholder="Оновіть призначення"
           />
+        )}
+        
+        <CheckboxField
+          form={form}
+          name="is_recurring"
+          label="Повторювана подія"
+        />
+        
+        {isRecurring && (
+          <div className="space-y-5">
+            <SelectFieldComponent
+              form={recurringForm}
+              name="recurrence_rule"
+              label="Періодичність"
+              options={RecurrenceRuleOptions}
+            />
+            <FormField
+              form={recurringForm}
+              name="recurrence_end_datetime"
+              label="Завершення повторень"
+              type="datetime-local"
+            />
+          </div>
         )}
         
         <div className="flex justify-center">

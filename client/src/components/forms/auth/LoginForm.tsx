@@ -41,7 +41,7 @@ export default function LoginForm() {
       router.push("/home");
       form.reset();
     } catch (error) {
-      toast.error(`При створенні Вашого акаунта сталась помилка: ${JSON.stringify(error)}`)
+      toast.error(`При вході у Ваш акаунт сталась помилка: ${JSON.stringify(error)}`)
     }
   };
   

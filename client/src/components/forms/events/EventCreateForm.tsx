@@ -2,14 +2,14 @@
 
 import FormBase from "@/components/forms/FormBase";
 import SelectFieldComponent from "@/components/forms/SelectFieldComponent";
-import {PriorityOptions} from "@/constants";
+import {RecurrenceRuleOptions, PriorityOptions} from "@/constants";
 import FormField from "@/components/forms/FormField";
 import {Button} from "@/components/ui/button";
 import {useRouter} from "next/navigation";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {toast} from "react-toastify";
-import {useCreateEventMutation} from "@/lib/redux/slices/events/eventsApiSlice";
+import {useCreateEventMutation, useCreateRecurringEventMutation} from "@/lib/redux/slices/events/eventsApiSlice";
 import {useCreateNotificationMutation} from "@/lib/redux/slices/notifications/notificationsApiSlice";
 import {
   EventWithNotificationsSchema,
@@ -21,16 +21,19 @@ import objToFormData from "@/utils/objToFormData";
 import TagInputField from "@/components/forms/TagInputField";
 import NotificationsFieldArray from "@/components/forms/events/NotificationsFieldArray";
 import AssignToSelectField from "@/components/teams/AssignToSelectField";
+import {RecurringEventSchema, TRecurringEventSchema} from "@/lib/validationSchemas/RecurringEventSchema";
+import CheckboxField from "@/components/forms/CheckboxField";
 
 interface EventFormProps {
   teamId?: string;
 }
 
 
-export default function EventCreateForm({teamId = undefined}: EventFormProps) {
+export default function EventCreateForm({teamId}: EventFormProps) {
   const router = useRouter();
   
   const [createEvent, {isLoading}] = useCreateEventMutation();
+  const [createRecurringEvent] = useCreateRecurringEventMutation();
   const [createNotification] = useCreateNotificationMutation();
   
   const form = useForm<TEventWithNotificationsSchema>({
@@ -52,6 +55,17 @@ export default function EventCreateForm({teamId = undefined}: EventFormProps) {
     },
   });
   
+  const recurringForm = useForm<TRecurringEventSchema>({
+    resolver: zodResolver(RecurringEventSchema),
+    mode: "all",
+    defaultValues: {
+      recurrence_rule: "w",
+      recurrence_end_datetime: undefined,
+    }
+  })
+  
+  const isRecurring = form.watch("is_recurring");
+  
   const onSubmit = async (values: TEventWithNotificationsSchema) => {
     try {
       const {notifications, ...eventValues} = values;
@@ -70,6 +84,16 @@ export default function EventCreateForm({teamId = undefined}: EventFormProps) {
           success: "Подію створено",
         }
       );
+      
+      // create recurring event
+      if (isRecurring) {
+        const recurringValues = recurringForm.getValues();
+        await createRecurringEvent({
+          event_id: response.event.id,
+          data: recurringValues
+        }).unwrap();
+        toast.success("Періодичність додано");
+      }
       
       // create notifications for a new event
       if (notifications.length > 0) {
@@ -165,6 +189,28 @@ export default function EventCreateForm({teamId = undefined}: EventFormProps) {
             label="Призначити подію"
             placeholder="Оберіть кому призначити цю подію"
           />
+        )}
+        <CheckboxField
+          form={form}
+          name="is_recurring"
+          label="Повторювана подія"
+        />
+        
+        {isRecurring && (
+          <div className="space-y-5">
+            <SelectFieldComponent
+              form={recurringForm}
+              name="recurrence_rule"
+              label="Періодичність"
+              options={RecurrenceRuleOptions}
+            />
+            <FormField
+              form={recurringForm}
+              name="recurrence_end_datetime"
+              label="Завершення повторень"
+              type="datetime-local"
+            />
+          </div>
         )}
         <NotificationsFieldArray
           form={form}
