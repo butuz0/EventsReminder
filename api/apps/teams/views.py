@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from apps.common.renderers import JSONRenderer
 from apps.events.models import Event
 from apps.events.serializers import EventDetailSerializer
+from apps.events.filters import EventFilter
 from .permissions import IsOwner, IsOwnerOrMember
 from .models import Team, Invitation
 from .serializers import (
@@ -19,6 +20,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
+from rest_framework import filters as drf_filters
+from django_filters.rest_framework import DjangoFilterBackend
 from djoser.serializers import UserSerializer
 
 User = get_user_model()
@@ -173,6 +176,9 @@ class TeamEventsListAPIView(generics.ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventDetailSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, drf_filters.SearchFilter]
+    filterset_class = EventFilter
+    search_fields = ['title', 'description', 'location', 'tags__name']
     renderer_classes = [JSONRenderer]
     object_label = 'events'
 

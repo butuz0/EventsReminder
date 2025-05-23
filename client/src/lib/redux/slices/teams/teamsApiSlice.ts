@@ -25,8 +25,11 @@ export const teamsApiSlice = baseApiSlice.injectEndpoints({
       query: (teamId) => `/teams/${teamId}/members/`,
       providesTags: ["Teams"]
     }),
-    getTeamEvents: builder.query<MyEventsResponse, string>({
-      query: (teamId) => `/teams/${teamId}/events/`,
+    getTeamEvents: builder.query<MyEventsResponse, { teamId: string, params: Record<string, any> }>({
+      query: ({teamId, params}) => ({
+        url: `/teams/${teamId}/events/`,
+        params,
+      }),
       providesTags: ["Teams", "Events"]
     }),
     createTeam: builder.mutation<CreateTeamResponse, CreateTeamData>({
@@ -76,6 +79,7 @@ export const {
   useGetTeamEventsQuery,
   useCreateTeamMutation,
   useUpdateTeamMutation,
+  useRemoveMemberMutation,
   useDeleteTeamMutation,
   useLeaveTeamMutation,
 } = teamsApiSlice;

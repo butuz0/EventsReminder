@@ -2,7 +2,7 @@
 
 import {useGetTeamDetailsQuery, useGetTeamEventsQuery} from "@/lib/redux/slices/teams/teamsApiSlice";
 import LoaderComponent from "@/components/shared/Loader";
-import React from "react";
+import React, {useMemo} from "react";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import EventsTable from "@/components/events/EventsTable";
 import PageTitle from "@/components/shared/PageTitle";
@@ -13,6 +13,7 @@ import {Button} from "@/components/ui/button";
 import Search from "@/components/shared/Search";
 import Link from "next/link";
 import TeamDetail from "@/components/teams/TeamDetail";
+import {useSearchParams} from "next/navigation";
 
 interface TeamDetails {
   params: {
@@ -22,8 +23,15 @@ interface TeamDetails {
 
 
 export default function TeamDetails({params}: TeamDetails) {
+  const searchParams = useSearchParams();
+  const eventsParams = useMemo(() => ({
+    search: searchParams.get("search") || undefined,
+    ordering: searchParams.get("ordering") || undefined,
+    page: Number(searchParams.get("page") || 1),
+  }), [searchParams]);
+  
   const {data: team, isLoading, isError} = useGetTeamDetailsQuery(params.team_id);
-  const {data: events} = useGetTeamEventsQuery(params.team_id);
+  const {data: events} = useGetTeamEventsQuery({teamId: params.team_id, params: eventsParams});
   const {data: user} = useGetCurrentUserQuery();
   
   if (isLoading) {
