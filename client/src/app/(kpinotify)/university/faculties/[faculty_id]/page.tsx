@@ -5,6 +5,9 @@ import FacultyDetails from "@/components/units/FacultyDetails";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import ProfilesList from "@/components/profiles/ProfilesList";
 import PageTitle from "@/components/shared/PageTitle";
+import {useSearchParams} from "next/navigation";
+import {useMemo} from "react";
+import Search from "@/components/shared/Search";
 
 interface FacultyPageProps {
   params: {
@@ -15,6 +18,14 @@ interface FacultyPageProps {
 
 export default function FacultyPage({params}: FacultyPageProps) {
   const facultyId = Number(params.faculty_id);
+  
+  const searchParams = useSearchParams();
+  const profilesParams = useMemo(() => ({
+    search: searchParams.get("search") || undefined,
+    page: Number(searchParams.get("page") || 1),
+    department__faculty: facultyId
+  }), [searchParams, facultyId]);
+  
   const {data, isLoading, isError} = useGetFacultyDetailsQuery(facultyId);
   
   if (isLoading) {
@@ -44,7 +55,10 @@ export default function FacultyPage({params}: FacultyPageProps) {
           <FacultyDetails departments={data.departments}/>
         </TabsContent>
         <TabsContent value="users">
-          <ProfilesList queryParams={{department__faculty: facultyId}}/>
+          <div className="mb-4">
+            <Search placeholder="Шукати користувача"/>
+          </div>
+          <ProfilesList queryParams={profilesParams}/>
         </TabsContent>
       </Tabs>
     </div>
