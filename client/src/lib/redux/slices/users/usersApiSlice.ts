@@ -28,7 +28,7 @@ export const usersApiSlice = baseApiSlice.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
-    updateProfile: builder.mutation<UpdateProfileResponse, UpdateProfileData>({
+    updateProfile: builder.mutation<UpdateProfileResponse, UpdateProfileData | FormData>({
       query: (data) => ({
         url: "/profiles/my-profile/update/",
         method: "PATCH",

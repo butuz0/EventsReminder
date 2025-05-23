@@ -2,18 +2,16 @@
 
 import React, {useEffect, useState} from "react";
 import {useGetAllFacultiesQuery, useGetFacultyDepartmentsQuery} from "@/lib/redux/slices/units/unitsApiSlice";
-import {UseFormReturn} from "react-hook-form";
-import {TProfileSchema} from "@/lib/validationSchemas/ProfileSchema";
-import {TProfileSetupSchema} from "@/lib/validationSchemas/ProfileSetupSchema";
+import {FieldValues, UseFormReturn} from "react-hook-form";
 import SelectFieldComponent from "@/components/forms/SelectFieldComponent";
 import Select from "react-select";
 import ClientOnlyComponent from "@/utils/ClientOnlyComponent";
 import {FormLabel} from "@/components/ui/form";
 import {selectFieldStyles} from "@/components/forms/selectFieldStyles";
 
-interface DepartmentSelectFieldProps {
-  form: UseFormReturn<TProfileSchema | TProfileSetupSchema>,
-  placeholder?: string,
+interface DepartmentSelectFieldProps<T extends FieldValues = any> {
+  form: UseFormReturn<T>;
+  placeholder?: string;
 }
 
 interface Option {
