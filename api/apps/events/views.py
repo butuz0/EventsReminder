@@ -35,7 +35,7 @@ class MyEventsListAPIView(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
     filter_backends = [DjangoFilterBackend, drf_filters.SearchFilter]
     filterset_class = EventFilter
-    search_fields = ['title', 'description', 'location', 'tags__name']
+    search_fields = ['title', 'description', 'tags__name']
     renderer_classes = [JSONRenderer]
     object_label = 'events'
 

@@ -21,7 +21,7 @@ class EventFilter(django_filters.FilterSet):
     team = django_filters.UUIDFilter(field_name='team__id')
 
     ordering = django_filters.OrderingFilter(
-        fields=['start_datetime', 'priority', 'title']
+        fields=['start_datetime', 'priority', 'title', 'created_at']
     )
 
     class Meta:

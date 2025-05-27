@@ -2,6 +2,7 @@ from django.utils.timezone import now
 from django.contrib.auth import get_user_model
 from .models import Event, RecurringEvent
 from apps.teams.models import Team
+from apps.users.serializers import CustomUserSerializer
 from rest_framework import serializers
 from taggit.serializers import TagListSerializerField, TaggitSerializer
 from djoser.serializers import UserSerializer
@@ -37,7 +38,7 @@ class RecurringEventSerializer(serializers.ModelSerializer):
 
 class BaseEventSerializer(TaggitSerializer, serializers.ModelSerializer):
     assigned_to_ids = serializers.ListField(child=serializers.UUIDField(), write_only=True, required=False)
-    assigned_to = UserSerializer(many=True, read_only=True)
+    assigned_to = CustomUserSerializer(many=True, read_only=True)
     tags = TagListSerializerField(required=False)
 
     class Meta:
@@ -157,7 +158,7 @@ class EventUpdateSerializer(BaseEventSerializer):
 class EventDetailSerializer(serializers.ModelSerializer):
     tags = TagListSerializerField()
     created_by = UserSerializer(read_only=True)
-    assigned_to = UserSerializer(many=True, read_only=True)
+    assigned_to = CustomUserSerializer(many=True, read_only=True)
     recurring_event = RecurringEventSerializer(read_only=True)
     image_url = serializers.SerializerMethodField()
     team = serializers.SerializerMethodField()
@@ -167,7 +168,7 @@ class EventDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'created_by', 'title', 'description',
                   'start_datetime', 'location', 'link',
                   'priority', 'image_url', 'tags', 'assigned_to',
-                  'is_recurring', 'recurring_event', 'team']
+                  'is_recurring', 'recurring_event', 'team', 'created_at']
 
     def get_team(self, obj: Event) -> dict | None:
         if obj.team:
