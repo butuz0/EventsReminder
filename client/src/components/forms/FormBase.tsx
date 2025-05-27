@@ -4,7 +4,7 @@ import React from "react";
 
 interface FormBaseProps extends React.FormHTMLAttributes<HTMLFormElement> {
   form: UseFormReturn<any>;
-  onSubmit: (data: any) => void;
+  onSubmit?: (data: any) => void;
   className?: string;
   children?: React.ReactNode;
 }
@@ -21,7 +21,7 @@ export default function FormBase(
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={onSubmit ? form.handleSubmit(onSubmit) : undefined}
         className={`space-y-5 ${className}`}
         {...rest}
       >
