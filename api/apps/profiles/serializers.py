@@ -29,8 +29,8 @@ class BaseProfileSerializer(serializers.ModelSerializer):
 class ProfileRetrieveSerializer(BaseProfileSerializer):
     id = serializers.UUIDField(source='user.id', read_only=True)
     email = serializers.ReadOnlyField(source='user.email')
-    gender = serializers.CharField(source='get_gender_display')
-    is_telegram_verified = serializers.CharField(read_only=True)
+    gender = serializers.ChoiceField(choices=Profile.Gender.choices)
+    is_telegram_verified = serializers.BooleanField(read_only=True)
     department_name = serializers.SerializerMethodField()
     department_abbreviation = serializers.SerializerMethodField()
     faculty = serializers.SerializerMethodField()
