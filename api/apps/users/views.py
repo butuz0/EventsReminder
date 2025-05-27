@@ -4,6 +4,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from djoser.views import UserViewSet
 from typing import Optional
 
 
@@ -16,15 +17,24 @@ def get_cookie_settings(max_age: int, httponly: bool = True) -> dict:
         'max_age': max_age,
     }
 
+
 def set_auth_cookies(response: Response, access_token: str, refresh_token: Optional[str]) -> None:
     access_token_lifetime = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'].total_seconds()
     response.set_cookie('access', access_token, **get_cookie_settings(access_token_lifetime, settings.COOKIE_HTTPONLY))
 
     if refresh_token:
         refresh_token_lifetime = settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'].total_seconds()
-        response.set_cookie('refresh', refresh_token, **get_cookie_settings(refresh_token_lifetime, settings.COOKIE_HTTPONLY))
+        response.set_cookie('refresh', refresh_token,
+                            **get_cookie_settings(refresh_token_lifetime, settings.COOKIE_HTTPONLY))
 
     response.set_cookie('logged_in', 'true', **get_cookie_settings(access_token_lifetime, False))
+
+
+def clear_auth_cookies(response: Response) -> Response:
+    response.delete_cookie('access')
+    response.delete_cookie('refresh')
+    response.delete_cookie('logged_in')
+    return response
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -74,9 +84,10 @@ class CustomTokenRefreshView(TokenRefreshView):
 class LogoutAPIView(APIView):
     def post(self, request: Request, *args, **kwargs) -> Response:
         response = Response(status=status.HTTP_204_NO_CONTENT)
+        return clear_auth_cookies(response)
 
-        response.delete_cookie('access')
-        response.delete_cookie('refresh')
-        response.delete_cookie('logged_in')
 
-        return response
+class CustomUserViewSet(UserViewSet):
+    def destroy(self, request, *args, **kwargs):
+        response = super().destroy(request, *args, **kwargs)
+        return clear_auth_cookies(response)

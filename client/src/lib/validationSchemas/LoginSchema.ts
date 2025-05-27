@@ -7,6 +7,7 @@ export const UserLoginSchema = z.object({
     .email({message: "Введіть коректну електронну пошту"}),
   password: z
     .string()
+    .trim()
     .min(6, {message: "Пароль має бути не меншим за 6 символів"}),
 });
 

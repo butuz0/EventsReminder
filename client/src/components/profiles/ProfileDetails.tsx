@@ -8,6 +8,7 @@ import {UserCircleIcon} from "@heroicons/react/24/solid";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import TelegramInfoBlock from "@/components/profiles/TelegramInfoBlock";
+import AccountDeleteButton from "@/components/profiles/AccoutDeletionDialog";
 
 
 export default function ProfileDetails() {
@@ -114,7 +115,8 @@ export default function ProfileDetails() {
         isVerified={is_telegram_verified}
       />
       
-      <div className="flex justify-end">
+      <div className="flex justify-between">
+        <AccountDeleteButton/>
         <Button asChild>
           <Link href="/profile/update/">
             <PencilIcon className="w-5"/>

@@ -5,7 +5,8 @@ import {
   LoginUserData,
   RegisterUserData,
   ResetPasswordConfirmData,
-  ResetPasswordRequestData
+  ResetPasswordRequestData,
+  User
 } from "@/types";
 
 
@@ -57,7 +58,18 @@ export const authApiSlice = baseApiSlice.injectEndpoints({
         url: "/auth/refresh/",
         method: "POST",
       }),
-    })
+    }),
+    getCurrentUser: builder.query<User, void>({
+      query: () => "/auth/users/me/",
+      providesTags: ["User"]
+    }),
+    deleteCurrentUser: builder.mutation<void, string>({
+      query: (current_password) => ({
+        url: "/auth/users/me/",
+        body: {current_password: current_password},
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -69,4 +81,6 @@ export const {
   useResetPasswordConfirmMutation,
   useLogoutUserMutation,
   useRefreshJWTMutation,
+  useGetCurrentUserQuery,
+  useDeleteCurrentUserMutation,
 } = authApiSlice;
