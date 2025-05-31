@@ -20,12 +20,14 @@ class Command(BaseCommand):
 
         scheduled = 0
         for n in notifications:
-            result = AsyncResult(n.celery_task_id)
-            if result.status in ['PENDING', 'RECEIVED', 'STARTED', 'RETRY']:
-                self.stdout.write(f"Notification {n.id} already scheduled as task {n.celery_task_id}")
-                continue
+            if n.celery_task_id:
+                result = AsyncResult(n.celery_task_id)
+                if result.status in ['PENDING', 'RECEIVED', 'STARTED', 'RETRY']:
+                    result.revoke()
 
+            n.celery_task_id = None
             task = None
+
             if n.notification_method == Notification.NotificationMethod.EMAIL:
                 task = send_notification_email_task.apply_async(
                     args=[n.event.id, n.created_by.id, n.id],

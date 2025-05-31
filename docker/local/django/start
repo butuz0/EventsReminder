@@ -7,4 +7,5 @@ set -o nounset
 python manage.py makemigrations --no-input
 python manage.py migrate --no-input
 python manage.py collectstatic --no-input
+python manage.py schedule_unsent_notifications
 exec python manage.py runserver 0.0.0.0:8000
