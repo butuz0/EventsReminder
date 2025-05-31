@@ -15,7 +15,7 @@ class ProfileListAPIView(generics.ListAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileRetrieveSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ['gender', 'department', 'department__faculty']
+    filterset_fields = ['department', 'department__faculty']
     search_fields = ['user__first_name', 'user__last_name', 'position']
     renderer_classes = [JSONRenderer]
     object_label = 'profiles'
@@ -35,7 +35,7 @@ class ProfileDetailAPIView(generics.RetrieveAPIView):
     lookup_url_kwarg = 'user_id'
 
     def get_queryset(self):
-        return Profile.objects.select_related('user').all()
+        return Profile.objects.select_related('user', 'telegram', 'department__faculty')
 
 
 class MyProfileAPIView(generics.RetrieveAPIView):
@@ -65,7 +65,7 @@ class ProfileSetupView(APIView):
         serializer = ProfileSetupSerializer(profile, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "Profile set up successfully"},
+            return Response({'message': 'Profile set up successfully'},
                             status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

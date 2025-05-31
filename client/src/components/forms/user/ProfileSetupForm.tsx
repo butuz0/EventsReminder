@@ -7,8 +7,6 @@ import {toast} from "react-toastify";
 import {useRouter} from "next/navigation";
 import FormField from "@/components/forms/FormField";
 import {Button} from "@/components/ui/button";
-import SelectFieldComponent from "@/components/forms/SelectFieldComponent";
-import {GenderOptions} from "@/constants";
 import DepartmentSelectField from "@/components/forms/user/DepartmentSelectField";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ProfileSetupSchema, TProfileSetupSchema} from "@/lib/validationSchemas/ProfileSetupSchema";
@@ -24,7 +22,6 @@ export default function ProfileSetupForm() {
     defaultValues: {
       position: "",
       department: 0,
-      gender: undefined,
     },
   });
   
@@ -49,13 +46,6 @@ export default function ProfileSetupForm() {
       onSubmit={onSubmit}
       className="w-full"
     >
-      <SelectFieldComponent
-        form={form}
-        name="gender"
-        label="Стать"
-        options={GenderOptions}
-        placeholder="Оберіть Вашу стать"
-      />
       <FormField
         form={form}
         name="position"

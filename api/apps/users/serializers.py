@@ -13,17 +13,12 @@ class CreateUserSerializer(UserCreateSerializer):
 
 
 class CustomUserSerializer(UserSerializer):
-    gender = serializers.SerializerMethodField()
     position = serializers.ReadOnlyField(source='profile.position')
     department = serializers.ReadOnlyField(source='profile.department.department_abbreviation')
     faculty = serializers.ReadOnlyField(source='profile.department.faculty.faculty_abbreviation')
-    phone_number = PhoneNumberField(source='profile.phone_number')
-
-    def get_gender(self, obj) -> str | None:
-        return obj.profile.get_gender_display()
 
     class Meta(UserSerializer.Meta):
         model = User
         fields = ['id', 'email', 'first_name', 'last_name', 'full_name',
-                  'gender', 'position', 'department', 'faculty', 'phone_number']
+                  'position', 'department', 'faculty']
         read_only_fields = ['id', 'email']

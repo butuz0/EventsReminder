@@ -36,8 +36,6 @@ export default function ProfileDetails() {
     first_name,
     last_name,
     email,
-    phone_number,
-    gender,
     position,
     department_name,
     department_abbreviation,
@@ -95,16 +93,6 @@ export default function ProfileDetails() {
         <InfoBlock label="Email">
           <p>
             {email}
-          </p>
-        </InfoBlock>
-        <InfoBlock label="Телефон">
-          <p>
-            {phone_number || "Не вказано"}
-          </p>
-        </InfoBlock>
-        <InfoBlock label="Стать">
-          <p>
-            {gender || "Не вказано"}
           </p>
         </InfoBlock>
       </div>

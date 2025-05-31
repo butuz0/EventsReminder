@@ -66,11 +66,9 @@ export interface User {
   first_name: string;
   last_name: string;
   full_name: string;
-  gender: string;
   position: string;
   department: string;
   faculty: string;
-  phone_number: string;
 }
 
 export interface ActivateUserData {
@@ -98,14 +96,12 @@ export interface Profile {
   first_name: string,
   last_name: string,
   position: string,
-  phone_number: string,
   telegram_username: string,
   telegram_phone_number: string,
   avatar_url: string,
   is_telegram_verified: boolean,
   id: string,
   email: string,
-  gender: string,
   department: string,
   department_name: string,
   department_abbreviation: string,
@@ -132,11 +128,9 @@ export interface UpdateProfileData {
   first_name: string;
   last_name: string;
   position: string;
-  phone_number?: string;
   telegram_username?: string;
   telegram_phone_number?: string;
   avatar?: string;
-  gender: string;
   department: number;
 }
 
@@ -146,18 +140,15 @@ export interface UpdateProfileResponse {
     first_name: string;
     last_name: string;
     position: string;
-    phone_number: string;
     telegram_username: string;
     telegram_phone_number: string;
     avatar_url: string;
-    gender: string;
     department: number;
   }
 }
 
 export interface SetupProfileData {
   position: string;
-  gender: string;
   department: number;
 }
 
@@ -176,7 +167,7 @@ export interface Event {
     id: string,
     name: string
   }
-  assigned_to: BaseUserResponse[],
+  assigned_to: User[],
   is_recurring: boolean,
   recurring_event: {
     id: string,
@@ -184,7 +175,8 @@ export interface Event {
     recurrence_end_datetime: string,
     created_at: string,
     updated_at: string
-  }
+  },
+  created_at: string,
 }
 
 export interface MyEventsResponse {
@@ -376,7 +368,6 @@ export interface RegistrationCard {
   keyword_phrase: string,
   voice_phrase: string,
   email: string,
-  phone_number: string,
   electronic_seal_name: string,
   electronic_seal_keyword_phrase: string,
 }
@@ -391,7 +382,6 @@ export interface CreateUpdateRegistrationCardData {
   keyword_phrase?: string,
   voice_phrase?: string,
   email?: string,
-  phone_number?: string,
   electronic_seal_name?: string,
   electronic_seal_keyword_phrase?: string,
 }

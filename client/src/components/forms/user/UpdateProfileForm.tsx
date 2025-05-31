@@ -9,8 +9,6 @@ import {ProfileSchema, TProfileSchema} from "@/lib/validationSchemas/ProfileSche
 import {Button} from "@/components/ui/button";
 import FormBase from "@/components/forms/FormBase";
 import FormField from "@/components/forms/FormField";
-import SelectFieldComponent from "@/components/forms/SelectFieldComponent";
-import {GenderOptions} from "@/constants";
 import DepartmentSelectField from "@/components/forms/user/DepartmentSelectField";
 import objToFormData from "@/utils/objToFormData";
 import LoaderComponent from "@/components/shared/Loader";
@@ -30,11 +28,9 @@ export default function EditProfileForm() {
       first_name: data?.profile.first_name ?? "",
       last_name: data?.profile.last_name ?? "",
       position: data?.profile.position ?? "",
-      phone_number: data?.profile.phone_number ?? "",
       telegram_username: data?.profile.telegram_username ?? "",
       telegram_phone_number: data?.profile.telegram_phone_number ?? "",
       avatar: undefined,
-      gender: data?.profile.gender ?? "o",
       department: Number(data?.profile.department) ?? undefined,
     },
   });
@@ -99,11 +95,6 @@ export default function EditProfileForm() {
           />
           <FormField
             form={form}
-            name="phone_number"
-            label="Номер телефону"
-          />
-          <FormField
-            form={form}
             name="telegram_username"
             label="Ім'я користувача Telegram"
           />
@@ -117,12 +108,6 @@ export default function EditProfileForm() {
             name="avatar"
             label="Аватар"
             type="file"
-          />
-          <SelectFieldComponent
-            form={form}
-            name="gender"
-            label="Стать"
-            options={GenderOptions}
           />
         </div>
         

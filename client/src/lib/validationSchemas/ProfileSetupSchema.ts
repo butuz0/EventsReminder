@@ -9,7 +9,6 @@ export const ProfileSetupSchema = z.object({
   department: z
     .number()
     .refine((val) => val > 0, {message: "Оберіть свою кафедру"}),
-  gender: z.enum(["m", "f", "o"], {message: "Оберіть свою стать"}),
 });
 
 export type TProfileSetupSchema = z.infer<typeof ProfileSetupSchema>;

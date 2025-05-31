@@ -19,12 +19,6 @@ export const NotificationMethods = [
   {value: "tg", label: "Telegram"},
 ]
 
-export const GenderOptions = [
-  {value: "m", label: "Чоловік"},
-  {value: "f", label: "Жінка"},
-  {value: "o", label: "Інша"}
-];
-
 export const InvitationStatusOptions = [
   {value: "p", label: "Очікує"},
   {value: "a", label: "Прийнято"},

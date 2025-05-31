@@ -8,7 +8,6 @@ from phonenumber_field.serializerfields import PhoneNumberField
 class BaseProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
-    phone_number = PhoneNumberField()
     telegram_username = serializers.CharField(source='telegram.telegram_username')
     telegram_phone_number = PhoneNumberField(source='telegram.telegram_phone_number')
     avatar = serializers.ImageField(write_only=True, required=False)
@@ -17,8 +16,8 @@ class BaseProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['first_name', 'last_name', 'position',
-                  'phone_number', 'telegram_username',
-                  'telegram_phone_number', 'avatar', 'avatar_url']
+                  'telegram_username', 'telegram_phone_number',
+                  'avatar', 'avatar_url']
 
     def get_avatar_url(self, obj: Profile) -> str | None:
         if obj.avatar:
@@ -29,7 +28,6 @@ class BaseProfileSerializer(serializers.ModelSerializer):
 class ProfileRetrieveSerializer(BaseProfileSerializer):
     id = serializers.UUIDField(source='user.id', read_only=True)
     email = serializers.ReadOnlyField(source='user.email')
-    gender = serializers.ChoiceField(choices=Profile.Gender.choices)
     is_telegram_verified = serializers.BooleanField(read_only=True)
     department_name = serializers.SerializerMethodField()
     department_abbreviation = serializers.SerializerMethodField()
@@ -38,26 +36,26 @@ class ProfileRetrieveSerializer(BaseProfileSerializer):
 
     class Meta(BaseProfileSerializer.Meta):
         fields = (BaseProfileSerializer.Meta.fields +
-                  ['is_telegram_verified', 'id', 'email', 'gender',
-                   'department', 'department_name', 'department_abbreviation',
+                  ['is_telegram_verified', 'id', 'email', 'department',
+                   'department_name', 'department_abbreviation',
                    'faculty', 'faculty_abbreviation'])
 
-    def get_department_name(self, obj: Profile) -> str:
+    def get_department_name(self, obj: Profile) -> str | None:
         if obj.department:
             return obj.department.department_name
         return None
 
-    def get_department_abbreviation(self, obj: Profile) -> str:
+    def get_department_abbreviation(self, obj: Profile) -> str | None:
         if obj.department:
             return obj.department.department_abbreviation
         return None
 
-    def get_faculty(self, obj: Profile) -> str:
+    def get_faculty(self, obj: Profile) -> str | None:
         if obj.department and obj.department.faculty:
             return obj.department.faculty.faculty_name
         return None
 
-    def get_faculty_abbreviation(self, obj: Profile) -> str:
+    def get_faculty_abbreviation(self, obj: Profile) -> str | None:
         if obj.department and obj.department.faculty:
             return obj.department.faculty.faculty_abbreviation
         return None
@@ -65,10 +63,9 @@ class ProfileRetrieveSerializer(BaseProfileSerializer):
 
 class ProfileUpdateSerializer(BaseProfileSerializer):
     department = serializers.PrimaryKeyRelatedField(queryset=Department.objects.all())
-    gender = serializers.ChoiceField(choices=Profile.Gender.choices)
 
     class Meta(BaseProfileSerializer.Meta):
-        fields = BaseProfileSerializer.Meta.fields + ['gender', 'department']
+        fields = BaseProfileSerializer.Meta.fields + ['department']
 
     def validate_telegram_username(self, value: str) -> str:
         value = value.strip().replace('@', '')
@@ -97,12 +94,7 @@ class ProfileUpdateSerializer(BaseProfileSerializer):
 
 class ProfileSetupSerializer(serializers.ModelSerializer):
     department = serializers.PrimaryKeyRelatedField(queryset=Department.objects.all())
-    gender = serializers.ChoiceField(choices=Profile.Gender.choices)
 
     class Meta:
         model = Profile
-        fields = [
-            "position",
-            "department",
-            "gender",
-        ]
+        fields = ['position', 'department']
