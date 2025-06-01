@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from apps.teams.models import Team
 from apps.common.models import TimeStampedModel
 from apps.common.validators import image_validator
@@ -67,8 +68,9 @@ class RecurringEvent(TimeStampedModel):
     recurrence_rule = models.CharField(verbose_name=_('Recurrence Rule'), max_length=10, choices=RecurrenceRule.choices,
                                        default=RecurrenceRule.WEEKLY)
     recurrence_end_datetime = models.DateTimeField(null=True, blank=True, verbose_name=_('End time'))
-    next_occurrence = models.DateTimeField(null=True, blank=True, verbose_name=_('Next Occurrence'))
-    last_occurrence = models.DateTimeField(null=True, blank=True, verbose_name=_('Last Occurrence'))
+
+    # celery task for updating event.start_datetime
+    celery_task_id = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         verbose_name = _('Recurring Event')
@@ -82,25 +84,31 @@ class RecurringEvent(TimeStampedModel):
         Calculate the next occurrence of the event based on the recurrence rule.
         Returns None if:
             - recurrence is finished (next occurrence > end_datetime);
-            - last_occurrence is missing (event has not occurred yet);
             - recurrence rule is unrecognized.
         '''
-        if not self.last_occurrence:
-            return self.next_occurrence
+        event_datetime = self.event.start_datetime
 
-        next_occurrence = None
+        print(event_datetime)
+
+        if timezone.is_naive(event_datetime):
+            event_datetime = timezone.make_aware(event_datetime)
+
+        if event_datetime > timezone.now():
+            print(' if event_datetime > timezone.now(): ', event_datetime)
+            return event_datetime
 
         if self.recurrence_rule == self.RecurrenceRule.DAILY:
-            next_occurrence = self.last_occurrence + timedelta(days=1)
+            next_occurrence = event_datetime + timedelta(days=1)
         elif self.recurrence_rule == self.RecurrenceRule.WEEKLY:
-            next_occurrence = self.last_occurrence + timedelta(weeks=1)
+            next_occurrence = event_datetime + timedelta(weeks=1)
         elif self.recurrence_rule == self.RecurrenceRule.MONTHLY:
-            next_occurrence = self.last_occurrence + relativedelta(months=1)
+            next_occurrence = event_datetime + relativedelta(months=1)
         elif self.recurrence_rule == self.RecurrenceRule.YEARLY:
-            next_occurrence = self.last_occurrence + relativedelta(years=1)
+            next_occurrence = event_datetime + relativedelta(years=1)
         else:
             return None
 
         if self.recurrence_end_datetime and next_occurrence > self.recurrence_end_datetime:
             return None
+        print('main return: ', event_datetime)
         return next_occurrence

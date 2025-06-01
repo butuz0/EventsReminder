@@ -8,9 +8,10 @@ class RecurringEventInline(admin.StackedInline):
     extra = 0
     verbose_name = _('Recurring Event')
     verbose_name_plural = _('Recurring Events')
-    readonly_fields = ['created_at', 'updated_at']
+    readonly_fields = ['created_at', 'updated_at', 'celery_task_id']
     fieldsets = (
         (_('Recurrence Rule'), {'fields': ['recurrence_rule', 'recurrence_end_datetime']}),
+        (_('Celery'), {'fields': ['celery_task_id']}),
         (_('Dates'), {'fields': ['created_at', 'updated_at']}),
     )
 
@@ -43,10 +44,11 @@ class EventAdmin(admin.ModelAdmin):
 class RecurringEventAdmin(admin.ModelAdmin):
     list_display = ['id', 'event', 'recurrence_rule', 'recurrence_end_datetime']
     list_display_links = ['id', 'event']
-    readonly_fields = ['event', 'created_at', 'updated_at']
+    readonly_fields = ['created_at', 'updated_at', 'celery_task_id']
 
     fieldsets = (
         (_('Event'), {'fields': ['event']}),
         (_('Recurring Rule'), {'fields': ['recurrence_rule', 'recurrence_end_datetime']}),
+        (_('Celery'), {'fields': ['celery_task_id']}),
         (_('Dates'), {'fields': ['created_at', 'updated_at']}),
     )

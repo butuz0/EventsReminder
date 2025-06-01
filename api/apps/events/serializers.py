@@ -1,12 +1,14 @@
 from django.utils.timezone import now
 from django.contrib.auth import get_user_model
 from .models import Event, RecurringEvent
+from .recurring import reschedule_recurring_event
 from apps.teams.models import Team
 from apps.users.serializers import CustomUserSerializer
 from rest_framework import serializers
 from taggit.serializers import TagListSerializerField, TaggitSerializer
 from djoser.serializers import UserSerializer
 from datetime import datetime
+from celery.result import AsyncResult
 
 User = get_user_model()
 
@@ -22,7 +24,7 @@ class RecurringEventSerializer(serializers.ModelSerializer):
 
     def validate_recurrence_end_datetime(self, value: datetime) -> datetime:
         if value and value < now():
-            raise serializers.ValidationError("End date must be in the future.")
+            raise serializers.ValidationError('End date must be in the future.')
         return value
 
     def validate(self, data: dict) -> dict:
@@ -133,6 +135,8 @@ class EventUpdateSerializer(BaseEventSerializer):
     def update(self, instance: Event, validated_data: dict) -> Event:
         tags = validated_data.pop('tags', None)
         assigned_to = validated_data.pop('assigned_to_ids', None)
+        old_datetime = instance.start_datetime
+        new_datetime = validated_data.get('start_datetime', old_datetime)
 
         # Delete RecurringEvent instance if is_recurring is set from True to False
         if not validated_data.get('is_recurring', True) and hasattr(instance, 'recurring_event'):
@@ -142,6 +146,9 @@ class EventUpdateSerializer(BaseEventSerializer):
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
+
+        if instance.is_recurring and hasattr(instance, 'recurring_event') and old_start != new_start:
+            reschedule_recurring_event(instance.recurring_event)
 
         # Update tags field
         if tags is not None:
