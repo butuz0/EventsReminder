@@ -88,13 +88,10 @@ class RecurringEvent(TimeStampedModel):
         '''
         event_datetime = self.event.start_datetime
 
-        print(event_datetime)
-
         if timezone.is_naive(event_datetime):
             event_datetime = timezone.make_aware(event_datetime)
 
         if event_datetime > timezone.now():
-            print(' if event_datetime > timezone.now(): ', event_datetime)
             return event_datetime
 
         if self.recurrence_rule == self.RecurrenceRule.DAILY:
@@ -110,5 +107,4 @@ class RecurringEvent(TimeStampedModel):
 
         if self.recurrence_end_datetime and next_occurrence > self.recurrence_end_datetime:
             return None
-        print('main return: ', event_datetime)
         return next_occurrence
