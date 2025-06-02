@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from django.utils.timezone import now
 from apps.notifications.models import Notification
 from apps.notifications.tasks import send_notification_email_task, send_notification_telegram_message_task
+from apps.common.celery import reschedule_celery_task
 from celery.result import AsyncResult
 
 
@@ -20,26 +21,28 @@ class Command(BaseCommand):
 
         scheduled = 0
         for n in notifications:
-            if n.celery_task_id:
-                result = AsyncResult(n.celery_task_id)
-                if result.status in ['PENDING', 'RECEIVED', 'STARTED', 'RETRY']:
-                    result.revoke()
-
-            n.celery_task_id = None
             task = None
 
             if n.notification_method == Notification.NotificationMethod.EMAIL:
-                task = send_notification_email_task.apply_async(
-                    args=[n.event.id, n.created_by.id, n.id],
-                    eta=n.notification_datetime)
-
+                task = send_notification_email_task
             elif n.notification_method == Notification.NotificationMethod.TELEGRAM:
-                task = send_notification_telegram_message_task.apply_async(
-                    args=[n.event.id, n.created_by.id, n.id],
-                    eta=n.notification_datetime)
+                task = send_notification_telegram_message_task
 
-            n.celery_task_id = task.id
-            n.save(update_fields=['celery_task_id'])
+            if task is None:
+                self.stdout.write(self.style.WARNING(
+                    f'Notification {n.id} skipped: '
+                    f'unknown notification method "{n.notification_method}"'
+                ))
+                continue
+
+            reschedule_celery_task(
+                instance=n,
+                celery_task=task,
+                task_args=[n.event.id, n.created_by.id, n.id],
+                eta=n.notification_datetime,
+                task_id_field='celery_task_id',
+                save=True
+            )
             scheduled += 1
 
         self.stdout.write(self.style.SUCCESS(
