@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
@@ -12,6 +12,7 @@ import {useLoginUserMutation} from "@/lib/redux/slices/auth/authApiSlice";
 import {useAppDispatch} from "@/lib/redux/hooks/reduxHooks";
 import {useRouter} from "next/navigation";
 import {setLogin} from "@/lib/redux/slices/auth/authSlice";
+import Link from "next/link";
 
 
 export default function LoginForm() {
@@ -66,7 +67,7 @@ export default function LoginForm() {
         placeholder="Ваш пароль"
         isPassword
       />
-      <div className="flex justify-center">
+      <div className="flex flex-col items-center gap-2">
         <Button
           type="submit"
           disabled={isLoading}
@@ -74,6 +75,11 @@ export default function LoginForm() {
         >
           Вхід
         </Button>
+        <Link
+          className="text-sm text-blue-700 hover:text-blue-400"
+          href="/forgot-password">
+          Забули пароль?
+        </Link>
       </div>
     </FormBase>
   )
