@@ -32,6 +32,11 @@ export const RecurrenceRuleOptions = [
   {value: "y", label: "Щороку"},
 ]
 
+export const PaginationPageSizes = {
+  "profiles": 20,
+  "events": 10
+}
+
 export const LeftNavbarLinks = [
   {
     label: "Головна",
