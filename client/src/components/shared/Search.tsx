@@ -25,6 +25,7 @@ export default function Search({placeholder = "Пошук..."}: SearchProps) {
     const params = new URLSearchParams(searchParams);
     if (term) {
       params.set("search", term);
+      params.delete("page");
     } else {
       params.delete("search");
     }
