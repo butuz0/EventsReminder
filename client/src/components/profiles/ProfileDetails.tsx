@@ -42,9 +42,7 @@ export default function ProfileDetails() {
     faculty,
     faculty_abbreviation,
     avatar_url,
-    telegram_username,
-    telegram_phone_number,
-    is_telegram_verified,
+    telegram
   } = data.profile;
   
   
@@ -98,9 +96,8 @@ export default function ProfileDetails() {
       </div>
       
       <TelegramInfoBlock
-        username={telegram_username}
-        phoneNumber={telegram_phone_number}
-        isVerified={is_telegram_verified}
+        username={telegram?.telegram_username}
+        isVerified={telegram?.is_verified}
       />
       
       <div className="flex justify-between">

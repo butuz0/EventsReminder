@@ -4,7 +4,8 @@ from .views import (
     ProfileDetailAPIView,
     MyProfileAPIView,
     ProfileUpdateAPIView,
-    ProfileSetupView
+    ProfileSetupView,
+    TelegramAuthAPIView
 )
 
 urlpatterns = [
@@ -13,4 +14,5 @@ urlpatterns = [
     path('my-profile/', MyProfileAPIView.as_view(), name='my-profile'),
     path('my-profile/setup/', ProfileSetupView.as_view(), name='my-profile-setup'),
     path('my-profile/update/', ProfileUpdateAPIView.as_view(), name='profile-update'),
+    path('telegram-auth/', TelegramAuthAPIView.as_view(), name='telegram-auth'),
 ]
