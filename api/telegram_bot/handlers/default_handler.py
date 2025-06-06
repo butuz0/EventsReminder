@@ -3,7 +3,6 @@ from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from .states import VerificationStates
 from telegram_bot.messages.verification import MESSAGES
-from telegram_bot.keyboards.verification import verification_keyboard
 
 router = Router()
 
@@ -15,5 +14,5 @@ async def handle_message(message: Message, state: FSMContext):
     if current_state == VerificationStates.verified:
         await message.reply(MESSAGES['already_verified'])
     else:
-        await message.reply(MESSAGES['ask_verification'], reply_markup=verification_keyboard)
+        await message.reply(MESSAGES['ask_verification'])
         await state.set_state(VerificationStates.unverified)
