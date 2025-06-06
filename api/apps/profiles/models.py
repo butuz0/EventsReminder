@@ -34,24 +34,18 @@ class Profile(TimeStampedModel):
 class TelegramData(TimeStampedModel):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='telegram')
 
-    # set by user
-    telegram_username = models.CharField(max_length=50, null=True, unique=True, blank=True,
-                                         verbose_name=_('Telegram Username'))
-    telegram_phone_number = PhoneNumberField(max_length=20, null=True, unique=True, blank=True,
-                                             verbose_name=_('Telegram Phone Number'))
+    # set by telegram login widget
+    telegram_username = models.CharField(max_length=50, null=True, unique=True, verbose_name=_('Telegram Username'))
+    telegram_first_name = models.CharField(max_length=50, null=True, verbose_name=_('Telegram First Name'))
+    telegram_last_name = models.CharField(max_length=50, null=True, verbose_name=_('Telegram Last Name'))
+    telegram_user_id = models.BigIntegerField(unique=True, null=True, verbose_name=_('Telegram User Id'))
 
-    # set by telegram bot automatically
-    telegram_user_id = models.BigIntegerField(unique=True, null=True, blank=True, verbose_name=_('Telegram User Id'))
-    telegram_chat_id = models.BigIntegerField(unique=True, null=True, blank=True, verbose_name=_('Telegram Chat Id'))
+    # set by telegram bot
     is_verified = models.BooleanField(default=False, verbose_name=_('Is Verified'))
 
     class Meta:
         verbose_name = _('Telegram Data')
         verbose_name_plural = _('Telegram Data')
-        indexes = [
-            models.Index(fields=['telegram_username']),
-            models.Index(fields=['telegram_phone_number']),
-        ]
 
     def __str__(self) -> str:
-        return self.telegram_username or self.telegram_phone_number or f'Unconnected user {self.profile.user}'
+        return self.telegram_username or f'Unconnected user {self.profile.user}'

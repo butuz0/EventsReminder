@@ -1,6 +1,6 @@
 from multiprocessing import Value
 from apps.units.models import Department
-from .models import Profile
+from .models import Profile, TelegramData
 from rest_framework import serializers
 from phonenumber_field.serializerfields import PhoneNumberField
 
@@ -8,37 +8,45 @@ from phonenumber_field.serializerfields import PhoneNumberField
 class BaseProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
-    telegram_username = serializers.CharField(source='telegram.telegram_username')
-    telegram_phone_number = PhoneNumberField(source='telegram.telegram_phone_number')
     avatar = serializers.ImageField(write_only=True, required=False)
     avatar_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
         fields = ['first_name', 'last_name', 'position',
-                  'telegram_username', 'telegram_phone_number',
                   'avatar', 'avatar_url']
 
     def get_avatar_url(self, obj: Profile) -> str | None:
-        if obj.avatar:
-            return f"http://localhost:8080{obj.avatar.url}"
+        request = self.context.get('request')
+        if obj.avatar and request:
+            url = request.build_absolute_uri(obj.avatar.url)
+            if url.startswith('http://localhost/'):
+                return url.replace('http://localhost/', 'http://localhost:8080/')
+            return url
         return None
+
+
+class TelegramDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TelegramData
+        fields = ['telegram_username', 'telegram_first_name',
+                  'telegram_last_name', 'is_verified']
 
 
 class ProfileRetrieveSerializer(BaseProfileSerializer):
     id = serializers.UUIDField(source='user.id', read_only=True)
     email = serializers.ReadOnlyField(source='user.email')
-    is_telegram_verified = serializers.BooleanField(read_only=True)
     department_name = serializers.SerializerMethodField()
     department_abbreviation = serializers.SerializerMethodField()
     faculty = serializers.SerializerMethodField()
     faculty_abbreviation = serializers.SerializerMethodField()
+    telegram = TelegramDataSerializer()
 
     class Meta(BaseProfileSerializer.Meta):
         fields = (BaseProfileSerializer.Meta.fields +
-                  ['is_telegram_verified', 'id', 'email', 'department',
-                   'department_name', 'department_abbreviation',
-                   'faculty', 'faculty_abbreviation'])
+                  ['id', 'email', 'department', 'department_name',
+                   'department_abbreviation', 'faculty',
+                   'faculty_abbreviation', 'telegram'])
 
     def get_department_name(self, obj: Profile) -> str | None:
         if obj.department:
@@ -67,27 +75,13 @@ class ProfileUpdateSerializer(BaseProfileSerializer):
     class Meta(BaseProfileSerializer.Meta):
         fields = BaseProfileSerializer.Meta.fields + ['department']
 
-    def validate_telegram_username(self, value: str) -> str:
-        value = value.strip().replace('@', '')
-
-        if len(value) < 5 or len(value) > 32:
-            raise serializers.ValidationError('Username must by 5-32 characters long.')
-
-        return value
-
     def update(self, instance: Profile, validated_data: dict) -> Profile:
         user_data = validated_data.pop('user', {})
-        telegram_data = validated_data.pop('telegram', {})
 
         # update standard User model fields
         for attr, value in user_data.items():
             setattr(instance.user, attr, value)
         instance.user.save()
-
-        # update TelegramData model fields
-        for attr, value in telegram_data.items():
-            setattr(instance.telegram, attr, value)
-        instance.telegram.save()
 
         return super().update(instance, validated_data)
 

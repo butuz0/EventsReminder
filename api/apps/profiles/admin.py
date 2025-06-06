@@ -5,11 +5,14 @@ from .models import Profile, TelegramData
 
 @admin.register(TelegramData)
 class TelegramDataAdmin(admin.ModelAdmin):
-    list_display = ['profile', 'telegram_username', 'telegram_phone_number']
+    list_display = ['profile', 'telegram_username',
+                    'telegram_first_name', 'telegram_last_name']
     list_display_links = ['profile', 'telegram_username']
     list_filter = ['is_verified']
-    readonly_fields = ['telegram_user_id', 'telegram_chat_id',
-                       'is_verified', 'created_at', 'updated_at']
+    search_fields = ['telegram_username', 'telegram_first_name',
+                     'telegram_last_name']
+    readonly_fields = ['telegram_user_id', 'is_verified',
+                       'created_at', 'updated_at']
 
 
 class TelegramDataInline(admin.StackedInline):
@@ -18,8 +21,8 @@ class TelegramDataInline(admin.StackedInline):
     extra = 0
     verbose_name = 'Telegram Data'
     verbose_name_plural = 'Telegram Data'
-    readonly_fields = ['telegram_user_id', 'telegram_chat_id',
-                       'is_verified', 'created_at', 'updated_at']
+    readonly_fields = ['telegram_user_id', 'is_verified',
+                       'created_at', 'updated_at']
 
 
 @admin.register(Profile)
