@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from .models import Faculty, Department
 from .serializers import DepartmentsSerializer, FacultySerializer, FacultyListSerializer
 from apps.common.renderers import JSONRenderer
@@ -46,6 +47,6 @@ class DepartmentsByFacultyAPIView(generics.ListAPIView):
     renderer_classes = [JSONRenderer]
     object_label = 'departments'
 
-    def get_queryset(self) -> List[Department]:
+    def get_queryset(self) -> QuerySet[Department, Department]:
         faculty_id = self.kwargs.get('faculty_id')
         return Department.objects.filter(faculty__id=faculty_id)
