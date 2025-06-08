@@ -91,9 +91,9 @@ def test_profile_setup_view_success(normal_user):
         'position': 'New position',
         'department': department.id
     }
-    response = client.put(reverse('my-profile-setup'),
-                          data=data,
-                          format='json')
+    response = client.post(reverse('my-profile-setup'),
+                           data=data,
+                           format='json')
     assert response.status_code == 200
     assert response.data['message'] == 'Profile set up successfully'
 
@@ -111,9 +111,9 @@ def test_profile_setup_view_fail(normal_user):
         'position': 'New position',
         'department': 'Fail'
     }
-    response = client.put(reverse('my-profile-setup'),
-                          data=data,
-                          format='json')
+    response = client.post(reverse('my-profile-setup'),
+                           data=data,
+                           format='json')
     assert response.status_code == 400
 
 
