@@ -92,21 +92,34 @@ export interface ResetPasswordConfirmData {
   re_new_password: string;
 }
 
+export interface TelegramAuthData {
+  id: number,
+  first_name: string,
+  last_name: string,
+  username: string,
+  photo_url: string,
+  auth_date: number,
+  hash: string
+}
+
 export interface Profile {
   first_name: string,
   last_name: string,
   position: string,
-  telegram_username: string,
-  telegram_phone_number: string,
   avatar_url: string,
-  is_telegram_verified: boolean,
   id: string,
   email: string,
   department: string,
   department_name: string,
   department_abbreviation: string,
   faculty: string,
-  faculty_abbreviation: string
+  faculty_abbreviation: string,
+  telegram: {
+    telegram_username: string,
+    telegram_first_name: string,
+    telegram_last_name: string,
+    is_verified: boolean
+  }
 }
 
 export interface MyProfileResponse {
@@ -128,8 +141,6 @@ export interface UpdateProfileData {
   first_name: string;
   last_name: string;
   position: string;
-  telegram_username?: string;
-  telegram_phone_number?: string;
   avatar?: string;
   department: number;
 }
@@ -140,9 +151,7 @@ export interface UpdateProfileResponse {
     first_name: string;
     last_name: string;
     position: string;
-    telegram_username: string;
-    telegram_phone_number: string;
-    avatar_url: string;
+    avatar: string;
     department: number;
   }
 }

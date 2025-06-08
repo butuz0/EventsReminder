@@ -4,7 +4,8 @@ import {
   MyProfileResponse,
   SetupProfileData,
   UpdateProfileData,
-  UpdateProfileResponse
+  UpdateProfileResponse,
+  TelegramAuthData
 } from "@/types";
 
 export const usersApiSlice = baseApiSlice.injectEndpoints({
@@ -12,7 +13,7 @@ export const usersApiSlice = baseApiSlice.injectEndpoints({
     setupProfile: builder.mutation<void, SetupProfileData>({
       query: (data) => ({
         url: "/profiles/my-profile/setup/",
-        method: "PUT",
+        method: "POST",
         body: data,
       }),
       invalidatesTags: ["User"],
@@ -35,6 +36,14 @@ export const usersApiSlice = baseApiSlice.injectEndpoints({
         body: data,
       }),
       invalidatesTags: ["User"],
+    }),
+    telegramAuth: builder.mutation<void, TelegramAuthData>({
+      query: (data) => ({
+        url: "/profiles/telegram-auth/",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["User"],
     })
   }),
 });
@@ -44,4 +53,5 @@ export const {
   useGetMyProfileQuery,
   useGetAllProfilesQuery,
   useUpdateProfileMutation,
+  useTelegramAuthMutation,
 } = usersApiSlice;
