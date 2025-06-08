@@ -1,4 +1,3 @@
-from multiprocessing import Value
 from apps.units.models import Department
 from .models import Profile, TelegramData
 from rest_framework import serializers
@@ -38,14 +37,14 @@ class ProfileRetrieveSerializer(BaseProfileSerializer):
     email = serializers.ReadOnlyField(source='user.email')
     department_name = serializers.SerializerMethodField()
     department_abbreviation = serializers.SerializerMethodField()
-    faculty = serializers.SerializerMethodField()
+    faculty_name = serializers.SerializerMethodField()
     faculty_abbreviation = serializers.SerializerMethodField()
     telegram = TelegramDataSerializer()
 
     class Meta(BaseProfileSerializer.Meta):
         fields = (BaseProfileSerializer.Meta.fields +
-                  ['id', 'email', 'department', 'department_name',
-                   'department_abbreviation', 'faculty',
+                  ['id', 'email', 'department_name', 'department_abbreviation',
+                   'department_abbreviation', 'faculty_name',
                    'faculty_abbreviation', 'telegram'])
 
     def get_department_name(self, obj: Profile) -> str | None:
@@ -58,7 +57,7 @@ class ProfileRetrieveSerializer(BaseProfileSerializer):
             return obj.department.department_abbreviation
         return None
 
-    def get_faculty(self, obj: Profile) -> str | None:
+    def get_faculty_name(self, obj: Profile) -> str | None:
         if obj.department and obj.department.faculty:
             return obj.department.faculty.faculty_name
         return None

@@ -73,8 +73,8 @@ class ProfileUpdateAPIView(generics.UpdateAPIView):
 
 
 class ProfileSetupView(APIView):
-    def put(self, request):
-        profile = request.user.profile
+    def post(self, request):
+        profile, _ = Profile.objects.get_or_create(user=request.user)
 
         serializer = ProfileSetupSerializer(profile, data=request.data)
         if serializer.is_valid():
