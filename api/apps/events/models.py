@@ -24,6 +24,8 @@ class Event(TimeStampedModel):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_events',
                                    verbose_name=_('Created By'))
     title = models.CharField(max_length=255, verbose_name=_('Title'))
+    priority = models.PositiveSmallIntegerField(choices=Priority.choices, default=Priority.MEDIUM,
+                                                verbose_name=_('Priority'))
     start_datetime = models.DateTimeField(verbose_name=_('Start Time'))
 
     # Optional fields
@@ -34,8 +36,6 @@ class Event(TimeStampedModel):
     description = models.TextField(blank=True, verbose_name=_('Description'))
     location = models.CharField(max_length=255, blank=True, verbose_name=_('Location'))
     link = models.URLField(blank=True, null=True, verbose_name=_('Event Link'))
-    priority = models.PositiveSmallIntegerField(choices=Priority.choices, default=Priority.MEDIUM,
-                                                verbose_name=_('Priority'))
     image = models.ImageField(upload_to=upload_event_image, validators=[image_validator], blank=True, null=True,
                               verbose_name=_('Image'))
     tags = TaggableManager(blank=True, verbose_name=_('Tags'))
@@ -91,7 +91,7 @@ class RecurringEvent(TimeStampedModel):
         if timezone.is_naive(event_datetime):
             event_datetime = timezone.make_aware(event_datetime)
 
-        if event_datetime > timezone.now():
+        if event_datetime >= timezone.now():
             return event_datetime
 
         if self.recurrence_rule == self.RecurrenceRule.DAILY:
@@ -105,6 +105,6 @@ class RecurringEvent(TimeStampedModel):
         else:
             return None
 
-        if self.recurrence_end_datetime and next_occurrence > self.recurrence_end_datetime:
+        if self.recurrence_end_datetime and next_occurrence >= self.recurrence_end_datetime:
             return None
         return next_occurrence
