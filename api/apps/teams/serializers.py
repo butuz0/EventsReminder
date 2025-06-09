@@ -124,21 +124,22 @@ class InvitationDetailSerializer(serializers.ModelSerializer):
 
 
 class InvitationRespondSerializer(serializers.ModelSerializer):
-    status = serializers.ChoiceField(choices=Invitation.Status.choices)
+    status = serializers.ChoiceField(choices=Invitation.Status.choices, required=True)
 
     class Meta:
         model = Invitation
         fields = ['status']
 
-    def update(self, instance: Invitation, validated_data: dict) -> Invitation:
+    def validate(self, attrs: dict) -> dict:
+        instance = self.instance
+
         if instance.status != Invitation.Status.PENDING:
             raise serializers.ValidationError('Invitation already responded.')
 
-        instance.status = validated_data.pop('status', None)
+        return attrs
 
-        if not instance.status:
-            raise serializers.ValidationError('Status is required.')
-
+    def update(self, instance: Invitation, validated_data: dict) -> Invitation:
+        instance.status = validated_data['status']
         instance.save()
 
         if instance.status == Invitation.Status.ACCEPTED:
