@@ -35,7 +35,7 @@ class TelegramDataFactory(factory.django.DjangoModelFactory):
 
 class ProfileWithTelegramFactory(ProfileFactory):
     @factory.post_generation
-    def profile(self, create, extracted, **kwargs):
+    def telegram(self, create, extracted, **kwargs):
         if create:
             TelegramDataFactory.create(profile=self)
 
