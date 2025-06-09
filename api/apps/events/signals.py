@@ -27,14 +27,6 @@ def delete_image_on_delete(sender, instance: Event, **kwargs):
         instance.image.delete(save=False)
 
 
-@receiver(post_save, sender=RecurringEvent)
-def create_calculate_next_occurrence_task(sender, instance: RecurringEvent, created: bool, **kwargs):
-    if not instance.event.is_recurring:
-        return
-
-    reschedule_recurring_event(instance)
-
-
 @receiver(post_delete, sender=RecurringEvent)
 def set_recurring_flag_false(sender, instance: RecurringEvent, **kwargs):
     event = instance.event

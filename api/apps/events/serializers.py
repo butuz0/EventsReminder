@@ -37,6 +37,20 @@ class RecurringEventSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('End date must be after event start date.')
         return data
 
+    def create(self, validated_data: dict) -> RecurringEvent:
+        event = validated_data.pop('event', None) or self.context.get('event')
+        if not event:
+            raise serializers.ValidationError('Event must be provided.')
+
+        recurring = RecurringEvent.objects.create(event=event, **validated_data)
+        reschedule_recurring_event(recurring)
+        return recurring
+
+    def update(self, instance: RecurringEvent, validated_data: dict) -> RecurringEvent:
+        recurring = super().update(instance, validated_data)
+        reschedule_recurring_event(instance)
+        return recurring
+
 
 class BaseEventSerializer(TaggitSerializer, serializers.ModelSerializer):
     assigned_to_ids = serializers.ListField(child=serializers.UUIDField(), write_only=True, required=False)
@@ -147,7 +161,7 @@ class EventUpdateSerializer(BaseEventSerializer):
             setattr(instance, attr, value)
         instance.save()
 
-        if instance.is_recurring and hasattr(instance, 'recurring_event') and old_start != new_start:
+        if instance.is_recurring and hasattr(instance, 'recurring_event') and old_datetime != new_datetime:
             reschedule_recurring_event(instance.recurring_event)
 
         # Update tags field
@@ -186,6 +200,10 @@ class EventDetailSerializer(serializers.ModelSerializer):
         return None
 
     def get_image_url(self, obj: Event) -> str | None:
-        if obj.image:
-            return f'http://localhost:8080{obj.image.url}'
+        request = self.context.get('request')
+        if obj.image and request:
+            url = request.build_absolute_uri(obj.image.url)
+            if url.startswith('http://localhost/'):
+                return url.replace('http://localhost/', 'http://localhost:8080/')
+            return url
         return None
