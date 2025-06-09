@@ -108,7 +108,7 @@ class RecurringEventCreateAPIView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         event_id = self.kwargs['event_id']
-        event = Event.objects.get(id=event_id)
+        event = get_object_or_404(Event, id=event_id)
 
         if event.created_by != self.request.user:
             raise PermissionDenied('Only event creator can create a recurring event.')
@@ -129,4 +129,6 @@ class RecurringEventUpdateAPIView(generics.UpdateAPIView):
     def get_object(self):
         event_id = self.kwargs['event_id']
         event = get_object_or_404(Event, id=event_id)
-        return get_object_or_404(RecurringEvent, event=event)
+        obj = get_object_or_404(RecurringEvent, event=event)
+        self.check_object_permissions(self.request, obj)
+        return obj
