@@ -37,7 +37,7 @@ class ProfileWithTelegramFactory(ProfileFactory):
     @factory.post_generation
     def telegram(self, create, extracted, **kwargs):
         if create:
-            TelegramDataFactory.create(profile=self)
+            TelegramDataFactory.create(profile=self, **kwargs)
 
 
 class UserWithProfileFactory(UserFactory):

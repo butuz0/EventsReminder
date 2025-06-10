@@ -14,9 +14,9 @@ User = get_user_model()
 def send_notification_email_task(event_id, user_id, notification_id):
     event = Event.objects.get(id=event_id)
     user = User.objects.get(id=user_id)
-    
+
     send_notification_email(user, event)
-    
+
     notification = Notification.objects.get(id=notification_id)
     notification.is_sent = True
     notification.save(update_fields=['is_sent'])
@@ -26,12 +26,12 @@ def send_notification_email_task(event_id, user_id, notification_id):
 def send_notification_telegram_message_task(event_id, user_id, notification_id):
     event = Event.objects.get(id=event_id)
     user = User.objects.get(id=user_id)
-    
-    text = generate_event_reminder_text(event)
-    user_chat_id = user.profile.telegram.telegram_chat_id
 
-    send_message(user_chat_id, text)
-    
+    text = generate_event_reminder_text(event)
+    user_id = user.profile.telegram.telegram_user_id
+
+    send_message(user_id, text)
+
     notification = Notification.objects.get(id=notification_id)
     notification.is_sent = True
-    notification.save(update_fields=['is_sent']) 
+    notification.save(update_fields=['is_sent'])
