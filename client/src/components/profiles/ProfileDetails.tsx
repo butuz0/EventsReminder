@@ -39,7 +39,7 @@ export default function ProfileDetails() {
     position,
     department_name,
     department_abbreviation,
-    faculty,
+    faculty_name,
     faculty_abbreviation,
     avatar_url,
     telegram
@@ -77,7 +77,7 @@ export default function ProfileDetails() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <InfoBlock label="Інститут / Факультет">
           <p>
-            {faculty} ({faculty_abbreviation})
+            {faculty_name} ({faculty_abbreviation})
           </p>
         </InfoBlock>
         <InfoBlock label="Кафедра">
