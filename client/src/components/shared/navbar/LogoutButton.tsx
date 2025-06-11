@@ -17,7 +17,7 @@ export default function LogoutButton() {
       hover:border-red-400 hover:cursor-pointer"
     >
       <ArrowLeftStartOnRectangleIcon className="w-8"/>
-      <p className="w-full">Logout</p>
+      <p className="w-full">Вихід</p>
     </button>
   );
 }
