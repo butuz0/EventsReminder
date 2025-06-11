@@ -27,7 +27,7 @@ interface InviteUserDialogProps {
 
 export default function InviteUserDialog({user, className}: InviteUserDialogProps) {
   const [createInvitation] = useCreateInvitationMutation();
-  const {data: teamsData, isLoading, isError} = useGetMyTeamsQuery();
+  const {data: teamsData, isLoading, isError} = useGetMyTeamsQuery({});
   const {data: currentUser} = useGetCurrentUserQuery();
   const [open, setOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
@@ -57,9 +57,10 @@ export default function InviteUserDialog({user, className}: InviteUserDialogProp
   
   if (teams?.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">
-        Немає команд, до яких можна запросити користувача.
-      </p>
+      <UserPlusIcon
+        className={`w-6 text-gray-500 p-0 ${className}`}
+        title="Немає команд, до яких можна запросити користувача."
+      />
     )
   }
   
@@ -93,7 +94,7 @@ export default function InviteUserDialog({user, className}: InviteUserDialogProp
           />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] border-sky-200">
         <DialogHeader>
           <DialogTitle>
             Запросити користувача
