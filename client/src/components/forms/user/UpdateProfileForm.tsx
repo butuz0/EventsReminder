@@ -28,8 +28,6 @@ export default function EditProfileForm() {
       first_name: data?.profile.first_name ?? "",
       last_name: data?.profile.last_name ?? "",
       position: data?.profile.position ?? "",
-      telegram_username: data?.profile.telegram_username ?? "",
-      telegram_phone_number: data?.profile.telegram_phone_number ?? "",
       avatar: undefined,
       department: Number(data?.profile.department) ?? undefined,
     },
@@ -95,16 +93,6 @@ export default function EditProfileForm() {
           />
           <FormField
             form={form}
-            name="telegram_username"
-            label="Ім'я користувача Telegram"
-          />
-          <FormField
-            form={form}
-            name="telegram_phone_number"
-            label="Номер телефону Telegram"
-          />
-          <FormField
-            form={form}
             name="avatar"
             label="Аватар"
             type="file"
@@ -115,7 +103,7 @@ export default function EditProfileForm() {
           <DepartmentSelectField form={form}/>
         </div>
         
-        <div className="mt-8 flex justify-end">
+        <div className="mt-8 flex justify-center">
           <Button
             type="submit"
             disabled={isUpdating}
