@@ -31,6 +31,13 @@ export default function TeamsList({teamParams = {}}: TeamsListProps) {
   
   const teams = data?.teams.results;
   
+  if (teams.length === 0) {
+    return (
+      <div className="text-center font-medium">
+        Ви не є членом жодної команди.
+      </div>
+    )
+  }
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {teams.map((team) => (

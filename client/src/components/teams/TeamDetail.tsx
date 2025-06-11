@@ -15,8 +15,8 @@ interface TeamDetailPageProps {
 
 export default function TeamDetail({team, isTeamCreator = false}: TeamDetailPageProps) {
   return (
-    <div className="mx-auto max-w-4xl rounded-xl border
-    border-gray-200 bg-gray-100 p-5 shadow-md space-y-6">
+    <div className="rounded-xl border border-gray-200
+    bg-gray-100 p-5 shadow-md space-y-6">
       <div className="rounded-xl bg-white p-6 shadow-md space-y-4">
         <h1 className="text-2xl font-bold">
           {team.name}
