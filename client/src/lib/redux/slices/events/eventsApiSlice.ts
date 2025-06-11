@@ -10,8 +10,11 @@ import {
 
 export const eventsApiSlice = baseApiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getMyEvents: builder.query<MyEventsResponse, void>({
-      query: () => "/events/",
+    getMyEvents: builder.query<MyEventsResponse, Record<string, any>>({
+      query: (params) => ({
+        url: "/events/",
+        params,
+      }),
       providesTags: ["Events"],
     }),
     getEventDetails: builder.query<EventDetailsResponse, string>({
