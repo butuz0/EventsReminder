@@ -1,4 +1,3 @@
-from apps.teams.models import Invitation
 from apps.teams.tasks import send_team_invitation_email_task
 from apps.teams.tests.factories import InvitationFactory
 from unittest.mock import patch

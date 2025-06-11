@@ -3,7 +3,6 @@ from apps.notifications.tasks import (
     send_notification_email_task,
     send_notification_telegram_message_task
 )
-from apps.notifications.models import Notification
 from apps.profiles.tests.factories import ProfileWithTelegramFactory
 from apps.events.tests.factories import EventFactory
 from unittest.mock import patch

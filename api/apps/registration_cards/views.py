@@ -12,7 +12,7 @@ class RegistrationCardListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     renderer_classes = [JSONRenderer]
     object_label = 'registration_cards'
-        
+
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
 

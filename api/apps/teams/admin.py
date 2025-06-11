@@ -16,8 +16,9 @@ class InvitationInline(admin.TabularInline):
 class TeamAdmin(admin.ModelAdmin):
     def member_count(self, obj):
         return obj.members.count()
+
     member_count.short_description = _('Member count')
-    
+
     list_display = ['id', 'name', 'created_by', 'member_count', 'created_at']
     list_filter = ['created_by']
     search_fields = ['name', 'created_by__email']

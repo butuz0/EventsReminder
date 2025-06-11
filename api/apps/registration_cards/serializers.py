@@ -8,7 +8,7 @@ class RegistrationCardSerializer(serializers.ModelSerializer):
         model = RegistrationCard
         fields = '__all__'
         read_only_fields = ('created_by', 'created_at', 'updated_at')
-        
+
     def validate_edrpou_code(self, value):
         if not value.isdigit():
             raise ValidationError({'edrpou_code': 'EDRPOU Code must contain only digits.'})

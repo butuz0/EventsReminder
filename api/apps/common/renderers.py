@@ -16,7 +16,7 @@ class JSONRenderer(BaseJSONRenderer):
         context = renderer_context or {}
 
         view = context.get('view')
-        
+
         object_label = getattr(view, 'object_label', self.object_label)
 
         response = context.get('response')

@@ -3,7 +3,6 @@ from django.utils.timezone import now
 from django.db.models import Q
 from apps.events.models import RecurringEvent
 from apps.events.recurring import reschedule_recurring_event
-from celery.result import AsyncResult
 
 
 class Command(BaseCommand):

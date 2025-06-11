@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.utils.translation import gettext_lazy as _
 from .models import Faculty, Department
 
 
@@ -22,8 +21,9 @@ class FacultyAdmin(admin.ModelAdmin):
 class DepartmentAdmin(admin.ModelAdmin):
     def faculty_abbreviation(self, obj: Department) -> str:
         return obj.faculty.faculty_abbreviation
+
     faculty_abbreviation.short_description = 'Faculty Abbreviation'
-    
+
     list_display = ['id', 'department_name', 'department_abbreviation', 'faculty_abbreviation']
     list_display_links = ['id', 'department_name']
     search_fields = ['department_name', 'department_abbreviation']

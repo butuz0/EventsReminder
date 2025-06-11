@@ -1,7 +1,7 @@
 from django.utils import timezone
 from .factories import EventFactory, RecurringEventFactory
-from apps.events.models import Event, RecurringEvent
-from datetime import datetime, timedelta
+from apps.events.models import RecurringEvent
+from datetime import timedelta
 import pytest
 
 

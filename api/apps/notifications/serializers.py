@@ -55,8 +55,8 @@ class NotificationSerializer(serializers.ModelSerializer):
         if event.created_by != user and not event.assigned_to.filter(id=user.id).exists():
             raise serializers.ValidationError('You do not have permission to create notifications for this event.')
 
-        if (attrs.get('notification_method') == Notification.NotificationMethod.TELEGRAM
-                and not user.profile.is_telegram_verified()):
+        if (attrs.get(
+                'notification_method') == Notification.NotificationMethod.TELEGRAM and not user.profile.is_telegram_verified()):
             raise serializers.ValidationError('Your Telegram account is not connected yet.')
 
         return attrs

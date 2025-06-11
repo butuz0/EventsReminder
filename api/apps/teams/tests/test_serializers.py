@@ -1,5 +1,5 @@
 from .factories import TeamFactory, InvitationFactory
-from apps.teams.models import Team, Invitation
+from apps.teams.models import Invitation
 from apps.teams.serializers import (
     TeamCreateSerializer,
     InvitationCreateSerializer,

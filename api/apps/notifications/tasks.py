@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.conf import settings
 from apps.events.models import Event
 from .models import Notification
 from .emails import send_notification_email

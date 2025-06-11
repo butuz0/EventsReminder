@@ -1,9 +1,8 @@
 from django.utils import timezone
-from .factories import NotificationFactory
 from apps.notifications.models import Notification
 from apps.profiles.tests.factories import UserWithProfileFactory
 from apps.events.tests.factories import EventFactory
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from datetime import timedelta
 import pytest
 

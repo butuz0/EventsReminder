@@ -3,8 +3,6 @@ from telegram_bot.utils.send_message import send_message
 from telegram_bot.utils.update_auth_state import set_user_verified_state
 from telegram_bot.messages.verification import MESSAGES
 from celery import shared_task
-import asyncio
-import logging
 
 
 @shared_task(bind=True, max_retries=10, default_retry_delay=2)

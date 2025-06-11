@@ -1,10 +1,10 @@
 from django.urls import path
 from .views import (
-    MyEventsListAPIView, 
-    EventDetailAPIView, 
-    EventCreateAPIView, 
-    EventUpdateAPIView, 
-    EventDeleteAPIView, 
+    MyEventsListAPIView,
+    EventDetailAPIView,
+    EventCreateAPIView,
+    EventUpdateAPIView,
+    EventDeleteAPIView,
     EventLeaveAPIView,
     RecurringEventCreateAPIView,
     RecurringEventUpdateAPIView

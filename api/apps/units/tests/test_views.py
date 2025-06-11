@@ -11,9 +11,8 @@ def test_departments_by_faculty():
     faculty = FacultyFactory()
     other_faculty = FacultyFactory()
 
-    dep1 = DepartmentFactory(faculty=faculty)
-    dep2 = DepartmentFactory(faculty=faculty)
-    dep_other = DepartmentFactory(faculty=other_faculty)
+    DepartmentFactory.create_batch(2, faculty=faculty)
+    DepartmentFactory(faculty=other_faculty)
 
     url = reverse('departments-by-faculty', kwargs={'faculty_id': faculty.id})
     client = APIClient()

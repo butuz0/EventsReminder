@@ -1,7 +1,6 @@
 from django.urls import reverse
 from apps.notifications.tests.factories import NotificationFactory
 from apps.events.tests.factories import EventFactory
-from apps.users.tests.factories import UserFactory
 from rest_framework.test import APIClient
 import pytest
 

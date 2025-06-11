@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.utils.timezone import now
 from django.conf import settings
@@ -13,7 +12,6 @@ from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 import hashlib
 import hmac
-import time
 
 User = get_user_model()
 

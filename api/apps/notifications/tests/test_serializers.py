@@ -3,7 +3,7 @@ from .factories import NotificationFactory
 from apps.notifications.models import Notification
 from apps.notifications.serializers import NotificationSerializer
 from apps.users.tests.factories import UserFactory
-from apps.profiles.tests.factories import UserWithProfileFactory, ProfileWithTelegramFactory
+from apps.profiles.tests.factories import ProfileWithTelegramFactory
 from apps.events.tests.factories import EventFactory, RecurringEventFactory
 from rest_framework.test import APIRequestFactory
 from faker import Faker
@@ -166,8 +166,8 @@ def test_notification_create_no_permission(normal_user):
 
     assert not serializer.is_valid()
     assert 'non_field_errors' in serializer.errors
-    assert (serializer.errors['non_field_errors'][0]
-            == 'You do not have permission to create notifications for this event.')
+    assert (serializer.errors['non_field_errors'][
+                0] == 'You do not have permission to create notifications for this event.')
 
 
 @pytest.mark.django_db

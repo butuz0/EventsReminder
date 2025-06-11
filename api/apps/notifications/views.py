@@ -33,17 +33,19 @@ class NotificationByEventListAPIView(BaseNotificationDetailAPIView):
     '''
     API view to retrieve notifications by event_id.
     '''
+
     def get_queryset(self):
         event_id = self.kwargs.get('event_id', None)
-        event=Event.objects.get(id=event_id)
+        event = Event.objects.get(id=event_id)
         user = self.request.user
         return self.queryset.filter(created_by=user, event=event).order_by('notification_datetime')
-    
+
 
 class NotificationByUserListAPIView(BaseNotificationDetailAPIView):
     '''
     API view to retrieve notifications by user_id.
     '''
+
     def get_queryset(self):
         user = self.request.user
         return self.queryset.filter(created_by=user).order_by('notification_datetime')

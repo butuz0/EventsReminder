@@ -3,7 +3,6 @@ from .models import Faculty, Department
 from .serializers import DepartmentsSerializer, FacultySerializer, FacultyListSerializer
 from apps.common.renderers import JSONRenderer
 from rest_framework import generics, permissions
-from typing import List
 
 
 class FacultyListAPIView(generics.ListAPIView):

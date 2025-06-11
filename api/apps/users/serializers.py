@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer, UserSerializer
-from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 
 User = get_user_model()

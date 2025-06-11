@@ -9,7 +9,7 @@ from apps.profiles.tests.factories import (
     TelegramDataFactory,
     ProfileWithTelegramFactory
 )
-from apps.units.tests.factories import DepartmentFactory, FacultyFactory
+from apps.units.tests.factories import DepartmentFactory
 from unittest.mock import Mock
 import pytest
 

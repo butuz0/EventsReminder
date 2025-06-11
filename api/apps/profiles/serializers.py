@@ -1,7 +1,6 @@
 from apps.units.models import Department
 from .models import Profile, TelegramData
 from rest_framework import serializers
-from phonenumber_field.serializerfields import PhoneNumberField
 
 
 class BaseProfileSerializer(serializers.ModelSerializer):
@@ -42,10 +41,9 @@ class ProfileRetrieveSerializer(BaseProfileSerializer):
     telegram = TelegramDataSerializer()
 
     class Meta(BaseProfileSerializer.Meta):
-        fields = (BaseProfileSerializer.Meta.fields +
-                  ['id', 'email', 'department_name', 'department_abbreviation',
-                   'department_abbreviation', 'faculty_name',
-                   'faculty_abbreviation', 'telegram'])
+        fields = (BaseProfileSerializer.Meta.fields + ['id', 'email', 'department_name', 'department_abbreviation',
+                                                       'department_abbreviation', 'faculty_name',
+                                                       'faculty_abbreviation', 'telegram'])
 
     def get_department_name(self, obj: Profile) -> str | None:
         if obj.department:

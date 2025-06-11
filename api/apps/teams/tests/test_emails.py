@@ -1,6 +1,5 @@
 from .factories import InvitationFactory
 from apps.teams.emails import send_team_invitation_email
-from apps.profiles.tests.factories import UserWithProfileFactory
 from config.settings.local import SITE_NAME, DEFAULT_FROM_EMAIL
 from unittest.mock import patch
 import pytest

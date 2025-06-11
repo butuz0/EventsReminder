@@ -3,7 +3,6 @@ from django.utils.timezone import now
 from apps.notifications.models import Notification
 from apps.notifications.tasks import send_notification_email_task, send_notification_telegram_message_task
 from apps.common.celery import reschedule_celery_task
-from celery.result import AsyncResult
 
 
 class Command(BaseCommand):

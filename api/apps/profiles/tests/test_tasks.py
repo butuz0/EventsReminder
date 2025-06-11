@@ -1,8 +1,7 @@
 from apps.profiles.tasks import send_telegram_greeting
 from apps.profiles.tests.factories import TelegramDataFactory
 from telegram_bot.messages.verification import MESSAGES
-from celery.exceptions import Retry
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import pytest
 
 

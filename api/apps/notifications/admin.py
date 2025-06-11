@@ -1,6 +1,6 @@
 from django.contrib import admin
-from django.utils.translation import gettext_lazy as _
 from .models import Notification
+
 
 @admin.register(Notification)
 class NotificationAdmin(admin.ModelAdmin):
@@ -11,7 +11,7 @@ class NotificationAdmin(admin.ModelAdmin):
     date_hierarchy = 'notification_datetime'
     list_per_page = 20
     readonly_fields = ('event', 'created_by', 'celery_task_id', 'is_sent')
-    
+
     fieldsets = (
         (None, {
             'fields': ('event', 'notification_method', 'notification_datetime', 'celery_task_id', 'is_sent')

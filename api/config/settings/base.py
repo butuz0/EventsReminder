@@ -3,7 +3,6 @@ from os import path, getenv
 from dotenv import load_dotenv
 from datetime import timedelta
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -55,7 +54,6 @@ LOCAL_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -85,7 +83,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -129,7 +126,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 FIELD_ENCRYPTION_KEY = getenv('FIELD_ENCRYPTION_KEY')
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -159,11 +155,10 @@ TAGGIT_CASE_INSENSITIVE = True
 
 AUTH_USER_MODEL = 'users.User'
 
-
 # Celery configuration
 if USE_TZ:
     CELERY_TIMEZONE = TIME_ZONE
-    
+
 CELERY_BROKER_URL = getenv('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = getenv('CELERY_RESULT_BACKEND')
 CELERY_ACCEPT_CONTENT = ['application/json']
@@ -177,7 +172,6 @@ CELERY_TASK_TIME_LIMIT = 5 * 60
 CELERY_TASK_SOFT_TIME_LIMIT = 60
 CELERY_TASK_REJECT_ON_WORKER_LOST = True
 CELERY_RESULT_EXPIRES = 300
-
 
 # Cookies JWT configuration
 COOKIE_NAME = 'access'
@@ -231,7 +225,6 @@ DJOSER = {
         'current_user': 'apps.users.serializers.CustomUserSerializer',
     },
 }
-
 
 TELEGRAM_BOT_TOKEN = getenv('TELEGRAM_BOT_TOKEN')
 REDIS_URL = getenv('REDIS_URL')

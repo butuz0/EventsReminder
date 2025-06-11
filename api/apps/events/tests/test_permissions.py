@@ -1,5 +1,4 @@
 from .factories import EventFactory, RecurringEventFactory
-from apps.events.models import Event
 from apps.events.permissions import IsOwner, IsOwnerOrAssignedTo
 from apps.users.tests.factories import UserFactory
 from rest_framework.test import APIRequestFactory

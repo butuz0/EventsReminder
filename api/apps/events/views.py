@@ -26,7 +26,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 class MyEventsListAPIView(generics.ListAPIView):
     '''
-    API view to retrieve a list of events created by 
+    API view to retrieve a list of events created by
     or assigned to the authenticated user.
     '''
     queryset = Event.objects.all().prefetch_related('tags', 'assigned_to')

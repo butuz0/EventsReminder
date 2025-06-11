@@ -11,7 +11,7 @@ User = get_user_model()
 
 class RegistrationCard(TimeStampedModel):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('Created By'))
-    
+
     # Legal Entity
     organization_name = models.CharField(max_length=255, verbose_name=_('Full Organization Name'))
     edrpou_code = models.CharField(max_length=8, verbose_name=_('EDRPOU Code'))
@@ -29,9 +29,9 @@ class RegistrationCard(TimeStampedModel):
     phone_number = PhoneNumberField(max_length=20, blank=True, verbose_name=_('Phone Number'))
 
     # Electronic Seal
-    electronic_seal_name = EncryptedCharField(max_length=255, blank=True, 
+    electronic_seal_name = EncryptedCharField(max_length=255, blank=True,
                                               verbose_name=_('Electronic Seal Name'))
-    electronic_seal_keyword_phrase = EncryptedCharField(max_length=255, blank=True, 
+    electronic_seal_keyword_phrase = EncryptedCharField(max_length=255, blank=True,
                                                         verbose_name=_('Electronic Seal Keyword Phrase'))
 
     class Meta:
@@ -40,7 +40,7 @@ class RegistrationCard(TimeStampedModel):
 
     def __str__(self):
         return self.organization_name
-    
+
     def clean(self):
         if self.edrpou_code and not self.edrpou_code.isdigit():
             raise ValidationError({'edrpou_code': _('EDRPOU Code must contain only digits.')})

@@ -3,6 +3,7 @@ from pathlib import Path
 import sys
 import os
 
+
 def setup_django():
     BASE_DIR = Path(__file__).resolve().parent.parent.parent
     sys.path.append(str(BASE_DIR / 'api'))

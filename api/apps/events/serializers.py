@@ -8,7 +8,6 @@ from rest_framework import serializers
 from taggit.serializers import TagListSerializerField, TaggitSerializer
 from djoser.serializers import UserSerializer
 from datetime import datetime
-from celery.result import AsyncResult
 
 User = get_user_model()
 
