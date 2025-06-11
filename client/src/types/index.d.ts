@@ -112,7 +112,7 @@ export interface Profile {
   department: string,
   department_name: string,
   department_abbreviation: string,
-  faculty: string,
+  faculty_name: string,
   faculty_abbreviation: string,
   telegram: {
     telegram_username: string,
