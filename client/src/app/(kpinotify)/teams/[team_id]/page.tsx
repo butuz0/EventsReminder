@@ -53,7 +53,7 @@ export default function TeamDetails({params}: TeamDetails) {
   const isTeamCreator = user?.id === team?.team.created_by.id;
   
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-5xl">
       <PageTitle title={team.team.name}/>
       <Tabs defaultValue="events" className="w-full">
         <TabsList className={
