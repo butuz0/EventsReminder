@@ -71,66 +71,68 @@ export default function RegistrationCardForm(
       form={form}
       onSubmit={onSubmit}
     >
-      <FormField
-        form={form}
-        name="organization_name"
-        label="Назва організації"
-      />
-      <FormField
-        form={form}
-        name="edrpou_code"
-        label="Код ЄДРПОУ"
-      />
-      <FormField
-        form={form}
-        name="region"
-        label="Область"
-      />
-      <FormField
-        form={form}
-        name="city"
-        label="Місто"
-      />
-      <FormField
-        form={form}
-        name="full_name"
-        label="ПІБ"
-      />
-      <FormField
-        form={form}
-        name="id_number"
-        label="Ідентифікаційний номер"
-      />
-      <FormField
-        form={form}
-        name="email"
-        label="Email"
-      />
-      <FormField
-        form={form}
-        name="phone_number"
-        label="Номер телефону"
-      />
-      <FormField
-        form={form}
-        name="keyword_phrase"
-        label="Ключова фраза"
-      />
-      <FormField
-        form={form}
-        name="voice_phrase"
-        label="Голосова фраза"
-      />
-      <FormField
-        form={form}
-        name="electronic_seal_name"
-        label="Назва Е-печатки"
-      />
-      <FormField
-        form={form}
-        name="electronic_seal_keyword_phrase"
-        label="Ключова фраза до печатки"
-      />
+      <div className="grid sm:grid-cols-2 gap-4">
+        <FormField
+          form={form}
+          name="organization_name"
+          label="Назва організації"
+        />
+        <FormField
+          form={form}
+          name="edrpou_code"
+          label="Код ЄДРПОУ"
+        />
+        <FormField
+          form={form}
+          name="region"
+          label="Область"
+        />
+        <FormField
+          form={form}
+          name="city"
+          label="Місто"
+        />
+        <FormField
+          form={form}
+          name="full_name"
+          label="ПІБ"
+        />
+        <FormField
+          form={form}
+          name="id_number"
+          label="Ідентифікаційний номер"
+        />
+        <FormField
+          form={form}
+          name="email"
+          label="Email"
+        />
+        <FormField
+          form={form}
+          name="phone_number"
+          label="Номер телефону"
+        />
+        <FormField
+          form={form}
+          name="keyword_phrase"
+          label="Ключова фраза"
+        />
+        <FormField
+          form={form}
+          name="voice_phrase"
+          label="Голосова фраза"
+        />
+        <FormField
+          form={form}
+          name="electronic_seal_name"
+          label="Назва Е-печатки"
+        />
+        <FormField
+          form={form}
+          name="electronic_seal_keyword_phrase"
+          label="Ключова фраза до печатки"
+        />
+      </div>
       <div className="flex justify-center">
         <Button
           type="submit"
