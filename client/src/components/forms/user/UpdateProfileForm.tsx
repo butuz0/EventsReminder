@@ -51,10 +51,12 @@ export default function EditProfileForm() {
   
   const onSubmit = async (values: TProfileSchema) => {
     try {
-      const hasFile = values.avatar instanceof File;
-      const payload = hasFile ? objToFormData(values) : values;
+      const hasImage = values.avatar instanceof File;
+      const data = hasImage
+        ? objToFormData(values)
+        : values;
       
-      await toast.promise(updateProfile(payload).unwrap(), {
+      await toast.promise(updateProfile(data).unwrap(), {
         pending: "Оновлюємо профіль...",
         success: "Профіль оновлено!"
       });
@@ -74,7 +76,8 @@ export default function EditProfileForm() {
       <FormBase
         form={form}
         onSubmit={onSubmit}
-        encType="multipart/form-data">
+        encType="multipart/form-data"
+      >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField
             form={form}

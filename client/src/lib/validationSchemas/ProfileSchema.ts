@@ -16,15 +16,10 @@ export const ProfileSchema = z.object({
     .trim()
     .min(1, "Введіть свою посаду")
     .max(250, "Посада повинна мати не більше 250 символів"),
-  phone_number: z.string().trim().optional(),
-  telegram_username: z.string().trim().optional(),
   avatar: z.any().optional(),
-  telegram_phone_number: z.string().trim().optional(),
   department: z
     .number()
     .refine((val) => val > 0, {message: "Оберіть свою кафедру",}),
-  gender: z.enum(["m", "f", "o"]),
-  
 });
 
 export type TProfileSchema = z.infer<typeof ProfileSchema>;
