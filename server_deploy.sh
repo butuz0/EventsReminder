@@ -48,9 +48,6 @@ docker system prune -af
 echo "Building and starting new containers..."
 docker compose -f "$TEMP_DIR/production.yml" up --build -d --remove-orphans
 
-echo "Running initial database population..."
-docker compose -f "$TEMP_DIR/production.yml" exec -T api python manage.py populate_units
-
 ENDSSH
 
 echo "Deployment completed successfully."
