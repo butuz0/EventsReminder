@@ -103,7 +103,7 @@ services:
       - ./api/staticfiles:/app/staticfiles
       - ./api/media:/app/media
       - ./docker/production/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-        - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - api
       - client
