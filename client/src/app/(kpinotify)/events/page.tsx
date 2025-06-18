@@ -4,7 +4,7 @@ import {useGetMyEventsQuery} from "@/lib/redux/slices/events/eventsApiSlice"
 import EventsTable from "@/components/events/EventsTable";
 import PageTitle from "@/components/shared/PageTitle";
 import LoaderComponent from "@/components/shared/Loader";
-import React, {useMemo} from "react";
+import React, {useMemo, Suspense} from "react";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import Search from "@/components/shared/Search";
@@ -13,7 +13,7 @@ import {useGetCurrentUserQuery} from "@/lib/redux/slices/auth/authApiSlice";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 
 
-export default function EventsPage() {
+function EventsPageContent() {
   const searchParams = useSearchParams();
   const params = useMemo(() => ({
     search: searchParams.get("search") || undefined,
@@ -97,4 +97,20 @@ export default function EventsPage() {
       </Tabs>
     </div>
   )
+}
+
+
+export default function EventsPage() {
+  return (
+    <Suspense
+      fallback={
+        <LoaderComponent
+          size="lg"
+          text="Завантаження подій..."
+        />
+      }
+    >
+      <EventsPageContent/>
+    </Suspense>
+  );
 }

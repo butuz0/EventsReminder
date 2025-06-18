@@ -17,16 +17,6 @@ export default function ProfilesList({queryParams = {}}: ProfilesListProps) {
   const totalPages = Math.ceil((data?.profiles.count ?? 0) / PaginationPageSizes.profiles);
   
   
-  if (isLoading) {
-    return (
-      <LoaderComponent
-        size="lg"
-        text="Завантаження користувачів..."
-        className="h-3/5"
-      />
-    );
-  }
-  
   if (isError || !data) {
     return (
       <div className="text-center text-red-600 font-medium">

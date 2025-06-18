@@ -8,10 +8,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 APPS_DIR = BASE_DIR / 'apps'
 
-local_env_file = path.join(BASE_DIR, '.envs', '.env.django')
+prod_env_file = path.join(BASE_DIR, '.envs', '.env.production')
 
-if path.isfile(local_env_file):
-    load_dotenv(local_env_file)
+if path.isfile(prod_env_file):
+    load_dotenv(prod_env_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/

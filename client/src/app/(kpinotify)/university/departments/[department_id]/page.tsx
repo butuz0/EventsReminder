@@ -2,7 +2,8 @@
 
 import DepartmentDetails from "@/components/units/DepartmentDetails";
 import {useSearchParams} from "next/navigation";
-import {useMemo} from "react";
+import {Suspense, useMemo} from "react";
+import LoaderComponent from "@/components/shared/Loader";
 
 interface DepartmentDetailsPageProps {
   params: {
@@ -11,7 +12,7 @@ interface DepartmentDetailsPageProps {
 }
 
 
-export default function DepartmentDetailsPage({params}: DepartmentDetailsPageProps) {
+function DepartmentDetailsContent({params}: DepartmentDetailsPageProps) {
   const departmentId = params.department_id;
   
   const searchParams = useSearchParams();
@@ -22,8 +23,22 @@ export default function DepartmentDetailsPage({params}: DepartmentDetailsPagePro
   }), [searchParams, departmentId]);
   
   return (
-    <div>
-      <DepartmentDetails departmentId={departmentId} queryParams={profilesParams}/>
-    </div>
+    <DepartmentDetails departmentId={departmentId} queryParams={profilesParams}/>
+  )
+}
+
+export default function DepartmentDetailsPage({params}: DepartmentDetailsPageProps) {
+  return (
+    <Suspense
+      fallback={
+        <LoaderComponent
+          size="lg"
+          text="Завантаження користувачів..."
+          className="h-3/5"
+        />
+      }
+    >
+      <DepartmentDetailsContent params={params}/>
+    </Suspense>
   )
 }

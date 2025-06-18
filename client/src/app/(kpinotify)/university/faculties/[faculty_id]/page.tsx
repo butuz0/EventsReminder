@@ -6,8 +6,9 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import ProfilesList from "@/components/profiles/ProfilesList";
 import PageTitle from "@/components/shared/PageTitle";
 import {useSearchParams} from "next/navigation";
-import {useMemo} from "react";
+import {Suspense, useMemo} from "react";
 import Search from "@/components/shared/Search";
+import LoaderComponent from "@/components/shared/Loader";
 
 interface FacultyPageProps {
   params: {
@@ -16,7 +17,7 @@ interface FacultyPageProps {
 }
 
 
-export default function FacultyPage({params}: FacultyPageProps) {
+function FacultyPageContent({params}: FacultyPageProps) {
   const facultyId = Number(params.faculty_id);
   
   const searchParams = useSearchParams();
@@ -29,7 +30,13 @@ export default function FacultyPage({params}: FacultyPageProps) {
   const {data, isLoading, isError} = useGetFacultyDetailsQuery(facultyId);
   
   if (isLoading) {
-    return <p className="text-center text-xl">Завантаження...</p>;
+    return (
+      <LoaderComponent
+        size="lg"
+        text="Завантаження..."
+        className="h-3/5"
+      />
+    )
   }
   
   if (isError || !data) {
@@ -63,4 +70,20 @@ export default function FacultyPage({params}: FacultyPageProps) {
       </Tabs>
     </div>
   );
+}
+
+export default function FacultyPage({params}: FacultyPageProps) {
+  return (
+    <Suspense
+      fallback={
+        <LoaderComponent
+          size="lg"
+          text="Завантаження користувачів..."
+          className="h-3/5"
+        />
+      }
+    >
+      <FacultyPageContent params={params}/>
+    </Suspense>
+  )
 }

@@ -6,10 +6,11 @@ import {Tabs, TabsList, TabsTrigger, TabsContent} from "@/components/ui/tabs";
 import ProfilesList from "@/components/profiles/ProfilesList";
 import Search from "@/components/shared/Search";
 import {useSearchParams} from "next/navigation";
-import {useMemo} from "react";
+import {useMemo, Suspense} from "react";
+import LoaderComponent from "@/components/shared/Loader";
 
 
-export default function UniversityPage() {
+function UniversityPageContent() {
   const searchParams = useSearchParams();
   const profilesParams = useMemo(() => ({
     search: searchParams.get("search") || undefined,
@@ -35,10 +36,35 @@ export default function UniversityPage() {
           <div className="mb-4">
             <Search placeholder="Шукати користувача"/>
           </div>
-          <ProfilesList queryParams={profilesParams}/>
+          <Suspense
+            fallback={
+              <LoaderComponent
+                size="lg"
+                text="Завантаження користувачів..."
+                className="h-3/5"
+              />
+            }
+          >
+            <ProfilesList queryParams={profilesParams}/>
+          </Suspense>
         </TabsContent>
       </Tabs>
     </div>
-  
   );
+}
+
+export default function UniversityPage() {
+  return (
+    <Suspense
+      fallback={
+        <LoaderComponent
+          size="lg"
+          text="Завантаження користувачів..."
+          className="h-3/5"
+        />
+      }
+    >
+      <UniversityPageContent/>
+    </Suspense>
+  )
 }

@@ -2,7 +2,7 @@ services:
   api: &api
     build:
       context: .
-      dockerfile: ./docker/local/django/Dockerfile
+      dockerfile: ./docker/production/django/Dockerfile
     image: kpi_notify_api
     container_name: kpi_notify_api
     restart: unless-stopped
@@ -13,10 +13,9 @@ services:
     expose:
       - "8000"
     env_file:
-      - ./api/.envs/.env.local
+      - ./api/.envs/.env.production
     depends_on:
       - postgres
-      - mailpit
       - redis
     command: /start
     networks:
@@ -25,7 +24,7 @@ services:
   postgres:
     build:
       context: .
-      dockerfile: ./docker/local/postgres/Dockerfile
+      dockerfile: ./docker/production/postgres/Dockerfile
     image: kpi_notify_postgres
     container_name: kpi_notify_postgres
     restart: unless-stopped
@@ -34,24 +33,7 @@ services:
     volumes:
       - kpi_notify_postgres_data:/var/lib/postgresql/data
     env_file:
-      - ./api/.envs/.env.local
-    networks:
-      - kpi_notify_nw
-
-  mailpit:
-    image: docker.io/axllent/mailpit:v1.15
-    container_name: kpi_notify_mailpit
-    restart: unless-stopped
-    ports:
-      - "8025:8025"
-      - "1025:1025"
-    volumes:
-      - kpi_notify_mailpit_data:/data
-    environment:
-      MP_MAX_MESSAGES: 5000
-      MP_DATA_FILE: /data/mailpit.db
-      MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+      - ./api/.envs/.env.production
     networks:
       - kpi_notify_nw
 
@@ -72,11 +54,6 @@ services:
     command: /start-celery-worker
     restart: unless-stopped
     ports: [ ]
-    depends_on:
-      - redis
-      - postgres
-    networks:
-      - kpi_notify_nw
 
   flower:
     <<: *api
@@ -86,11 +63,6 @@ services:
     ports:
       - "5555:5555"
     command: /start-flower
-    depends_on:
-      - redis
-      - postgres
-    networks:
-      - kpi_notify_nw
 
   telegram_bot:
     <<: *api
@@ -99,46 +71,42 @@ services:
     command: /start-telegram-bot
     restart: unless-stopped
     ports: [ ]
-    depends_on:
-      - postgres
-      - redis
-    networks:
-      - kpi_notify_nw
 
   client:
     build:
       context: .
-      dockerfile: ./docker/local/client/Dockerfile
+      dockerfile: ./docker/production/client/Dockerfile
     image: kpi_notify_client
     container_name: kpi_notify_client
+    restart: unless-stopped
     expose:
       - "3000"
     working_dir: /app
-    volumes:
-      - ./client:/app
-      - /app/node_modules
+    env_file:
+      - "./client/.env.production"
     depends_on:
       - api
-    environment:
-      - WATCHPACK_POLLING=true
     networks:
       - kpi_notify_nw
 
   nginx:
     build:
-      context: ./docker/local/nginx
+      context: ./docker/production/nginx
       dockerfile: Dockerfile
     image: kpi_notify_nginx
     container_name: kpi_notify_nginx
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./api/staticfiles:/app/staticfiles
       - ./api/media:/app/media
-      - nginx_logs:/var/log/nginx
+      - ./docker/production/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+        - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - api
+      - client
     networks:
       - kpi_notify_nw
 
@@ -148,6 +116,4 @@ networks:
 
 volumes:
   kpi_notify_postgres_data: { }
-  kpi_notify_mailpit_data: { }
   kpi_notify_redis_data: { }
-  nginx_logs: { }
