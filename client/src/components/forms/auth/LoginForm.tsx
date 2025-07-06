@@ -41,8 +41,8 @@ export default function LoginForm() {
       dispatch(setLogin());
       router.push("/home");
       form.reset();
-    } catch (error) {
-      toast.error(`При вході у Ваш акаунт сталась помилка: ${JSON.stringify(error)}`)
+    } catch {
+      toast.error("При вході у Ваш акаунт сталась помилка")
     }
   };
   

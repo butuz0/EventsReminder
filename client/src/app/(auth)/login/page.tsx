@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "KPI Notify | Log In"
 }
 
+
 export default function LoginPage() {
   return (
     <div className="w-full">
@@ -13,7 +14,7 @@ export default function LoginPage() {
         title="Вхід в акаунт"
         staticText="Ще не маєте акаунту?"
         linkText="Реєстрація"
-        linkHref={"/register"}
+        linkHref="/register"
       />
       <LoginForm/>
     </div>
