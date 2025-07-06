@@ -1,13 +1,13 @@
+"use client";
+
 import FormHeader from "@/components/forms/FormHeader";
 import LoginForm from "@/components/forms/auth/LoginForm";
-import {Metadata} from "next";
-
-export const metadata: Metadata = {
-  title: "KPI Notify | Log In"
-}
+import useRedirectIfAuthenticated from "@/hooks/useRedirectIfAuthenticated";
 
 
 export default function LoginPage() {
+  useRedirectIfAuthenticated();
+  
   return (
     <div className="w-full">
       <FormHeader
