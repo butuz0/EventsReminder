@@ -187,12 +187,14 @@ class TeamEventsListAPIView(generics.ListAPIView):
     def get_queryset(self):
         team_id = self.kwargs['team_id']
         team = get_object_or_404(Team, id=team_id)
+        user = self.request.user
 
-        permission = IsOwnerOrMember()
-        if not permission.has_object_permission(self.request, self, team):
-            raise PermissionDenied(detail=permission.message)
-
-        return Event.objects.filter(team=team)
+        if team.created_by == user:
+            return self.queryset.filter(team=team)
+        elif team.members.filter(id=user.id).exists():
+            return self.queryset.filter(team=team, assigned_to=user)
+        else:
+            raise PermissionDenied(detail=IsOwnerOrMember().message)
 
 
 class TeamInvitationsListAPIView(generics.ListAPIView):
