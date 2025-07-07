@@ -1,7 +1,6 @@
 import {FieldValues, Path, UseFormReturn} from "react-hook-form";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
-import ClientOnlyComponent from "@/utils/ClientOnlyComponent";
 import {
   FormLabel,
   FormControl,
@@ -24,6 +23,7 @@ interface SelectFieldComponentProps<T extends FieldValues> {
   options?: Option[];
   loadOptions?: (inputValue: string, callback: (options: Option[]) => void) => void;
   placeholder?: string;
+  icon?: React.ReactNode;
   isDisabled?: boolean;
   isLoading?: boolean;
   isMulti?: boolean;
@@ -39,6 +39,7 @@ export default function SelectFieldComponent<T extends FieldValues>(
     options,
     loadOptions,
     placeholder,
+    icon,
     isDisabled = false,
     isLoading = false,
     isMulti = false,
@@ -54,32 +55,34 @@ export default function SelectFieldComponent<T extends FieldValues>(
         <FormItem>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            {/*<ClientOnlyComponent>*/}
-            <SelectComponent
-              value={
-                isMulti
-                  ? options?.filter((option) => field.value?.includes(option.value))
-                  : options?.find((option) => option.value === field.value)
-              }
-              onChange={(selected: any) => {
-                if (isMulti) {
-                  field.onChange((selected || []).map((s: Option) => s.value));
-                } else {
-                  field.onChange((selected as Option)?.value);
+            <div className="flex w-full items-center gap-2">
+              {icon}
+              <SelectComponent
+                value={
+                  isMulti
+                    ? options?.filter((option) => field.value?.includes(option.value))
+                    : options?.find((option) => option.value === field.value)
                 }
-              }}
-              isMulti={isMulti}
-              cacheOptions
-              defaultOptions={options}
-              loadOptions={loadOptions}
-              options={options}
-              isDisabled={isDisabled}
-              isLoading={isLoading}
-              placeholder={placeholder}
-              styles={selectFieldStyles}
-              instanceId={name}
-            />
-            {/*</ClientOnlyComponent>*/}
+                onChange={(selected: any) => {
+                  if (isMulti) {
+                    field.onChange((selected || []).map((s: Option) => s.value));
+                  } else {
+                    field.onChange((selected as Option)?.value);
+                  }
+                }}
+                isMulti={isMulti}
+                cacheOptions
+                defaultOptions={options}
+                loadOptions={loadOptions}
+                options={options}
+                isDisabled={isDisabled}
+                isLoading={isLoading}
+                placeholder={placeholder}
+                styles={selectFieldStyles}
+                instanceId={name}
+                className="w-full"
+              />
+            </div>
           </FormControl>
           <FormMessage/>
         </FormItem>

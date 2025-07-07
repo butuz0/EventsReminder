@@ -9,7 +9,15 @@ import {useRouter} from "next/navigation";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {toast} from "react-toastify";
-import {MapPinIcon, CalendarIcon, PhotoIcon, LinkIcon, ClipboardDocumentListIcon} from "@heroicons/react/24/outline";
+import {
+  MapPinIcon,
+  CalendarIcon,
+  PhotoIcon,
+  LinkIcon,
+  ClipboardDocumentListIcon,
+  ArrowPathIcon,
+  ExclamationCircleIcon
+} from "@heroicons/react/24/outline";
 import FormHeader from "@/components/forms/FormHeader";
 import objToFormData from "@/utils/objToFormData";
 import TagInputField from "@/components/forms/TagInputField";
@@ -136,6 +144,7 @@ export default function EventUpdateForm({event}: EventUpdateFormProps) {
           label="Пріоритет"
           options={PriorityOptions}
           placeholder="Оберіть новий пріоритет"
+          icon={<ExclamationCircleIcon className="w-7"/>}
         />
         
         <TagInputField
@@ -185,12 +194,13 @@ export default function EventUpdateForm({event}: EventUpdateFormProps) {
         />
         
         {isRecurring && (
-          <div className="space-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <SelectFieldComponent
               form={recurringForm}
               name="recurrence_rule"
               label="Періодичність"
               options={RecurrenceRuleOptions}
+              icon={<ArrowPathIcon className="w-7"/>}
             />
             <FormField
               form={recurringForm}

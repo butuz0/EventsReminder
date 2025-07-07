@@ -15,7 +15,15 @@ import {
   EventWithNotificationsSchema,
   TEventWithNotificationsSchema
 } from "@/lib/validationSchemas/EventSchema";
-import {MapPinIcon, CalendarIcon, PhotoIcon, LinkIcon, ClipboardDocumentListIcon} from "@heroicons/react/24/outline";
+import {
+  MapPinIcon,
+  CalendarIcon,
+  PhotoIcon,
+  LinkIcon,
+  ClipboardDocumentListIcon,
+  ArrowPathIcon,
+  ExclamationCircleIcon
+} from "@heroicons/react/24/outline";
 import FormHeader from "@/components/forms/FormHeader";
 import objToFormData from "@/utils/objToFormData";
 import TagInputField from "@/components/forms/TagInputField";
@@ -154,6 +162,7 @@ export default function EventCreateForm({teamId}: EventFormProps) {
           label="Пріоритет"
           options={PriorityOptions}
           placeholder="Оберіть пріоритет події"
+          icon={<ExclamationCircleIcon className="w-7"/>}
         />
         <TagInputField
           form={form}
@@ -197,18 +206,20 @@ export default function EventCreateForm({teamId}: EventFormProps) {
         />
         
         {isRecurring && (
-          <div className="space-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <SelectFieldComponent
               form={recurringForm}
               name="recurrence_rule"
               label="Періодичність"
               options={RecurrenceRuleOptions}
+              icon={<ArrowPathIcon className="w-7"/>}
             />
             <FormField
               form={recurringForm}
               name="recurrence_end_datetime"
               label="Завершення повторень"
               type="datetime-local"
+              icon={<CalendarIcon className="w-7"/>}
             />
           </div>
         )}
