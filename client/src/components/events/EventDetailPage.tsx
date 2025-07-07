@@ -177,7 +177,7 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
         {isCreator && (
           <Button asChild>
             <Link href={`/events/${event_id}/update`}>
-              Змінити
+              Оновити подію
             </Link>
           </Button>
         )}
