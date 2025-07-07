@@ -31,6 +31,12 @@ import NotificationsFieldArray from "@/components/forms/events/NotificationsFiel
 import AssignToSelectField from "@/components/teams/AssignToSelectField";
 import {RecurringEventSchema, TRecurringEventSchema} from "@/lib/validationSchemas/RecurringEventSchema";
 import CheckboxField from "@/components/forms/CheckboxField";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface EventFormProps {
   teamId?: string;
@@ -88,8 +94,8 @@ export default function EventCreateForm({teamId}: EventFormProps) {
       const response = await toast.promise(
         createEvent(data).unwrap(),
         {
-          pending: "Створюємо подію...",
-          success: "Подію створено",
+          pending: "Додаємо подію...",
+          success: "Подію додано",
         }
       );
       
@@ -100,7 +106,6 @@ export default function EventCreateForm({teamId}: EventFormProps) {
           event_id: response.event.id,
           data: recurringValues
         }).unwrap();
-        toast.success("Періодичність додано");
       }
       
       // create notifications for a new event
@@ -113,13 +118,12 @@ export default function EventCreateForm({teamId}: EventFormProps) {
             }).unwrap()
           )
         );
-        toast.success("Нагадування створено");
       }
       
       router.push(`/events/${response.event.id}`);
       form.reset();
-    } catch (error) {
-      toast.error("При створенні події сталась помилка.")
+    } catch {
+      toast.error("При додаванні події сталась помилка.")
     }
   }
   
@@ -127,7 +131,7 @@ export default function EventCreateForm({teamId}: EventFormProps) {
     <div className="w-full max-w-3xl bg-white p-5 rounded-xl
     border border-sky-200 shadow-md flex flex-col justify-center">
       <FormHeader
-        title="Створіть нову подію"
+        title="Додайте нову подію"
       />
       <FormBase
         form={form}
@@ -142,13 +146,7 @@ export default function EventCreateForm({teamId}: EventFormProps) {
           placeholder="Назва нової події"
           icon={<ClipboardDocumentListIcon className="w-7"/>}
         />
-        <FormField
-          form={form}
-          name="description"
-          label="Опис"
-          placeholder="Додатковий опис події"
-          isTextarea
-        />
+        
         <FormField
           form={form}
           name="start_datetime"
@@ -156,6 +154,7 @@ export default function EventCreateForm({teamId}: EventFormProps) {
           type="datetime-local"
           icon={<CalendarIcon className="w-7"/>}
         />
+        
         <SelectFieldComponent
           form={form}
           name="priority"
@@ -164,41 +163,7 @@ export default function EventCreateForm({teamId}: EventFormProps) {
           placeholder="Оберіть пріоритет події"
           icon={<ExclamationCircleIcon className="w-7"/>}
         />
-        <TagInputField
-          form={form}
-          name="tags"
-          label="Теги"
-        />
-        <FormField
-          form={form}
-          name="location"
-          label="Місце"
-          placeholder="Місце події"
-          icon={<MapPinIcon className="w-7"/>}
-        />
-        <FormField
-          form={form}
-          name="link"
-          label="Посилання"
-          placeholder="Посилання для події"
-          icon={<LinkIcon className="w-7"/>}
-        />
-        <FormField
-          form={form}
-          name="image"
-          label="Зображення"
-          type="file"
-          icon={<PhotoIcon className="w-7"/>}
-        />
-        {teamId && (
-          <AssignToSelectField
-            form={form}
-            name="assigned_to_ids"
-            teamId={teamId}
-            label="Призначити подію"
-            placeholder="Оберіть кому призначити цю подію"
-          />
-        )}
+        
         <CheckboxField
           form={form}
           name="is_recurring"
@@ -223,6 +188,66 @@ export default function EventCreateForm({teamId}: EventFormProps) {
             />
           </div>
         )}
+        <Accordion
+          type="multiple"
+          className="mb-0"
+        >
+          <AccordionItem
+            value="additional"
+            className="border-t border-gray-300"
+          >
+            <AccordionTrigger className="text-lg">
+              Додаткова інформація
+            </AccordionTrigger>
+            <AccordionContent className="space-y-5">
+              <FormField
+                form={form}
+                name="description"
+                label="Опис"
+                placeholder="Опис події"
+                isTextarea
+              />
+              <TagInputField
+                form={form}
+                name="tags"
+                label="Теги"
+              />
+              <FormField
+                form={form}
+                name="location"
+                label="Місце"
+                placeholder="Місце події"
+                icon={<MapPinIcon className="w-7"/>}
+              />
+              <FormField
+                form={form}
+                name="link"
+                label="Посилання"
+                placeholder="Посилання для події"
+                icon={<LinkIcon className="w-7"/>}
+              />
+              <FormField
+                form={form}
+                name="image"
+                label="Зображення"
+                type="file"
+                icon={<PhotoIcon className="w-7"/>}
+              />
+              {teamId && (
+                <AssignToSelectField
+                  form={form}
+                  name="assigned_to_ids"
+                  teamId={teamId}
+                  label="Призначити подію"
+                  placeholder="Оберіть кому призначити цю подію"
+                />
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        
+        <hr className="border-gray-300"/>
+        
         <NotificationsFieldArray
           form={form}
           name="notifications"
@@ -233,7 +258,7 @@ export default function EventCreateForm({teamId}: EventFormProps) {
             disabled={isLoading}
             className="text-md hover:cursor-pointer"
           >
-            Підтвердити
+            Додати подію
           </Button>
         </div>
       </FormBase>

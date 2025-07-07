@@ -23,7 +23,7 @@ export default function NotificationsFieldArray<T extends FieldValues>(
   });
   
   return (
-    <div className="mt-6 space-y-4">
+    <div className="space-y-4">
       <p className="text-lg font-medium">Нагадування</p>
       {fields.map((field, index) => (
         <div

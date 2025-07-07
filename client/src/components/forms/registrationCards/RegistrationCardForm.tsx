@@ -15,6 +15,12 @@ import {
   useUpdateRegistrationCardMutation
 } from "@/lib/redux/slices/registrationCards/registrationCardsApiSlice";
 import {useRouter} from "next/navigation";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface RegistrationCardFormProps {
   cardId?: string;
@@ -71,74 +77,132 @@ export default function RegistrationCardForm(
       form={form}
       onSubmit={onSubmit}
     >
-      <div className="grid sm:grid-cols-2 gap-4">
-        <FormField
-          form={form}
-          name="organization_name"
-          label="Назва організації"
-        />
-        <FormField
-          form={form}
-          name="edrpou_code"
-          label="Код ЄДРПОУ"
-        />
-        <FormField
-          form={form}
-          name="region"
-          label="Область"
-        />
-        <FormField
-          form={form}
-          name="city"
-          label="Місто"
-        />
-        <FormField
-          form={form}
-          name="full_name"
-          label="ПІБ"
-        />
-        <FormField
-          form={form}
-          name="id_number"
-          label="Ідентифікаційний номер"
-        />
-        <FormField
-          form={form}
-          name="email"
-          label="Email"
-        />
-        <FormField
-          form={form}
-          name="phone_number"
-          label="Номер телефону"
-        />
-        <FormField
-          form={form}
-          name="keyword_phrase"
-          label="Ключова фраза"
-        />
-        <FormField
-          form={form}
-          name="voice_phrase"
-          label="Голосова фраза"
-        />
-        <FormField
-          form={form}
-          name="electronic_seal_name"
-          label="Назва Е-печатки"
-        />
-        <FormField
-          form={form}
-          name="electronic_seal_keyword_phrase"
-          label="Ключова фраза до печатки"
-        />
-      </div>
+      <Accordion
+        type="multiple"
+        defaultValue={["item-1"]}
+        className="space-y-5"
+      >
+        <AccordionItem
+          value="item-1"
+          className="border-b border-gray-300"
+        >
+          <AccordionTrigger className="text-lg hover:cursor-pointer">
+            Юридична особа
+          </AccordionTrigger>
+          <AccordionContent className="grid sm:grid-cols-2 gap-4">
+            <FormField
+              form={form}
+              name="organization_name"
+              label="Назва організації"
+            />
+            <FormField
+              form={form}
+              name="edrpou_code"
+              label="Код ЄДРПОУ"
+            />
+          </AccordionContent>
+        </AccordionItem>
+        
+        <AccordionItem
+          value="item-2"
+          className="border-b border-gray-300"
+        >
+          <AccordionTrigger className="text-lg hover:cursor-pointer">
+            Відомості про місцезнаходження
+          </AccordionTrigger>
+          <AccordionContent className="grid sm:grid-cols-2 gap-4">
+            <FormField
+              form={form}
+              name="region"
+              label="Область"
+            />
+            <FormField
+              form={form}
+              name="city"
+              label="Місто"
+            />
+          </AccordionContent>
+        </AccordionItem>
+        
+        <AccordionItem
+          value="item-3"
+          className="border-b border-gray-300"
+        >
+          <AccordionTrigger className="text-lg hover:cursor-pointer">
+            Дані заявника
+          </AccordionTrigger>
+          <AccordionContent className="grid sm:grid-cols-2 gap-4">
+            <FormField
+              form={form}
+              name="full_name"
+              label="ПІБ"
+            />
+            <FormField
+              form={form}
+              name="id_number"
+              label="Ідентифікаційний номер"
+            />
+            <FormField
+              form={form}
+              name="keyword_phrase"
+              label="Ключова фраза"
+            />
+            <FormField
+              form={form}
+              name="voice_phrase"
+              label="Голосова фраза"
+            />
+          </AccordionContent>
+        </AccordionItem>
+        
+        <AccordionItem
+          value="item-4"
+          className="border-b border-gray-300"
+        >
+          <AccordionTrigger className="text-lg hover:cursor-pointer">
+            Засоби звʼязку
+          </AccordionTrigger>
+          <AccordionContent className="grid sm:grid-cols-2 gap-4">
+            <FormField
+              form={form}
+              name="email"
+              label="Email"
+            />
+            <FormField
+              form={form}
+              name="phone_number"
+              label="Номер телефону"
+            />
+          </AccordionContent>
+        </AccordionItem>
+        
+        <AccordionItem
+          value="item-5"
+          className="border-b border-gray-300 last:border-none"
+        >
+          <AccordionTrigger className="text-lg hover:cursor-pointer">
+            Кваліфікований сертифікат електронної печатки
+          </AccordionTrigger>
+          <AccordionContent className="grid sm:grid-cols-2 gap-4">
+            <FormField
+              form={form}
+              name="electronic_seal_name"
+              label="Назва Е-печатки"
+            />
+            <FormField
+              form={form}
+              name="electronic_seal_keyword_phrase"
+              label="Ключова фраза до печатки"
+            />
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
       <div className="flex justify-center">
         <Button
           type="submit"
           disabled={isCreating || isUpdating}
         >
-          {cardId ? "Оновити" : "Створити"}
+          {cardId ? "Оновити картку" : "Додати картку"}
         </Button>
       </div>
     </FormBase>

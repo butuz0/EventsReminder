@@ -31,6 +31,12 @@ import {TEventSchema, EventSchema} from "@/lib/validationSchemas/EventSchema";
 import {Event} from "@/types";
 import {RecurringEventSchema, TRecurringEventSchema} from "@/lib/validationSchemas/RecurringEventSchema";
 import CheckboxField from "@/components/forms/CheckboxField";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface EventUpdateFormProps {
   event: Event;
@@ -124,14 +130,6 @@ export default function EventUpdateForm({event}: EventUpdateFormProps) {
         
         <FormField
           form={form}
-          name="description"
-          label="Опис"
-          placeholder="Оновлений опис події"
-          isTextarea
-        />
-        
-        <FormField
-          form={form}
           name="start_datetime"
           label="Дата та час"
           type="datetime-local"
@@ -147,52 +145,11 @@ export default function EventUpdateForm({event}: EventUpdateFormProps) {
           icon={<ExclamationCircleIcon className="w-7"/>}
         />
         
-        <TagInputField
-          form={form}
-          name="tags"
-          label="Теги"
-        />
-        
-        <FormField
-          form={form}
-          name="location"
-          label="Місце"
-          placeholder="Оновлене місце"
-          icon={<MapPinIcon className="w-7"/>}
-        />
-        
-        <FormField
-          form={form}
-          name="link"
-          label="Посилання"
-          placeholder="Оновлене посилання"
-          icon={<LinkIcon className="w-7"/>}
-        />
-        
-        <FormField
-          form={form}
-          name="image"
-          label="Зображення"
-          type="file"
-          icon={<PhotoIcon className="w-7"/>}
-        />
-        
-        {event.team && (
-          <AssignToSelectField
-            form={form}
-            name="assigned_to_ids"
-            teamId={event.team.id}
-            label="Призначити"
-            placeholder="Оновіть призначення"
-          />
-        )}
-        
         <CheckboxField
           form={form}
           name="is_recurring"
           label="Повторювана подія"
         />
-        
         {isRecurring && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <SelectFieldComponent
@@ -210,6 +167,69 @@ export default function EventUpdateForm({event}: EventUpdateFormProps) {
             />
           </div>
         )}
+        
+        <Accordion
+          type="multiple"
+          className="mb-0"
+        >
+          <AccordionItem
+            value="additional"
+            className="border-t border-gray-300"
+          >
+            <AccordionTrigger className="text-lg">
+              Додаткова інформація
+            </AccordionTrigger>
+            <AccordionContent className="space-y-5">
+              <FormField
+                form={form}
+                name="description"
+                label="Опис"
+                placeholder="Оновлений опис події"
+                isTextarea
+              />
+              
+              <TagInputField
+                form={form}
+                name="tags"
+                label="Теги"
+              />
+              
+              <FormField
+                form={form}
+                name="location"
+                label="Місце"
+                placeholder="Оновлене місце"
+                icon={<MapPinIcon className="w-7"/>}
+              />
+              
+              <FormField
+                form={form}
+                name="link"
+                label="Посилання"
+                placeholder="Оновлене посилання"
+                icon={<LinkIcon className="w-7"/>}
+              />
+              
+              <FormField
+                form={form}
+                name="image"
+                label="Зображення"
+                type="file"
+                icon={<PhotoIcon className="w-7"/>}
+              />
+              
+              {event.team && (
+                <AssignToSelectField
+                  form={form}
+                  name="assigned_to_ids"
+                  teamId={event.team.id}
+                  label="Призначити"
+                  placeholder="Оновіть призначення"
+                />
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
         
         <div className="flex justify-center">
           <Button
