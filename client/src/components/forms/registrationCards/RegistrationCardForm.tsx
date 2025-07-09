@@ -201,6 +201,7 @@ export default function RegistrationCardForm(
         <Button
           type="submit"
           disabled={isCreating || isUpdating}
+          className="hover:cursor-pointer"
         >
           {cardId ? "Оновити картку" : "Додати картку"}
         </Button>

@@ -22,7 +22,7 @@ export default function Profile() {
       <TabsContent value="cards">
         <Button asChild className="mb-2">
           <Link href={"/profile/registration-cards/create"}>
-            Додати
+            Додати картку
           </Link>
         </Button>
         <RegistrationCardsTable/>

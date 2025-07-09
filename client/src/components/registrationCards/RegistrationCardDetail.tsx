@@ -1,15 +1,13 @@
 "use client";
 
 import {
-  useDeleteRegistrationCardMutation,
   useGetRegistrationCardDetailsQuery
 } from "@/lib/redux/slices/registrationCards/registrationCardsApiSlice";
 import InfoBlock from "@/components/shared/InfoBlock";
 import LoaderComponent from "@/components/shared/Loader";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
-import {toast} from "react-toastify";
-import {useRouter} from "next/navigation";
+import RegistrationCardDeleteButton from "@/components/registrationCards/RegistrationCardDeleteButton";
 
 interface RegistrationCardDetailProps {
   cardId: string;
@@ -18,8 +16,6 @@ interface RegistrationCardDetailProps {
 
 export default function RegistrationCardDetail({cardId}: RegistrationCardDetailProps) {
   const {data: card, isLoading, isError} = useGetRegistrationCardDetailsQuery(cardId);
-  const [deleteCard] = useDeleteRegistrationCardMutation();
-  const router = useRouter();
   
   if (isLoading) {
     return <LoaderComponent size="xl" text="Завантаження картки..."/>
@@ -27,18 +23,6 @@ export default function RegistrationCardDetail({cardId}: RegistrationCardDetailP
   
   if (isError || !card) {
     return <p className="text-center text-red-600 font-medium">Не вдалося завантажити картку</p>
-  }
-  
-  const handleDelete = async () => {
-    try {
-      toast.promise(deleteCard(cardId).unwrap(), {
-        pending: "Видаляємо реєстраційну картку...",
-        success: "Реєстраційну картку видалено"
-      })
-      router.push("/profile");
-    } catch (error) {
-      toast.error("Під час видалення реєстраційної картки сталась помилка.")
-    }
   }
   
   return (
@@ -111,17 +95,11 @@ export default function RegistrationCardDetail({cardId}: RegistrationCardDetailP
       </div>
       
       <div className="flex justify-between">
-        <Button
-          variant="destructive"
-          onClick={handleDelete}
-          className="hover:cursor-pointer"
-        >
-          Видалити
-        </Button>
+        <RegistrationCardDeleteButton registrationCardId={card.id}/>
         
         <Button asChild>
           <Link href={`/profile/registration-cards/${cardId}/update/`}>
-            Змінити
+            Оновити картку
           </Link>
         </Button>
       </div>

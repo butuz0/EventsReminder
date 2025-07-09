@@ -9,13 +9,7 @@ interface RegistrationCardPageProps {
 
 
 export default async function RegistrationCardPage({params}: RegistrationCardPageProps) {
-  const {card_id} = await params;
-  
-  console.log(card_id);
-  console.log(card_id);
-  console.log(card_id);
-  console.log(card_id);
-  console.log(card_id);
+  const {card_id} = params;
   
   return (
     <div>

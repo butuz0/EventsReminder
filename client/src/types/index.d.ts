@@ -377,6 +377,7 @@ export interface RegistrationCard {
   keyword_phrase: string,
   voice_phrase: string,
   email: string,
+  phone_number: string,
   electronic_seal_name: string,
   electronic_seal_keyword_phrase: string,
 }
