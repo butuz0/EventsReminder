@@ -9,7 +9,7 @@ class IsOwner(IsAdminPermissionMixin, permissions.BasePermission):
     '''
     Custom permission to allow only owners of the notification to access them.
     '''
-    message = 'You do not have permission to access this notification.'
+    message = 'У Вас немає доступу до цього нагадування.'
 
     def has_object_permission(self, request: Request, view: View, obj: Notification) -> bool:
         user = request.user

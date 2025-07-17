@@ -82,7 +82,7 @@ class RemoveTeamMemberView(APIView):
         user = get_object_or_404(User, id=user_id)
 
         if user not in team.members.all():
-            return Response({'detail': 'User is not a member of this team.'},
+            return Response({'detail': 'Користувач не є членом цієї команди.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
         team.members.remove(user)
@@ -98,11 +98,11 @@ class TeamLeaveAPIView(APIView):
         team = get_object_or_404(Team, id=id)
 
         if team.created_by == user:
-            return Response({'detail': 'You cannot leave a team that you have created.'},
+            return Response({'detail': 'Ви не можете покинути команду, лідером якої Ви є.'},
                             status=status.HTTP_403_FORBIDDEN)
 
         if not team.members.filter(id=user.id).exists():
-            raise PermissionDenied('You are not a member of this team.')
+            raise PermissionDenied('Ви не є членом цієї команди.')
 
         team.members.remove(user)
         return Response({'detail': 'You have left the team.'},

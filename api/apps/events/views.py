@@ -97,7 +97,7 @@ class EventLeaveAPIView(APIView):
             event.assigned_to.remove(request.user)
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        raise PermissionDenied('You cannot leave the event because you have never been assigned to it.')
+        raise PermissionDenied('Ви не можете відмовитись від події, оскільки вона Вам не призначена.')
 
 
 class RecurringEventCreateAPIView(generics.CreateAPIView):
@@ -111,7 +111,7 @@ class RecurringEventCreateAPIView(generics.CreateAPIView):
         event = get_object_or_404(Event, id=event_id)
 
         if event.created_by != self.request.user:
-            raise PermissionDenied('Only event creator can create a recurring event.')
+            raise PermissionDenied('Тільки творець події може створити повторювану подію.')
 
         event.is_recurring = True
         event.save(update_fields=['is_recurring'])

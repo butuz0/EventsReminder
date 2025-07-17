@@ -9,7 +9,7 @@ class IsOwner(IsAdminPermissionMixin, permissions.BasePermission):
     '''
     Custom permission to allow only owners of an event to edit it.
     '''
-    message = 'You do not have permission to edit or delete this event.'
+    message = 'Ви не можете редагувати або видалити цю подію.'
 
     def has_object_permission(self, request: Request, view: View, obj: Event | RecurringEvent) -> bool:
         if isinstance(obj, Event):

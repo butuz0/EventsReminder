@@ -75,7 +75,7 @@ def test_team_create_serializer_creator_in_members(normal_user):
     assert not serializer.is_valid()
 
     assert 'members_ids' in serializer.errors
-    assert serializer.errors['members_ids'][0] == 'You cannot add yourself to the team since you are the creator of it.'
+    assert serializer.errors['members_ids'][0] == 'Ви не можете додати себе у команду, оскільки Ви її лідер.'
 
 
 def test_team_create_serializer_duplicate_members(normal_user):
@@ -91,7 +91,7 @@ def test_team_create_serializer_duplicate_members(normal_user):
     assert not serializer.is_valid()
 
     assert 'members_ids' in serializer.errors
-    assert serializer.errors['members_ids'][0] == 'Duplicate user IDs are not allowed.'
+    assert serializer.errors['members_ids'][0] == 'Надано дублюючі ID користувачів.'
 
 
 def test_team_create_serializer_member_does_not_exist(normal_user):
@@ -106,7 +106,7 @@ def test_team_create_serializer_member_does_not_exist(normal_user):
     assert not serializer.is_valid()
 
     assert 'members_ids' in serializer.errors
-    assert 'Users with the following IDs do not exist' in serializer.errors['members_ids'][0]
+    assert 'Не знайдено користувачів із наступними ID' in serializer.errors['members_ids'][0]
 
 
 @pytest.mark.django_db
@@ -138,8 +138,8 @@ def test_invitation_create_does_not_exist(normal_user):
 
     assert 'team' in serializer.errors
     assert 'sent_to' in serializer.errors
-    assert serializer.errors['team'][0] == 'Team does not exist.'
-    assert serializer.errors['sent_to'][0] == 'User does not exist.'
+    assert serializer.errors['team'][0] == 'Команди не знайдено.'
+    assert serializer.errors['sent_to'][0] == 'Користувача не знайдено.'
 
 
 def test_invitation_create_created_by_other_user(normal_user):
@@ -154,7 +154,7 @@ def test_invitation_create_created_by_other_user(normal_user):
     serializer = InvitationCreateSerializer(data=data, context=context)
     assert not serializer.is_valid()
 
-    assert serializer.errors['non_field_errors'][0] == 'Only team owner can send invitations.'
+    assert serializer.errors['non_field_errors'][0] == 'Лише лідер команди може створювати запрошення.'
 
 
 def test_validate_invite_self(normal_user):
@@ -167,7 +167,7 @@ def test_validate_invite_self(normal_user):
     serializer = InvitationCreateSerializer(data=data, context=context)
     assert not serializer.is_valid()
 
-    assert serializer.errors['non_field_errors'][0] == 'You cannot invite yourself.'
+    assert serializer.errors['non_field_errors'][0] == 'Ви не можете запросити себе.'
 
 
 def test_validate_user_already_member(normal_user):
@@ -182,7 +182,7 @@ def test_validate_user_already_member(normal_user):
     serializer = InvitationCreateSerializer(data=data, context=context)
     assert not serializer.is_valid()
 
-    assert serializer.errors['non_field_errors'][0] == 'User is already a member of the team.'
+    assert serializer.errors['non_field_errors'][0] == 'Користувач вже є членом команди.'
 
 
 @pytest.mark.django_db
@@ -203,7 +203,7 @@ def test_validate_invitation_already_pending(normal_user):
     serializer = InvitationCreateSerializer(data=data, context=context)
     assert not serializer.is_valid()
 
-    assert serializer.errors['non_field_errors'][0] == 'Invitation already pending.'
+    assert serializer.errors['non_field_errors'][0] == 'Запрошення вже було створено раніше.'
 
 
 @pytest.mark.django_db
@@ -252,4 +252,4 @@ def test_invitation_respond_already_responded(normal_user):
     serializer = InvitationRespondSerializer(instance=invitation, data=data)
     assert not serializer.is_valid()
 
-    assert serializer.errors['non_field_errors'][0] == 'Invitation already responded.'
+    assert serializer.errors['non_field_errors'][0] == 'На запрошення вже було надано відповідь.'

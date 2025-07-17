@@ -43,6 +43,6 @@ class RegistrationCard(TimeStampedModel):
 
     def clean(self):
         if self.edrpou_code and not self.edrpou_code.isdigit():
-            raise ValidationError({'edrpou_code': _('EDRPOU Code must contain only digits.')})
+            raise ValidationError({'edrpou_code': _('Код ЄДРПОУ повинен містити лише цифри.')})
         if self.edrpou_code and len(self.edrpou_code) != 8:
-            raise ValidationError({'edrpou_code': _('EDRPOU Code must be 8 digits long.')})
+            raise ValidationError({'edrpou_code': _('Код ЄДРПОУ повинен складатись із 8-ми цифр.')})

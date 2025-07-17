@@ -96,7 +96,7 @@ class TelegramAuthAPIView(APIView):
 
         received_hash = data.get('hash')
         if not received_hash:
-            return Response({'detail': 'Hash missing'},
+            return Response({'detail': 'Хеш не було вказано.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
         # Data-check-string is a concatenation of all received fields,
@@ -114,13 +114,13 @@ class TelegramAuthAPIView(APIView):
 
         # verify received hash
         if not hmac.compare_digest(received_hash, calculated_hash):
-            return Response({'detail': 'Invalid Telegram auth data'},
+            return Response({'detail': 'Некоректні дані авторизації Telegram.'},
                             status=status.HTTP_403_FORBIDDEN)
 
         # check auth_date expiration (10 min)
         auth_date = int(data.get('auth_date', 0))
         if now().timestamp() - auth_date > 600:
-            return Response({'detail': 'Telegram auth data expired'},
+            return Response({'detail': 'Дані авторизації Telegram протерміновані.'},
                             status=status.HTTP_403_FORBIDDEN)
 
         # update TelegramData model

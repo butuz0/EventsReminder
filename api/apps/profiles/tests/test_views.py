@@ -166,7 +166,7 @@ def test_telegram_auth_expired_date():
                            format='json')
 
     assert response.status_code == 403
-    assert response.data['detail'] == 'Telegram auth data expired'
+    assert response.data['detail'] == 'Дані авторизації Telegram протерміновані.'
 
 
 @pytest.mark.django_db
@@ -180,7 +180,7 @@ def test_telegram_auth_no_hash():
                            format='json')
 
     assert response.status_code == 400
-    assert response.data['detail'] == 'Hash missing'
+    assert response.data['detail'] == 'Хеш не було вказано.'
 
 
 @pytest.mark.django_db
@@ -194,7 +194,7 @@ def test_telegram_auth_invalid_data():
     response = client.post(reverse('telegram-auth'), payload, format='json')
 
     assert response.status_code == 403
-    assert response.data['detail'] == 'Invalid Telegram auth data'
+    assert response.data['detail'] == 'Некоректні дані авторизації Telegram.'
 
 
 @pytest.mark.django_db

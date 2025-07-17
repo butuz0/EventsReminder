@@ -66,7 +66,7 @@ def test_notification_in_past(normal_user):
     assert not serializer.is_valid()
 
     assert 'notification_datetime' in serializer.errors
-    assert serializer.errors['notification_datetime'][0] == 'Notification datetime cannot be in the past.'
+    assert serializer.errors['notification_datetime'][0] == 'Нагадування не може бути у минулому.'
 
 
 @pytest.mark.django_db
@@ -82,7 +82,7 @@ def test_notification_create_no_event(normal_user):
     assert not serializer.is_valid()
 
     assert 'notification_datetime' in serializer.errors
-    assert serializer.errors['notification_datetime'][0] == 'Event is required.'
+    assert serializer.errors['notification_datetime'][0] == 'Подію не було надано.'
 
 
 @pytest.mark.django_db
@@ -99,33 +99,7 @@ def test_notification_create_event_does_not_exist(normal_user):
     assert not serializer.is_valid()
 
     assert 'event' in serializer.errors
-    assert serializer.errors['event'][0] == 'Event does not exist.'
-
-
-@pytest.mark.django_db
-def test_notification_after_recurring_end(normal_user):
-    event = EventFactory(
-        created_by=normal_user,
-        start_datetime=now() + timedelta(days=3),
-        is_recurring=True
-    )
-    RecurringEventFactory(
-        event=event,
-        recurrence_end_datetime=now() + timedelta(days=1)
-    )
-
-    data = {
-        'event': event.id,
-        'notification_datetime': (now() + timedelta(days=2)).isoformat()
-    }
-    serializer = NotificationSerializer(
-        data=data,
-        context={'request': get_request(normal_user)}
-    )
-    assert not serializer.is_valid()
-
-    assert 'notification_datetime' in serializer.errors
-    assert serializer.errors['notification_datetime'][0] == 'Notification must be before recurring event end time.'
+    assert serializer.errors['event'][0] == 'Подія не існує.'
 
 
 @pytest.mark.django_db
@@ -146,7 +120,7 @@ def test_notification_after_event_start(normal_user):
     assert not serializer.is_valid()
 
     assert 'notification_datetime' in serializer.errors
-    assert serializer.errors['notification_datetime'][0] == 'Notification must be before event start time.'
+    assert serializer.errors['notification_datetime'][0] == 'Нагадування повинно бути раніше події.'
 
 
 @pytest.mark.django_db
@@ -167,7 +141,7 @@ def test_notification_create_no_permission(normal_user):
     assert not serializer.is_valid()
     assert 'non_field_errors' in serializer.errors
     assert (serializer.errors['non_field_errors'][
-                0] == 'You do not have permission to create notifications for this event.')
+                0] == 'Ви не можете створити нагадування для цієї події.')
 
 
 @pytest.mark.django_db
@@ -214,4 +188,4 @@ def test_notification_create_telegram_not_verified():
     assert not serializer.is_valid()
 
     assert 'non_field_errors' in serializer.errors
-    assert serializer.errors['non_field_errors'][0] == 'Your Telegram account is not connected yet.'
+    assert serializer.errors['non_field_errors'][0] == 'Ваш акаунт Telegram не підключено.'

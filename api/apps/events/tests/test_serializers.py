@@ -62,7 +62,7 @@ def test_recurring_event_serializer_end_in_past():
 
     errors = e.value.detail
     assert 'recurrence_end_datetime' in errors
-    assert str(errors['recurrence_end_datetime'][0]) == 'End date must be in the future.'
+    assert str(errors['recurrence_end_datetime'][0]) == 'Дата завершення повторення події повинна бути у майбутньому.'
 
 
 @pytest.mark.django_db
@@ -82,7 +82,7 @@ def test_recurring_event_serializer_end_before_event_start():
         serializer.is_valid(raise_exception=True)
 
     assert 'non_field_errors' in e.value.detail
-    assert 'End date must be after event start date.' in str(e.value.detail['non_field_errors'][0])
+    assert 'Дата завершення повторення події повинна бути після моменту настання події.' in str(e.value.detail['non_field_errors'][0])
 
 
 @pytest.mark.django_db
@@ -99,7 +99,7 @@ def test_recurring_event_serializer_without_event():
     with pytest.raises(ValidationError) as e:
         serializer.save()
 
-    assert str(e.value.detail[0]) == 'Event must be provided.'
+    assert str(e.value.detail[0]) == 'Подію не було надно.'
 
 
 @pytest.mark.django_db
@@ -209,7 +209,7 @@ def test_event_create_serializer_invalid_datetime(normal_user):
 
     assert not serializer.is_valid()
     assert 'start_datetime' in serializer.errors
-    assert serializer.errors['start_datetime'][0] == 'Event start time cannot be in the past.'
+    assert serializer.errors['start_datetime'][0] == 'Момент настання події повинен бути у майбутньому.'
 
 
 @pytest.mark.django_db
@@ -229,7 +229,7 @@ def test_event_create_serializer_assign_to_yourself(normal_user):
 
     assert not serializer.is_valid()
     assert 'assigned_to_ids' in serializer.errors
-    assert serializer.errors['assigned_to_ids'][0] == 'You cannot assign the event to yourself.'
+    assert serializer.errors['assigned_to_ids'][0] == 'Ви не можете призначити подію собі.'
 
 
 @pytest.mark.django_db
@@ -250,7 +250,7 @@ def test_event_create_serializer_assigned_to_duplicates(normal_user):
 
     assert not serializer.is_valid()
     assert 'assigned_to_ids' in serializer.errors
-    assert serializer.errors['assigned_to_ids'][0] == 'Duplicate user IDs are not allowed.'
+    assert serializer.errors['assigned_to_ids'][0] == 'Надано дублюючі ID користувачів.'
 
 
 @pytest.mark.django_db
@@ -274,7 +274,7 @@ def test_event_create_serializer_assigned_to_does_not_exist(normal_user):
         serializer.is_valid(raise_exception=True)
 
     assert 'assigned_to_ids' in serializer.errors
-    assert 'Users with the following IDs do not exist' in str(e.value.detail['assigned_to_ids'][0])
+    assert 'Не знайдено користувачів із наступними ID' in str(e.value.detail['assigned_to_ids'][0])
 
 
 @pytest.mark.django_db
@@ -293,7 +293,7 @@ def test_event_create_serializer_team_does_not_exist(normal_user):
 
     assert not serializer.is_valid()
     assert 'team' in serializer.errors
-    assert serializer.errors['team'][0] == 'Team does not exist.'
+    assert serializer.errors['team'][0] == 'Команди не існує.'
 
 
 @pytest.mark.django_db
@@ -313,7 +313,7 @@ def test_event_create_serializer_not_team_creator(normal_user):
 
     assert not serializer.is_valid()
     assert 'team' in serializer.errors
-    assert serializer.errors['team'][0] == 'Only team owner can create events.'
+    assert serializer.errors['team'][0] == 'Лише лідер команди може додавати події.'
 
 
 @pytest.mark.django_db
@@ -334,7 +334,7 @@ def test_event_create_serializer_not_team_members(normal_user):
     serializer = EventCreateSerializer(data=data, context=context)
 
     assert not serializer.is_valid()
-    assert 'The following users are not members of the selected team' in serializer.errors['non_field_errors'][0]
+    assert 'Наступні користувачі не є членами команди' in serializer.errors['non_field_errors'][0]
 
 
 @pytest.mark.django_db

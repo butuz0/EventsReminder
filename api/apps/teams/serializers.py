@@ -21,16 +21,16 @@ class TeamCreateSerializer(serializers.ModelSerializer):
         if not value:
             return []
         if self.context['request'].user.id in value:
-            raise serializers.ValidationError('You cannot add yourself to the team since you are the creator of it.')
+            raise serializers.ValidationError('Ви не можете додати себе у команду, оскільки Ви її лідер.')
 
         user_ids = set(value)
         if len(user_ids) != len(value):
-            raise serializers.ValidationError('Duplicate user IDs are not allowed.')
+            raise serializers.ValidationError('Надано дублюючі ID користувачів.')
 
         existing_ids = set(User.objects.filter(id__in=user_ids).values_list('id', flat=True))
         missing_ids = user_ids - existing_ids
         if missing_ids:
-            raise serializers.ValidationError(f'Users with the following IDs do not exist: {list(missing_ids)}')
+            raise serializers.ValidationError(f'Не знайдено користувачів із наступними ID: {list(missing_ids)}')
 
         return value
 
@@ -79,14 +79,14 @@ class InvitationCreateSerializer(serializers.ModelSerializer):
         try:
             team = Team.objects.get(id=value)
         except Team.DoesNotExist:
-            raise serializers.ValidationError('Team does not exist.')
+            raise serializers.ValidationError('Команди не знайдено.')
         return team
 
     def validate_sent_to(self, value: str):
         try:
             user = User.objects.get(id=value)
         except User.DoesNotExist:
-            raise serializers.ValidationError('User does not exist.')
+            raise serializers.ValidationError('Користувача не знайдено.')
         return user
 
     def validate(self, attrs: dict) -> dict:
@@ -95,13 +95,13 @@ class InvitationCreateSerializer(serializers.ModelSerializer):
         sent_to = attrs.get('sent_to')
 
         if user != team.created_by:
-            raise serializers.ValidationError('Only team owner can send invitations.')
+            raise serializers.ValidationError('Лише лідер команди може створювати запрошення.')
         if sent_to == user:
-            raise serializers.ValidationError('You cannot invite yourself.')
+            raise serializers.ValidationError('Ви не можете запросити себе.')
         if sent_to in team.members.all():
-            raise serializers.ValidationError('User is already a member of the team.')
+            raise serializers.ValidationError('Користувач вже є членом команди.')
         if Invitation.objects.filter(team=team, sent_to=sent_to, status=Invitation.Status.PENDING).exists():
-            raise serializers.ValidationError('Invitation already pending.')
+            raise serializers.ValidationError('Запрошення вже було створено раніше.')
         return attrs
 
     def create(self, validated_data: dict) -> Invitation:
@@ -133,7 +133,7 @@ class InvitationRespondSerializer(serializers.ModelSerializer):
         instance = self.instance
 
         if instance.status != Invitation.Status.PENDING:
-            raise serializers.ValidationError('Invitation already responded.')
+            raise serializers.ValidationError('На запрошення вже було надано відповідь.')
 
         return attrs
 

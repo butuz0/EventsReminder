@@ -111,7 +111,7 @@ def test_remove_team_member_user_is_not_member(client, normal_user):
     )
 
     assert response.status_code == 400
-    assert response.data['detail'] == 'User is not a member of this team.'
+    assert response.data['detail'] == 'Користувач не є членом цієї команди.'
 
 
 @pytest.mark.django_db
@@ -146,7 +146,7 @@ def test_team_leave_team_user_is_creator(client, normal_user):
     )
 
     assert response.status_code == 403
-    assert response.data['detail'] == 'You cannot leave a team that you have created.'
+    assert response.data['detail'] == 'Ви не можете покинути команду, лідером якої Ви є.'
 
 
 @pytest.mark.django_db
@@ -159,7 +159,7 @@ def test_team_leave_team_not_member(client):
     )
 
     assert response.status_code == 403
-    assert response.data['detail'] == 'You are not a member of this team.'
+    assert response.data['detail'] == 'Ви не є членом цієї команди.'
 
 
 @pytest.mark.django_db

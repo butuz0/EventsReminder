@@ -24,7 +24,7 @@ def test_registration_card_invalid_edrpou_non_digits():
         card.clean()
 
     assert 'edrpou_code' in e.value.message_dict
-    assert e.value.message_dict['edrpou_code'][0] == 'EDRPOU Code must contain only digits.'
+    assert e.value.message_dict['edrpou_code'][0] == 'Код ЄДРПОУ повинен містити лише цифри.'
 
 
 @pytest.mark.django_db
@@ -35,4 +35,4 @@ def test_registration_card_invalid_edrpou_length():
         card.clean()
 
     assert 'edrpou_code' in e.value.message_dict
-    assert e.value.message_dict['edrpou_code'][0] == 'EDRPOU Code must be 8 digits long.'
+    assert e.value.message_dict['edrpou_code'][0] == 'Код ЄДРПОУ повинен складатись із 8-ми цифр.'

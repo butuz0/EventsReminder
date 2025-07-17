@@ -21,30 +21,25 @@ class NotificationSerializer(serializers.ModelSerializer):
 
     def validate_notification_datetime(self, value):
         if value < now():
-            raise serializers.ValidationError('Notification datetime cannot be in the past.')
+            raise serializers.ValidationError('Нагадування не може бути у минулому.')
 
         event = self.initial_data.get('event')
         if not event:
-            raise serializers.ValidationError('Event is required.')
+            raise serializers.ValidationError('Подію не було надано.')
 
         try:
             event = Event.objects.select_related('recurring_event').get(id=event)
         except Event.DoesNotExist:
-            raise serializers.ValidationError('Event does not exist.')
+            raise serializers.ValidationError('Подія не існує.')
 
         if value > event.start_datetime:
-            raise serializers.ValidationError('Notification must be before event start time.')
-
-        if event.is_recurring and hasattr(event, 'recurring_event'):
-            recurrence_end = event.recurring_event.recurrence_end_datetime
-            if recurrence_end and value > recurrence_end:
-                raise serializers.ValidationError('Notification must be before recurring event end time.')
+            raise serializers.ValidationError('Нагадування повинно бути раніше події.')
 
         return value
 
     def validate_event(self, value):
         if not Event.objects.filter(id=value).exists():
-            raise serializers.ValidationError('Event does not exist.')
+            raise serializers.ValidationError('Подія не існує.')
         return value
 
     def validate(self, attrs):
@@ -53,11 +48,11 @@ class NotificationSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
 
         if event.created_by != user and not event.assigned_to.filter(id=user.id).exists():
-            raise serializers.ValidationError('You do not have permission to create notifications for this event.')
+            raise serializers.ValidationError('Ви не можете створити нагадування для цієї події.')
 
         if (attrs.get(
                 'notification_method') == Notification.NotificationMethod.TELEGRAM and not user.profile.is_telegram_verified()):
-            raise serializers.ValidationError('Your Telegram account is not connected yet.')
+            raise serializers.ValidationError('Ваш акаунт Telegram не підключено.')
 
         return attrs
 

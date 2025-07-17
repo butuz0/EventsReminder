@@ -107,7 +107,7 @@ def test_event_leave_user_not_assigned(client, normal_user):
     )
 
     assert response.status_code == 403
-    assert response.data['detail'] == 'You cannot leave the event because you have never been assigned to it.'
+    assert response.data['detail'] == 'You cannot leave the event because you have never been assigned to it.Ви не можете відмовитись від події, оскільки вона Вам не призначена.'
 
 
 @pytest.mark.django_db
@@ -161,7 +161,7 @@ def test_recurring_event_create_not_created_by_user(client, normal_user):
     )
 
     assert response.status_code == 403
-    assert response.data['detail'] == 'Only event creator can create a recurring event.'
+    assert response.data['detail'] == 'Тільки творець події може створити повторювану подію.'
     assert not RecurringEvent.objects.filter(event=event).exists()
 
 

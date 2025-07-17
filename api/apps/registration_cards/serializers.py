@@ -11,7 +11,7 @@ class RegistrationCardSerializer(serializers.ModelSerializer):
 
     def validate_edrpou_code(self, value):
         if not value.isdigit():
-            raise ValidationError({'edrpou_code': 'EDRPOU Code must contain only digits.'})
+            raise ValidationError({'edrpou_code': 'Код ЄДРПОУ повинен містити лише цифри.'})
         if len(value) != 8:
-            raise ValidationError({'edrpou_code': 'EDRPOU Code must be 8 digits long.'})
+            raise ValidationError({'edrpou_code': 'Код ЄДРПОУ повинен складатись із 8-ми цифр.'})
         return value

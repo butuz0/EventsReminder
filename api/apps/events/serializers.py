@@ -23,7 +23,7 @@ class RecurringEventSerializer(serializers.ModelSerializer):
 
     def validate_recurrence_end_datetime(self, value: datetime) -> datetime:
         if value and value < now():
-            raise serializers.ValidationError('End date must be in the future.')
+            raise serializers.ValidationError('Дата завершення повторення події повинна бути у майбутньому.')
         return value
 
     def validate(self, data: dict) -> dict:
@@ -33,13 +33,13 @@ class RecurringEventSerializer(serializers.ModelSerializer):
             event = self.context.get('event')  # if object is being created
 
         if event and data.get('recurrence_end_datetime') and data['recurrence_end_datetime'] < event.start_datetime:
-            raise serializers.ValidationError('End date must be after event start date.')
+            raise serializers.ValidationError('Дата завершення повторення події повинна бути після моменту настання події.')
         return data
 
     def create(self, validated_data: dict) -> RecurringEvent:
         event = validated_data.pop('event', None) or self.context.get('event')
         if not event:
-            raise serializers.ValidationError('Event must be provided.')
+            raise serializers.ValidationError('Подію не було надано.')
 
         recurring = RecurringEvent.objects.create(event=event, **validated_data)
         reschedule_recurring_event(recurring)
@@ -65,19 +65,19 @@ class BaseEventSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     def validate_start_datetime(self, value: datetime) -> datetime:
         if value < now():
-            raise serializers.ValidationError('Event start time cannot be in the past.')
+            raise serializers.ValidationError('Момент настання події повинен бути у майбутньому.')
         return value
 
     def validate_assigned_to_ids(self, value: list[str]) -> list[str]:
         user = self.context['request'].user
 
         if user.id in value:
-            raise serializers.ValidationError('You cannot assign the event to yourself.')
+            raise serializers.ValidationError('Ви не можете призначити подію собі.')
 
         # Check if any user IDs are duplicates
         user_ids = set(value)
         if len(user_ids) != len(value):
-            raise serializers.ValidationError('Duplicate user IDs are not allowed.')
+            raise serializers.ValidationError('Надано дублюючі ID користувачів.')
 
         # Check if all users exist
         existing_ids = set(
@@ -87,7 +87,7 @@ class BaseEventSerializer(TaggitSerializer, serializers.ModelSerializer):
         )
         missing_ids = user_ids - existing_ids
         if missing_ids:
-            raise serializers.ValidationError(f'Users with the following IDs do not exist: {list(missing_ids)}')
+            raise serializers.ValidationError(f'Не знайдено користувачів із наступними ID: {list(missing_ids)}')
 
         return value
 
@@ -102,10 +102,10 @@ class EventCreateSerializer(BaseEventSerializer):
         try:
             team = Team.objects.get(id=value)
         except Team.DoesNotExist:
-            raise serializers.ValidationError('Team does not exist.')
+            raise serializers.ValidationError('Команди не існує.')
 
         if self.context['request'].user != team.created_by:
-            raise serializers.ValidationError('Only team owner can create events.')
+            raise serializers.ValidationError('Лише лідер команди може додавати події.')
 
         return value
 
@@ -123,7 +123,7 @@ class EventCreateSerializer(BaseEventSerializer):
         if not assigned_to_ids.issubset(team_member_ids):
             invalid_ids = assigned_to_ids - team_member_ids
             raise serializers.ValidationError(
-                f'The following users are not members of the selected team: {list(invalid_ids)}'
+                f'Наступні користувачі не є членами команди: {list(invalid_ids)}'
             )
         return attrs
 

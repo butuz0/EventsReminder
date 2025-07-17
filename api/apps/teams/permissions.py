@@ -9,7 +9,7 @@ class IsOwner(IsAdminPermissionMixin, permissions.BasePermission):
     '''
     Custom permission to allow only owners of the team to modify it.
     '''
-    message = 'You do not have permission to modify this team.'
+    message = 'Ви не можете редагувати або видалити цю команду.'
 
     def has_object_permission(self, request: Request, view: View, obj: Team) -> bool:
         user = request.user
@@ -20,7 +20,7 @@ class IsOwnerOrMember(IsAdminPermissionMixin, permissions.BasePermission):
     '''
     Custom permission to allow only owners or members of the team view it.
     '''
-    message = 'You do not have permission to view this team.'
+    message = 'Ви не маєте доступу до цієї команди.'
 
     def has_object_permission(self, request: Request, view: View, obj: Team) -> bool:
         user = request.user
