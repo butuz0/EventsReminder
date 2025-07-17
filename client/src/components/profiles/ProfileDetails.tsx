@@ -3,7 +3,6 @@
 import {useGetMyProfileQuery} from "@/lib/redux/slices/users/usersApiSlice";
 import LoaderComponent from "@/components/shared/Loader";
 import InfoBlock from "@/components/shared/InfoBlock";
-import {PencilIcon} from "@heroicons/react/24/outline";
 import {UserCircleIcon} from "@heroicons/react/24/solid";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
@@ -104,7 +103,6 @@ export default function ProfileDetails() {
         <AccountDeleteButton/>
         <Button asChild>
           <Link href="/profile/update/">
-            <PencilIcon className="w-5"/>
             Оновити профіль
           </Link>
         </Button>

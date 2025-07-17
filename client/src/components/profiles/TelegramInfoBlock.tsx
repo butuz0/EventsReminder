@@ -6,6 +6,7 @@ import {useEffect, useRef} from "react";
 import {useTelegramAuthMutation} from "@/lib/redux/slices/users/usersApiSlice";
 import {toast} from "react-toastify";
 import {TelegramAuthData} from "@/types";
+import {clsx} from "clsx";
 
 interface TelegramInfoBlockProps {
   username?: string,
@@ -16,8 +17,11 @@ interface TelegramInfoBlockProps {
 export default function TelegramInfoBlock({username, isVerified = false}: TelegramInfoBlockProps) {
   const widgetRef = useRef<HTMLDivElement>(null);
   const [telegramAuth] = useTelegramAuthMutation();
-  
+  const isHttps = window.location.protocol === "https:";
+
   useEffect(() => {
+    if (!isHttps || !widgetRef.current || widgetRef.current.childNodes.length > 0) return;
+
     if (widgetRef.current && widgetRef.current.childNodes.length === 0) {
       const script = document.createElement("script");
       script.src = "https://telegram.org/js/telegram-widget.js?22";
@@ -34,16 +38,21 @@ export default function TelegramInfoBlock({username, isVerified = false}: Telegr
       try {
         await telegramAuth(user).unwrap();
         toast.success("Telegram-бота успішно підключено");
-      } catch (error) {
+      } catch {
         toast.error("Помилка при підключенні Telegram-бота");
       }
     };
-  }, []);
+  }, [isHttps, telegramAuth]);
   
   return (
     <InfoBlock label="Telegram">
-      <div className="grid grid-cols-3 gap-4 mt-2">
-        <div ref={widgetRef} className="flex justify-center"></div>
+      <div
+          className={clsx("grid gap-4 mt-2", {
+            "grid-cols-3": isHttps,
+            "grid-cols-2": !isHttps,
+          })}
+      >
+        {isHttps && <div ref={widgetRef} className="flex justify-center"></div>}
         <div className="text-center">
           <div className="text-gray-700 text-sm">
             Ім'я користувача
