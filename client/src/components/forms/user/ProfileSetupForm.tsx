@@ -10,6 +10,7 @@ import {Button} from "@/components/ui/button";
 import DepartmentSelectField from "@/components/forms/user/DepartmentSelectField";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ProfileSetupSchema, TProfileSetupSchema} from "@/lib/validationSchemas/ProfileSetupSchema";
+import extractErrorMessage from "@/utils/extractErrorMessage";
 
 
 export default function ProfileSetupForm() {
@@ -35,7 +36,7 @@ export default function ProfileSetupForm() {
       router.push("/profile");
       form.reset();
     } catch (error) {
-      toast.error("При оновлені Вашого профілю сталась помилка.")
+      toast.error(`При оновлені Вашого профілю сталась помилка: ${extractErrorMessage(error)}`)
     }
     
   }

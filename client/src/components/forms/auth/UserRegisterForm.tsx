@@ -9,6 +9,7 @@ import FormBase from "@/components/forms/FormBase";
 import FormField from "@/components/forms/FormField";
 import {AtSymbolIcon, UserCircleIcon} from "@heroicons/react/24/outline";
 import {useRegisterUserMutation} from "@/lib/redux/slices/auth/authApiSlice";
+import extractErrorMessage from "@/utils/extractErrorMessage";
 
 
 export default function UserRegisterForm() {
@@ -36,7 +37,7 @@ export default function UserRegisterForm() {
         }
       );
     } catch (error) {
-      toast.error(`При створенні Вашого акаунта сталась помилка: ${JSON.stringify(error)}`)
+      toast.error(`При створенні Вашого акаунта сталась помилка: ${extractErrorMessage(error)}`)
     }
   };
   return (

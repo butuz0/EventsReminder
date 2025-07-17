@@ -21,6 +21,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import extractErrorMessage from "@/utils/extractErrorMessage";
 
 interface RegistrationCardFormProps {
   cardId?: string;
@@ -67,8 +68,8 @@ export default function RegistrationCardForm(
       }
       form.reset();
       router.push("/profile/");
-    } catch {
-      toast.error("Помилка під час збереження картки");
+    } catch (error) {
+      toast.error(`Під час додавання реєстраційної картки сталась помилка: ${extractErrorMessage(error)}`);
     }
   };
   

@@ -104,8 +104,8 @@ export default function EventUpdateForm({event}: EventUpdateFormProps) {
       
       
       router.push(`/events/${event.id}`);
-    } catch (err) {
-      toast.error("Помилка під час оновлення події.");
+    } catch (error) {
+      toast.error(`Помилка під час оновлення події: ${extractErrorMessage(error)}`)
     }
   };
   

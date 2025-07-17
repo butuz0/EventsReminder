@@ -10,6 +10,7 @@ import FormField from "@/components/forms/FormField";
 import {Button} from "@/components/ui/button";
 import {useRouter} from "next/navigation";
 import MembersSelectField from "@/components/forms/teams/MembersSelectField";
+import extractErrorMessage from "@/utils/extractErrorMessage";
 
 
 export default function TeamCreateForm() {
@@ -42,7 +43,7 @@ export default function TeamCreateForm() {
         form.reset();
       });
     } catch (error) {
-      toast.error(`При створенні команди сталась помилка: ${JSON.stringify(error)}`)
+      toast.error(`При створенні команди сталась помилка: ${extractErrorMessage(error)}`)
     }
   }
   

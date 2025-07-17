@@ -14,6 +14,7 @@ import FormHeader from "@/components/forms/FormHeader";
 import FormBase from "@/components/forms/FormBase";
 import {AtSymbolIcon,} from "@heroicons/react/24/outline";
 import React from "react";
+import extractErrorMessage from "@/utils/extractErrorMessage";
 
 
 export default function PasswordResetRequestForm() {
@@ -33,7 +34,7 @@ export default function PasswordResetRequestForm() {
       toast.success(`На електронну пошту ${values.email} було надіслано лист із посиланням для оновлення паролю`);
       form.reset();
     } catch (error) {
-      toast.error("При надсиланні запиту на зміну паролю сталась помилка");
+      toast.error(`При надсиланні запиту на зміну паролю сталась помилка: ${extractErrorMessage(error)}`)
     }
   };
   

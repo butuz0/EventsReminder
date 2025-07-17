@@ -13,6 +13,7 @@ import {useAppDispatch} from "@/lib/redux/hooks/reduxHooks";
 import {useRouter} from "next/navigation";
 import {setLogin} from "@/lib/redux/slices/auth/authSlice";
 import Link from "next/link";
+import extractErrorMessage from "@/utils/extractErrorMessage";
 
 
 export default function LoginForm() {
@@ -41,8 +42,8 @@ export default function LoginForm() {
       dispatch(setLogin());
       router.push("/home");
       form.reset();
-    } catch {
-      toast.error("При вході у Ваш акаунт сталась помилка")
+    } catch (error){
+      toast.error(`При вході у Ваш акаунт сталась помилка: ${extractErrorMessage(error)}`)
     }
   };
   

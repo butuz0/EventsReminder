@@ -14,6 +14,7 @@ import FormBase from "@/components/forms/FormBase";
 import FormField from "@/components/forms/FormField";
 import {Button} from "@/components/ui/button";
 import React from "react";
+import extractErrorMessage from "@/utils/extractErrorMessage";
 
 interface PasswordResetConfirmForm {
   uid: string,
@@ -44,7 +45,7 @@ export default function PasswordResetConfirmForm({uid, token}: PasswordResetConf
       router.push("/login");
       form.reset();
     } catch (error) {
-      toast.error("При оновлені паролю сталась помилка");
+      toast.error(`При оновлені паролю сталась помилка: ${extractErrorMessage(error)}`)
     }
   };
   

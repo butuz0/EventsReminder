@@ -14,6 +14,7 @@ import objToFormData from "@/utils/objToFormData";
 import LoaderComponent from "@/components/shared/Loader";
 import FormHeader from "@/components/forms/FormHeader";
 import {useRouter} from "next/navigation";
+import extractErrorMessage from "@/utils/extractErrorMessage";
 
 
 export default function EditProfileForm() {
@@ -62,7 +63,7 @@ export default function EditProfileForm() {
       });
       router.push("/profile");
     } catch (error) {
-      toast.error("Помилка при оновлені профілю");
+      toast.error(`При оновлені Вашого профілю сталась помилка: ${extractErrorMessage(error)}`)
     }
   };
   

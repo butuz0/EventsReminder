@@ -37,6 +37,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import extractErrorMessage from "@/utils/extractErrorMessage";
 
 interface EventFormProps {
   teamId?: string;
@@ -122,8 +123,8 @@ export default function EventCreateForm({teamId}: EventFormProps) {
       
       router.push(`/events/${response.event.id}`);
       form.reset();
-    } catch {
-      toast.error("При додаванні події сталась помилка.")
+    } catch (error){
+      toast.error(`При додаванні події сталась помилка: ${extractErrorMessage(error)}`)
     }
   }
   

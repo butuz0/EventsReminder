@@ -10,6 +10,7 @@ import SelectFieldComponent from "@/components/forms/SelectFieldComponent";
 import {NotificationMethods} from "@/constants";
 import {toast} from "react-toastify";
 import FormBase from "@/components/forms/FormBase";
+import extractErrorMessage from "@/utils/extractErrorMessage";
 
 interface NotificationCreateFormProps {
   eventId: string;
@@ -43,8 +44,8 @@ export default function NotificationCreateForm(
         notification_method: "email",
       });
       onSuccess?.();
-    } catch {
-      toast.error("Не вдалося створити нагадування");
+    } catch (error){
+      toast.error(`Не вдалося створити нагадування: ${extractErrorMessage(error)}`)
     }
   };
   

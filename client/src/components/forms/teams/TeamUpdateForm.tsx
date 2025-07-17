@@ -11,6 +11,7 @@ import {Button} from "@/components/ui/button";
 import {useRouter} from "next/navigation";
 import LoaderComponent from "@/components/shared/Loader";
 import React from "react";
+import extractErrorMessage from "@/utils/extractErrorMessage";
 
 interface TeamUpdateFormProps {
   teamId: string;
@@ -58,7 +59,7 @@ export default function TeamUpdateForm({teamId}: TeamUpdateFormProps) {
       router.push(`/teams/${data?.team.id}`);
       form.reset();
     } catch (error) {
-      toast.error("При оновленні команди сталась помилка.")
+      toast.error(`При оновленні команди сталась помилка: ${extractErrorMessage(error)}`)
     }
   }
   
