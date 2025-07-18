@@ -5,13 +5,13 @@ import {useGetAllFacultiesQuery, useGetFacultyDepartmentsQuery} from "@/lib/redu
 import {FieldValues, UseFormReturn} from "react-hook-form";
 import SelectFieldComponent from "@/components/forms/SelectFieldComponent";
 import Select from "react-select";
-import ClientOnlyComponent from "@/utils/ClientOnlyComponent";
 import {FormLabel} from "@/components/ui/form";
 import {selectFieldStyles} from "@/components/forms/selectFieldStyles";
 
 interface DepartmentSelectFieldProps<T extends FieldValues = any> {
   form: UseFormReturn<T>;
-  placeholder?: string;
+  defaultFaculty?: number;
+  defaultDepartment?: number;
 }
 
 interface Option {
@@ -19,10 +19,15 @@ interface Option {
   label: string;
 }
 
-export default function DepartmentSelectField({form}: DepartmentSelectFieldProps) {
+export default function DepartmentSelectField(
+  {
+    form,
+    defaultFaculty,
+    defaultDepartment,
+  }: DepartmentSelectFieldProps) {
   const [facultyOptions, setFacultyOptions] = useState<Option[]>([]);
   const [departmentOptions, setDepartmentOptions] = useState<Option[]>([]);
-  const [selectedFaculty, setSelectedFaculty] = useState<number | undefined>(undefined);
+  const [selectedFaculty, setSelectedFaculty] = useState<number | undefined>(defaultFaculty);
   
   const {data: facultiesData, isLoading: facultiesLoading} = useGetAllFacultiesQuery();
   const {data: departmentsData, isLoading: departmentsLoading} = useGetFacultyDepartmentsQuery(
@@ -68,7 +73,6 @@ export default function DepartmentSelectField({form}: DepartmentSelectFieldProps
     <div className="space-y-5">
       <div className="space-y-1">
         <FormLabel>Факультет</FormLabel>
-        {/*<ClientOnlyComponent>*/}
         <Select
           options={facultyOptions}
           isLoading={facultiesLoading}
@@ -78,7 +82,6 @@ export default function DepartmentSelectField({form}: DepartmentSelectFieldProps
           placeholder="Оберіть Ваш факультет"
           styles={selectFieldStyles}
         />
-        {/*</ClientOnlyComponent>*/}
       </div>
       <SelectFieldComponent
         form={form}

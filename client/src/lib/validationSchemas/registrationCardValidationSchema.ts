@@ -45,8 +45,10 @@ export const RegistrationCardSchema = z.object({
     .optional()
     .or(z.literal("")),
   phone_number: z
-    .string()
-    .trim()
+    .union([
+      z.string().trim().regex(/^\+380\d{9}$/, "Номер телефону повинен мати формат '+380xxxxxxxxx'"),
+      z.literal(""),
+    ])
     .optional(),
   electronic_seal_name: z
     .string()
