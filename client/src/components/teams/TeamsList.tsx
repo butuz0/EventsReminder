@@ -33,8 +33,8 @@ export default function TeamsList({teamParams = {}}: TeamsListProps) {
   
   if (teams.length === 0) {
     return (
-      <div className="text-center font-medium">
-        Ви не є членом жодної команди.
+      <div className="text-center text-gray-600 font-medium">
+        Ви не є членом жодної команди
       </div>
     )
   }

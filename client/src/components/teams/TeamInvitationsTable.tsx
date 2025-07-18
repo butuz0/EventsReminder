@@ -34,10 +34,10 @@ export default function TeamInvitationsTable({teamId}: TeamInvitationsTableProps
   
   const invitations = data?.invitations.results;
   
-  if (!(invitations.length > 0)) {
+  if (invitations.length === 0) {
     return (
-      <div className="text-center font-medium">
-        Немає запрошень у цю команду.
+      <div className="text-center text-gray-600 font-medium">
+        Немає запрошень у цю команду
       </div>
     )
   }

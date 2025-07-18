@@ -30,10 +30,10 @@ export default function InvitationsTable() {
   
   const invitations = data?.invitations.results;
   
-  if (!(invitations.length > 0)) {
+  if (invitations.length === 0) {
     return (
-      <div className="text-center font-medium">
-        У Вас немає запрошень.
+      <div className="text-center text-gray-600 font-medium">
+        У Вас немає запрошень
       </div>
     )
   }
