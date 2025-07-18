@@ -1,6 +1,6 @@
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from config.settings.local import SITE_NAME, DEFAULT_FROM_EMAIL
+from config.settings.local import SITE_NAME, DEFAULT_FROM_EMAIL, DOMAIN
 from .models import Event
 
 
@@ -12,6 +12,7 @@ def send_notification_email(user, event: Event) -> None:
     context = {
         'user': user,
         'event': event,
+        'domain': DOMAIN,
         'site_name': SITE_NAME
     }
 

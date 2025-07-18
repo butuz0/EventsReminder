@@ -1,58 +1,58 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load l10n %}
 
 {% block title %}
-  {% trans 'Event Reminder' %}- {{ event.title }}
+  Нагадування про подію - {{ event.title }}
 {% endblock %}
 
 {% block content %}
-  <h2 style="color: #333;">🔔{% trans 'Reminder about your upcoming event' %}</h2>
+  <h2 style="color: #333;">🔔 Нагадування про Вашу майбутню подію</h2>
   <p>
-    {% blocktrans with name=user.full_name %}Hello {{ name }},{% endblocktrans %}
+    Вітаємо, {{ user.full_name }},
   </p>
   <p>
-    {% trans 'This is a reminder about your scheduled event.' %}
+    Це нагадування про заплановану подію.
   </p>
   <hr style="margin: 20px 0;" />
   <h3 style="color: #222;">📌 {{ event.title }}</h3>
 
   {% if event.description %}
     <p>
-      <strong>{% trans 'Description:' %}</strong><br />{{ event.description }}
+      <strong>Опис:</strong>
+      <br/>
+      {{ event.description }}
     </p>
   {% endif %}
 
   <p>
-    <strong>{% trans 'Start Time:' %}</strong> {{ event.start_datetime|date:'l, d M Y H:i' }}
+    <strong>Час події:</strong> {{ event.start_datetime|date:'l, d M Y H:i' }}
   </p>
 
   {% if event.location %}
     <p>
-      <strong>{% trans 'Location:' %}</strong> {{ event.location }}
+      <strong>Місце:</strong> {{ event.location }}
     </p>
   {% endif %}
 
   {% if event.link %}
     <p>
-      <strong>{% trans 'Link:' %}</strong> <a href="{{ event.link }}" target="_blank">{{ event.link }}</a>
+      <strong>Посилання:</strong> <a href="{{ event.link }}" target="_blank">{{ event.link }}</a>
     </p>
   {% endif %}
 
-  {% if event.priority %}
-    <p>
-      <strong>{% trans 'Priority:' %}</strong> {{ event.get_priority_display }}
-    </p>
-  {% endif %}
+  <p>
+    <strong>Пріоритет:</strong> {{ event.get_priority_display }}
+  </p>
 
   {% if event.created_by != user %}
     <p style="color: #888;">
-      {% blocktrans with creator=event.created_by.full_name %}This event was assigned to you by {{ creator }}{% endblocktrans %}.
+      {% with creator=event.created_by.full_name %}Цю подію призначив(ла) Вам: {{ creator }}{% endwith %}.
     </p>
   {% endif %}
 
   <hr style="margin: 20px 0;" />
   <p style="font-size: 14px;">
-    {% blocktrans %}You can view full event details at:{% endblocktrans %}
+    Ви можете переглянути повну інформацію про подію тут:
     <br />
     <a href="{% url 'event-detail' event.id %}" target="_blank">{{ domain }}/events/{{ event.id }}/</a>
   </p>
