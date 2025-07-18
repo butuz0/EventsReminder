@@ -30,6 +30,14 @@ export default function RegistrationCardsTable() {
   
   const cards = data?.registration_cards.results;
   
+  if (cards.length === 0) {
+    return (
+      <div className="text-center text-gray-600 font-medium">
+        Реєстраційних карток АЦСК не знайдено
+      </div>
+    );
+  }
+  
   return (
     <div className="rounded-xl bg-gray-100 p-2 shadow-lg border border-gray-200">
       <div className="grid grid-cols-[2fr_1fr_1fr_1fr] rounded-t-xl px-4 py-5 font-semibold text-sm">
