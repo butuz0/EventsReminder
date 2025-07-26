@@ -55,7 +55,7 @@ export default function RegistrationCardsTable() {
           return (
             <Link
               key={card.id}
-              href={`/profile/registration-cards/${card.id}/`}
+              href={`/documents/registration-cards/${card.id}/`}
               className={clsx(
                 "grid grid-cols-[2fr_1fr_1fr_1fr] bg-white px-4 py-4 transition-colors hover:bg-gray-200",
                 {

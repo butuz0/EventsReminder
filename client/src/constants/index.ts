@@ -4,6 +4,7 @@ import {
   UserIcon,
   ClipboardDocumentListIcon,
   AcademicCapIcon,
+  DocumentTextIcon,
 } from "@heroicons/react/24/outline";
 
 
@@ -47,6 +48,11 @@ export const LeftNavbarLinks = [
     label: "Профіль",
     href: "/profile",
     icon: UserIcon
+  },
+  {
+    label: "Документи",
+    href: "/documents",
+    icon: DocumentTextIcon
   },
   {
     label: "Події",
