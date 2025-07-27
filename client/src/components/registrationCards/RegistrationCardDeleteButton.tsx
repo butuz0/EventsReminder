@@ -19,7 +19,7 @@ export default function RegistrationCardDeleteButton({registrationCardId}: Regis
     try {
       await deleteRegistrationCard(registrationCardId).unwrap();
       toast.success("Ви успішно видалили картку АЦСК")
-      router.push("/profile");
+      router.push("/documents/");
     } catch {
       toast.error("Сталась помилка");
     }

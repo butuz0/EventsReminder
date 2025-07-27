@@ -58,6 +58,26 @@ export const RegistrationCardSchema = z.object({
     .string()
     .trim()
     .optional(),
-});
+  issue_date: z
+    .string()
+    .refine(val => !isNaN(Date.parse(val)), {
+      message: "Невірний формат дати",
+    }),
+  expiration_date: z
+    .string()
+    .refine(val => !isNaN(Date.parse(val)), {
+      message: "Невірний формат дати",
+    }),
+}).refine((data) => {
+    if (data.issue_date && data.expiration_date) {
+      return data.expiration_date > data.issue_date;
+    }
+    return true;
+  },
+  {
+    message: "Дата закінчення дії повинна бути пізніше за дату видачі",
+    path: ["expiration_date"],
+  }
+);
 
 export type TRegistrationCardSchema = z.infer<typeof RegistrationCardSchema>;

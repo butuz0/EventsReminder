@@ -380,6 +380,8 @@ export interface RegistrationCard {
   phone_number: string,
   electronic_seal_name: string,
   electronic_seal_keyword_phrase: string,
+  issue_date: string,
+  expiration_date: string
 }
 
 export interface CreateUpdateRegistrationCardData {
@@ -394,6 +396,8 @@ export interface CreateUpdateRegistrationCardData {
   email?: string,
   electronic_seal_name?: string,
   electronic_seal_keyword_phrase?: string,
+  issue_date?: string | Date,
+  expiration_date?: string | Date
 }
 
 export interface CreateRegistrationCardResponse {

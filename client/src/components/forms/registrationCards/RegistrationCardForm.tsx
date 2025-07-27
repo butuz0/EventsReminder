@@ -9,7 +9,7 @@ import FormField from "@/components/forms/FormField";
 import {
   RegistrationCardSchema,
   TRegistrationCardSchema
-} from "@/lib/validationSchemas/registrationCardValidationSchema";
+} from "@/lib/validationSchemas/RegistrationCardValidationSchema";
 import {
   useCreateRegistrationCardMutation,
   useUpdateRegistrationCardMutation
@@ -22,6 +22,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import extractErrorMessage from "@/utils/extractErrorMessage";
+import {useEffect} from "react";
+import {addYears, format, isValid, parseISO} from "date-fns";
 
 interface RegistrationCardFormProps {
   cardId?: string;
@@ -42,20 +44,44 @@ export default function RegistrationCardForm(
     resolver: zodResolver(RegistrationCardSchema),
     mode: "all",
     defaultValues: defaultValues || {
-      organization_name: "",
-      edrpou_code: "",
-      region: "",
-      city: "",
-      full_name: "",
-      id_number: "",
-      keyword_phrase: "",
-      voice_phrase: "",
-      email: "",
-      phone_number: "",
-      electronic_seal_name: "",
-      electronic_seal_keyword_phrase: ""
+      organization_name: "Національний технічний університет України «КПІ імені Ігоря Сікорського»",
+      edrpou_code: "02070921",
+      region: "м. Київ",
+      city: "Київ",
+      full_name: undefined,
+      id_number: undefined,
+      keyword_phrase: undefined,
+      voice_phrase: undefined,
+      email: undefined,
+      phone_number: undefined,
+      electronic_seal_name: undefined,
+      electronic_seal_keyword_phrase: undefined,
+      issue_date: undefined,
+      expiration_date: undefined
     }
   });
+  
+  // set the expiration_date to 2 years after issue_date
+  useEffect(() => {
+    const subscription = form.watch((value, {name}) => {
+      if (name !== "issue_date") return;
+      
+      const issueDateRaw = value.issue_date;
+      const issueDate = typeof issueDateRaw === "string"
+        ? parseISO(issueDateRaw)
+        : issueDateRaw;
+      
+      if (!isValid(issueDate)) return;
+      
+      const expirationDate = addYears(issueDate!, 2);
+      form.setValue("expiration_date", format(expirationDate, "yyyy-MM-dd"), {
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+    });
+    
+    return () => subscription.unsubscribe();
+  }, [form]);
   
   const onSubmit = async (values: TRegistrationCardSchema) => {
     try {
@@ -67,7 +93,7 @@ export default function RegistrationCardForm(
         toast.success("Картку створено успішно");
       }
       form.reset();
-      router.push("/profile/");
+      router.push("/documents/");
     } catch (error) {
       toast.error(`Під час додавання реєстраційної картки сталась помилка: ${extractErrorMessage(error)}`);
     }
@@ -80,7 +106,7 @@ export default function RegistrationCardForm(
     >
       <Accordion
         type="multiple"
-        defaultValue={["item-1"]}
+        defaultValue={["item-3", "item-6"]}
         className="space-y-5"
       >
         <AccordionItem
@@ -197,7 +223,31 @@ export default function RegistrationCardForm(
             />
           </AccordionContent>
         </AccordionItem>
+        
+        <AccordionItem
+          value="item-6"
+          className="border-b border-gray-300"
+        >
+          <AccordionTrigger className="text-lg hover:cursor-pointer">
+            Дати
+          </AccordionTrigger>
+          <AccordionContent className="grid sm:grid-cols-2 gap-4">
+            <FormField
+              form={form}
+              name="issue_date"
+              label="Дата підписання"
+              type="date"
+            />
+            <FormField
+              form={form}
+              name="expiration_date"
+              label="Дата закінчення дії"
+              type="date"
+            />
+          </AccordionContent>
+        </AccordionItem>
       </Accordion>
+      
       <div className="flex justify-center">
         <Button
           type="submit"

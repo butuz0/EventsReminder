@@ -25,13 +25,14 @@ def generate_masked_method(field_name, verbose_name):
 
 @admin.register(RegistrationCard)
 class RegistrationCardAdmin(admin.ModelAdmin):
-    list_display = ['organization_name', 'edrpou_code', 'region', 'city']
-    search_fields = ['organization_name', 'edrpou_code']
+    list_display = ['organization_name', 'full_name', 'issue_date', 'expiration_date']
+    search_fields = ['organization_name', 'full_name']
     list_filter = ['region', 'city', 'created_at']
     readonly_fields = ['organization_name', 'edrpou_code', 'region',
                        'city', 'email', 'phone_number', 'created_by',
                        'created_at', 'updated_at',
                        ] + [f'masked_{field}' for field, _ in MASKED_FIELDS]
+    sortable_by = ['full_name', 'issue_date', 'expiration_date']
 
     fieldsets = (
         ('Legal Entity', {
@@ -40,12 +41,16 @@ class RegistrationCardAdmin(admin.ModelAdmin):
             )}),
         ('Applicant', {
             'fields': (
-                'masked_full_name', 'masked_id_number', 'masked_keyword_phrase', 'masked_voice_phrase'
+                'full_name', 'masked_id_number', 'masked_keyword_phrase', 'masked_voice_phrase'
             )}),
         ('Contacts', {'fields': ('email', 'phone_number')}),
         ('Electronic Seal', {
             'fields': (
                 'masked_electronic_seal_name', 'masked_electronic_seal_keyword_phrase'
+            )}),
+        ('Dates', {
+            'fields': (
+                'issue_date', 'expiration_date'
             )}),
         ('Metadata', {'fields': ('created_by', 'created_at', 'updated_at')}),
     )

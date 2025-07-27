@@ -8,11 +8,24 @@ import LoaderComponent from "@/components/shared/Loader";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import RegistrationCardDeleteButton from "@/components/registrationCards/RegistrationCardDeleteButton";
+import {formatDate, dateTimeDistanceToNow} from "@/utils/formatDateTime";
+import React from "react";
 
 interface RegistrationCardDetailProps {
   cardId: string;
 }
 
+
+function DataSection({title, children}: { title: string, children: React.ReactNode }) {
+  return (
+    <div className="space-y-2 bg-white p-4 rounded-xl shadow-sm">
+      <h2 className="text-lg font-semibold">
+        {title}
+      </h2>
+      {children}
+    </div>
+  )
+}
 
 export default function RegistrationCardDetail({cardId}: RegistrationCardDetailProps) {
   const {data: card, isLoading, isError} = useGetRegistrationCardDetailsQuery(cardId);
@@ -28,77 +41,88 @@ export default function RegistrationCardDetail({cardId}: RegistrationCardDetailP
   return (
     <div className="max-w-4xl mx-auto space-y-6 bg-gray-100
     p-6 rounded-xl shadow-md text-sm border border-gray-200">
-      <div className="space-y-2 bg-white p-4 rounded-md shadow-sm">
-        <h2 className="text-lg font-semibold">
-          Юридична особа
-        </h2>
+      <DataSection title="Юридична особа">
         <InfoBlock label="Назва організації">
           {card.organization_name}
         </InfoBlock>
         <InfoBlock label="Код ЄДРПОУ">
           {card.edrpou_code || "Не вказано"}
         </InfoBlock>
-      </div>
+      </DataSection>
       
-      <div className="space-y-2 bg-white p-4 rounded-md shadow-sm">
-        <h2 className="text-lg font-semibold">
-          Відомості про місцезнаходження
-        </h2>
-        <InfoBlock label="Область">
-          {card.region || "Не вказано"}
-        </InfoBlock>
-        <InfoBlock label="Населений пункт">
-          {card.city || "Не вказано"}
-        </InfoBlock>
-      </div>
+      <DataSection title="Відомості про місцезнаходження">
+        <div className="grid grid-cols-2 gap-2">
+          <InfoBlock label="Область">
+            {card.region || "Не вказано"}
+          </InfoBlock>
+          <InfoBlock label="Населений пункт">
+            {card.city || "Не вказано"}
+          </InfoBlock>
+        </div>
+      </DataSection>
       
-      <div className="space-y-2 bg-white p-4 rounded-md shadow-sm">
-        <h2 className="text-lg font-semibold">
-          Дані заявника
-        </h2>
-        <InfoBlock label="ПІБ">
-          {card.full_name || "Не вказано"}
-        </InfoBlock>
-        <InfoBlock label="ІПН / ID номер">
-          {card.id_number || "Не вказано"}
-        </InfoBlock>
-        <InfoBlock label="Питання до ключової фрази">
-          {card.keyword_phrase || "Не вказано"}
-        </InfoBlock>
-        <InfoBlock label="Ключова фраза голосової аутентифікації">
-          {card.voice_phrase || "Не вказано"}
-        </InfoBlock>
-      </div>
+      <DataSection title="Дані заявника">
+        <div className="grid grid-cols-2 gap-2">
+          <InfoBlock label="ПІБ">
+            {card.full_name || "Не вказано"}
+          </InfoBlock>
+          <InfoBlock label="ІПН / ID номер">
+            {card.id_number || "Не вказано"}
+          </InfoBlock>
+          <InfoBlock label="Питання до ключової фрази">
+            {card.keyword_phrase || "Не вказано"}
+          </InfoBlock>
+          <InfoBlock label="Ключова фраза голосової аутентифікації">
+            {card.voice_phrase || "Не вказано"}
+          </InfoBlock>
+        </div>
+      </DataSection>
       
       <div className="space-y-2 bg-white p-4 rounded-md shadow-sm">
         <h2 className="text-lg font-semibold">
           Засоби звʼязку
         </h2>
-        <InfoBlock label="Телефон">
-          {card.phone_number || "Не вказано"}
-        </InfoBlock>
-        <InfoBlock label="Електронна пошта">
-          {card.email || "Не вказано"}
-        </InfoBlock>
+        <div className="grid grid-cols-2 gap-2">
+          <InfoBlock label="Телефон">
+            {card.phone_number || "Не вказано"}
+          </InfoBlock>
+          <InfoBlock label="Електронна пошта">
+            {card.email || "Не вказано"}
+          </InfoBlock>
+        </div>
       </div>
       
-      <div className="space-y-2 bg-white p-4 rounded-md shadow-sm">
-        <h2 className="text-lg font-semibold">
-          Кваліфікований сертифікат електронної печатки
-        </h2>
-        <InfoBlock label="Назва електронної печатки">
-          {card.electronic_seal_name || "Не вказано"}
-        </InfoBlock>
-        <InfoBlock label="Ключова фраза до печатки">
-          {card.electronic_seal_keyword_phrase || "Не вказано"}
-        </InfoBlock>
-      </div>
+      <DataSection title="Кваліфікований сертифікат електронної печатки">
+        <div className="grid grid-cols-2 gap-2">
+          <InfoBlock label="Назва електронної печатки">
+            {card.electronic_seal_name || "Не вказано"}
+          </InfoBlock>
+          <InfoBlock label="Ключова фраза до печатки">
+            {card.electronic_seal_keyword_phrase || "Не вказано"}
+          </InfoBlock>
+        </div>
+      </DataSection>
+      
+      <DataSection title="Дати">
+        <div className="grid grid-cols-2 gap-2">
+          <InfoBlock label="Дата підписання">
+            {card.issue_date ? formatDate(card.issue_date.toString()) : "Не вказано"}
+          </InfoBlock>
+          <InfoBlock label="Дата закінчення дії">
+            {
+              card.expiration_date
+                ? `${formatDate(card.expiration_date.toString())} - ${dateTimeDistanceToNow(card.expiration_date.toString())}`
+                : "Не вказано"
+            }
+          </InfoBlock>
+        </div>
+      </DataSection>
       
       <div className="flex justify-between">
         <RegistrationCardDeleteButton registrationCardId={card.id}/>
         
         <Button asChild>
-          <Link href={`/profile/registration-cards/${cardId}/update/`}>
+          <Link href={`/documents/registration-cards/${cardId}/update/`}>
             Оновити картку
           </Link>
         </Button>

@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 from apps.common.models import TimeStampedModel
 from phonenumber_field.modelfields import PhoneNumberField
-from encrypted_model_fields.fields import EncryptedCharField
+from encrypted_model_fields.fields import EncryptedCharField, EncryptedDateField
 
 User = get_user_model()
 
@@ -34,12 +34,17 @@ class RegistrationCard(TimeStampedModel):
     electronic_seal_keyword_phrase = EncryptedCharField(max_length=255, blank=True,
                                                         verbose_name=_('Electronic Seal Keyword Phrase'))
 
+    # Dates
+    issue_date = EncryptedDateField(blank=True, null=True, verbose_name=_('Signing Date'))
+    expiration_date = EncryptedDateField(blank=True, null=True, verbose_name=_('Expiration Date'))
+
     class Meta:
         verbose_name = 'Registration Card'
         verbose_name_plural = 'Registration Cards'
+        ordering = ['issue_date']
 
     def __str__(self):
-        return self.organization_name
+        return f'{self.full_name} - {self.organization_name}'
 
     def clean(self):
         if self.edrpou_code and not self.edrpou_code.isdigit():
