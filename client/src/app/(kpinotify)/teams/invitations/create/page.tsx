@@ -20,18 +20,15 @@ function UniversityPageContent() {
   return (
     <div>
       <PageTitle title="Університет"/>
-      <Tabs defaultValue="university">
+      <Tabs defaultValue="users">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="university">
-            Університет
-          </TabsTrigger>
           <TabsTrigger value="users">
             Користувачі
           </TabsTrigger>
+          <TabsTrigger value="university">
+            Університет
+          </TabsTrigger>
         </TabsList>
-        <TabsContent value="university">
-          <FacultiesTable/>
-        </TabsContent>
         <TabsContent value="users">
           <div className="mb-4">
             <Search placeholder="Шукати користувача"/>
@@ -47,6 +44,9 @@ function UniversityPageContent() {
           >
             <ProfilesList queryParams={profilesParams}/>
           </Suspense>
+        </TabsContent>
+        <TabsContent value="university">
+          <FacultiesTable/>
         </TabsContent>
       </Tabs>
     </div>

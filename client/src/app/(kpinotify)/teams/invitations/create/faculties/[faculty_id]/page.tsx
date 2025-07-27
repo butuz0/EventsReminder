@@ -49,23 +49,23 @@ function FacultyPageContent({params}: FacultyPageProps) {
   return (
     <div>
       <PageTitle title={data.faculty_name}/>
-      <Tabs defaultValue="faculty">
+      <Tabs defaultValue="users">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="faculty">
-            Інститут / Факультет
-          </TabsTrigger>
           <TabsTrigger value="users">
             Користувачі
           </TabsTrigger>
+          <TabsTrigger value="faculty">
+            Інститут / Факультет
+          </TabsTrigger>
         </TabsList>
-        <TabsContent value="faculty">
-          <FacultyDetails departments={data.departments}/>
-        </TabsContent>
         <TabsContent value="users">
           <div className="mb-4">
             <Search placeholder="Шукати користувача"/>
           </div>
           <ProfilesList queryParams={profilesParams}/>
+        </TabsContent>
+        <TabsContent value="faculty">
+          <FacultyDetails departments={data.departments}/>
         </TabsContent>
       </Tabs>
     </div>

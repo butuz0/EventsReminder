@@ -1,7 +1,6 @@
 "use client";
 
 import {useGetAllProfilesQuery} from "@/lib/redux/slices/users/usersApiSlice";
-import LoaderComponent from "@/components/shared/Loader";
 import ProfileCard from "@/components/profiles/ProfileCard";
 import React from "react";
 import PaginationComponent from "@/components/shared/PaginationComponent";
@@ -13,7 +12,7 @@ interface ProfilesListProps {
 
 
 export default function ProfilesList({queryParams = {}}: ProfilesListProps) {
-  const {data, isLoading, isError} = useGetAllProfilesQuery(queryParams);
+  const {data, isError} = useGetAllProfilesQuery(queryParams);
   const totalPages = Math.ceil((data?.profiles.count ?? 0) / PaginationPageSizes.profiles);
   
   
@@ -26,6 +25,14 @@ export default function ProfilesList({queryParams = {}}: ProfilesListProps) {
   }
   
   const users = data.profiles.results;
+  
+  if (users.length === 0) {
+    return (
+      <div className="text-center text-gray-600 font-medium">
+        Ви єдиний користувач КПІ Notify 🥺
+      </div>
+    )
+  }
   
   return (
     <div className="flex flex-col gap-3">

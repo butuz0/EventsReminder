@@ -72,7 +72,7 @@ export default function TeamDetails({params}: TeamDetails) {
           
           {isTeamCreator && (
             <TabsTrigger value="invitations">
-              Запрошення у команду
+              Запрошення
             </TabsTrigger>
           )}
         </TabsList>

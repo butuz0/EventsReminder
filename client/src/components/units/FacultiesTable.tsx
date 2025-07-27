@@ -30,7 +30,7 @@ export default function FacultiesTable() {
         {faculties?.map((faculty, i) => (
           <Link
             key={faculty.id}
-            href={`/university/faculties/${faculty.id}/`}
+            href={`/teams/invitations/create/faculties/${faculty.id}/`}
             className={clsx(
               "grid items-center bg-white px-4 py-5 grid-cols-[1fr_3fr_1fr] " +
               "hover:bg-gray-200 transition-colors",

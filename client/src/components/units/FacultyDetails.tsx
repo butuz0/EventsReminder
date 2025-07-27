@@ -23,7 +23,7 @@ export default function FacultyDetails({departments}: FacultyDetailsProps) {
           {departments?.map((department, i) => (
             <Link
               key={department.id}
-              href={`/university/departments/${department.id}/`}
+              href={`/teams/invitations/create/departments/${department.id}/`}
               className={clsx(
                 "grid items-center bg-white px-4 py-5 grid-cols-[1fr_4fr_1fr] " +
                 "hover:bg-gray-200 transition-colors",

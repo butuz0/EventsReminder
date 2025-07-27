@@ -3,7 +3,6 @@ import {
   HomeIcon,
   UserIcon,
   ClipboardDocumentListIcon,
-  AcademicCapIcon,
   DocumentTextIcon,
 } from "@heroicons/react/24/outline";
 
@@ -64,9 +63,4 @@ export const LeftNavbarLinks = [
     href: "/teams",
     icon: UserGroupIcon
   },
-  {
-    label: "Університет",
-    href: "/university",
-    icon: AcademicCapIcon
-  }
 ]
