@@ -1,10 +1,10 @@
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from config.settings.local import SITE_NAME, DEFAULT_FROM_EMAIL, DOMAIN
-from .models import Event
+from apps.events.models import Event
 
 
-def send_notification_email(user, event: Event) -> None:
+def send_event_notification_email(user, event: Event) -> None:
     subject = f'Notification for {event}'
     from_email = DEFAULT_FROM_EMAIL
     recipient_list = [user.email]

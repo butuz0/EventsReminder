@@ -336,7 +336,8 @@ export interface RespondToInvitationData {
 
 export interface Notification {
   id: number,
-  event: string,
+  content_type: string,
+  object_id: string,
   notification_method: string,
   created_by: string,
   notification_datetime: string,
@@ -344,7 +345,8 @@ export interface Notification {
 }
 
 export interface NotificationCreateData {
-  event: string,
+  content_type: string,
+  object_id: string,
   notification_method: string,
   notification_datetime: string | Date,
 }

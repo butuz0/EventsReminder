@@ -13,13 +13,15 @@ import FormBase from "@/components/forms/FormBase";
 import extractErrorMessage from "@/utils/extractErrorMessage";
 
 interface NotificationCreateFormProps {
-  eventId: string;
+  contentType: string;
+  objectId: string;
   onSuccess?: () => void;
 }
 
 export default function NotificationCreateForm(
   {
-    eventId,
+    contentType,
+    objectId,
     onSuccess,
   }: NotificationCreateFormProps) {
   const [createNotification, {isLoading}] = useCreateNotificationMutation();
@@ -27,7 +29,6 @@ export default function NotificationCreateForm(
   const form = useForm<TNotificationSchema>({
     resolver: zodResolver(NotificationSchema),
     defaultValues: {
-      event: eventId,
       notification_datetime: undefined,
       notification_method: undefined,
     },
@@ -35,16 +36,18 @@ export default function NotificationCreateForm(
   
   const onSubmit = async (values: TNotificationSchema) => {
     try {
-      // @ts-ignore
-      await createNotification(values).unwrap();
+      await createNotification({
+        content_type: contentType,
+        object_id: objectId,
+        ...values
+      }).unwrap();
       toast.success("Нагадування створено");
       form.reset({
-        event: eventId,
         notification_datetime: new Date(),
         notification_method: "email",
       });
       onSuccess?.();
-    } catch (error){
+    } catch (error) {
       toast.error(`Не вдалося створити нагадування: ${extractErrorMessage(error)}`)
     }
   };

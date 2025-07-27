@@ -115,7 +115,8 @@ export default function EventCreateForm({teamId}: EventFormProps) {
           notifications.map((n) =>
             createNotification({
               ...n,
-              event: response.event.id,
+              content_type: "event",
+              object_id: response.event.id,
             }).unwrap()
           )
         );
@@ -123,7 +124,7 @@ export default function EventCreateForm({teamId}: EventFormProps) {
       
       router.push(`/events/${response.event.id}`);
       form.reset();
-    } catch (error){
+    } catch (error) {
       toast.error(`При додаванні події сталась помилка: ${extractErrorMessage(error)}`)
     }
   }

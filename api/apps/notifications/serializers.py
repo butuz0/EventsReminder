@@ -1,18 +1,20 @@
 from django.utils.timezone import now
+from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 from apps.events.models import Event
 from .models import Notification
 
 
 class NotificationSerializer(serializers.ModelSerializer):
-    event = serializers.UUIDField()
+    content_type = serializers.CharField()
+    object_id = serializers.UUIDField()
     created_by = serializers.SerializerMethodField()
 
     class Meta:
         model = Notification
         fields = [
-            'id', 'event', 'notification_method', 'created_by',
-            'notification_datetime', 'is_sent'
+            'id', 'content_type', 'object_id', 'notification_method',
+            'created_by', 'notification_datetime', 'is_sent'
         ]
         read_only_fields = ['id', 'created_by', 'is_sent']
 
@@ -22,43 +24,39 @@ class NotificationSerializer(serializers.ModelSerializer):
     def validate_notification_datetime(self, value):
         if value < now():
             raise serializers.ValidationError('Нагадування не може бути у минулому.')
+        return value
 
-        event = self.initial_data.get('event')
-        if not event:
-            raise serializers.ValidationError('Подію не було надано.')
-
+    def validate_content_type(self, value: str) -> ContentType:
         try:
-            event = Event.objects.select_related('recurring_event').get(id=event)
-        except Event.DoesNotExist:
-            raise serializers.ValidationError('Подія не існує.')
+            content_type = ContentType.objects.get(model=value.lower())
+        except ContentType.DoesNotExist:
+            raise serializers.ValidationError({'content_type': 'Вказаний тип обʼєкта не підтримується.'})
 
-        if value > event.start_datetime:
-            raise serializers.ValidationError('Нагадування повинно бути раніше події.')
-
-        return value
-
-    def validate_event(self, value):
-        if not Event.objects.filter(id=value).exists():
-            raise serializers.ValidationError('Подія не існує.')
-        return value
+        return content_type
 
     def validate(self, attrs):
-        event_id = attrs.get('event')
-        event = Event.objects.get(id=event_id)
+        model_class = attrs.get('content_type').model_class()
+        object_id = attrs.get('object_id')
         user = self.context['request'].user
 
-        if event.created_by != user and not event.assigned_to.filter(id=user.id).exists():
-            raise serializers.ValidationError('Ви не можете створити нагадування для цієї події.')
+        try:
+            obj = model_class.objects.get(id=object_id)
+        except model_class.DoesNotExist:
+            raise serializers.ValidationError({'object_id': 'Обʼєкт не знайдено.'})
 
-        if (attrs.get(
-                'notification_method') == Notification.NotificationMethod.TELEGRAM and not user.profile.is_telegram_verified()):
+        if model_class is Event:
+            if hasattr(obj, 'start_datetime') and attrs['notification_datetime'] > obj.start_datetime:
+                raise serializers.ValidationError('Нагадування повинно бути раніше події.')
+
+            if obj.created_by != user and not obj.assigned_to.filter(id=user.id).exists():
+                raise serializers.ValidationError('Ви не можете створити нагадування для цієї події.')
+
+        if (attrs['notification_method'] == Notification.NotificationMethod.TELEGRAM
+                and not user.profile.is_telegram_verified()):
             raise serializers.ValidationError('Ваш акаунт Telegram не підключено.')
 
         return attrs
 
     def create(self, validated_data):
-        event_id = validated_data.pop('event')
-        event = Event.objects.get(id=event_id)
         user = self.context['request'].user
-
-        return Notification.objects.create(event=event, created_by=user, **validated_data)
+        return Notification.objects.create(created_by=user, **validated_data)

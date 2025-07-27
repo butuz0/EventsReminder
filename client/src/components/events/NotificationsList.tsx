@@ -11,14 +11,16 @@ import {
 } from "@/lib/redux/slices/notifications/notificationsApiSlice";
 import {toast} from "react-toastify";
 import NotificationCreateForm from "@/components/forms/notifications/NotificationCreateForm";
+import extractErrorMessage from "@/utils/extractErrorMessage";
 
 interface NotificationsListProps {
-  eventId: string;
+  contentType: string;
+  objectId: string;
 }
 
 
-export default function NotificationsList({eventId}: NotificationsListProps) {
-  const {data, refetch} = useEventNotificationsQuery(eventId);
+export default function NotificationsList({contentType, objectId}: NotificationsListProps) {
+  const {data, refetch} = useEventNotificationsQuery(objectId);
   const [deleteNotification] = useDeleteNotificationMutation();
   
   const notifications = data?.notifications.results;
@@ -30,7 +32,7 @@ export default function NotificationsList({eventId}: NotificationsListProps) {
         success: "Нагадування видалено!"
       });
     } catch (error) {
-      toast.error("Помилка під час видалення нагадування");
+      toast.error(`Помилка під час видалення нагадування: ${extractErrorMessage(error)}`);
     }
   }
   
@@ -57,7 +59,8 @@ export default function NotificationsList({eventId}: NotificationsListProps) {
             </div>
           ))}
         <NotificationCreateForm
-          eventId={eventId}
+          contentType={contentType}
+          objectId={objectId}
           onSuccess={() => refetch()}
         />
       </div>

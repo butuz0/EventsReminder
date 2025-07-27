@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from .models import Notification
@@ -14,11 +15,11 @@ def create_celery_notification_task(sender, instance: Notification, created: boo
 
     if instance.notification_method == Notification.NotificationMethod.EMAIL:
         task = send_notification_email_task.apply_async(
-            args=[instance.event.id, instance.created_by.id, instance.id],
+            args=(instance.content_type.id, instance.object_id, instance.created_by.id, instance.id),
             eta=eta)
     elif instance.notification_method == Notification.NotificationMethod.TELEGRAM:
         task = send_notification_telegram_message_task.apply_async(
-            args=[instance.event.id, instance.created_by.id, instance.id],
+            args=(instance.content_type.id, instance.object_id, instance.created_by.id, instance.id),
             eta=eta)
 
     instance.celery_task_id = task.id

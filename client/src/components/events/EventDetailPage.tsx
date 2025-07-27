@@ -160,7 +160,7 @@ export default function EventDetailPage({event_id}: EventDetailProps) {
         )}
       </div>
       
-      <NotificationsList eventId={event_id}/>
+      <NotificationsList contentType="event" objectId={event_id}/>
       
       <div className="flex justify-between">
         <EventDeleteLeaveButton
