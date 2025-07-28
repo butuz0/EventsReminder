@@ -10,6 +10,7 @@ import Link from "next/link";
 import RegistrationCardDeleteButton from "@/components/registrationCards/RegistrationCardDeleteButton";
 import {formatDate, dateTimeDistanceToNow} from "@/utils/formatDateTime";
 import React from "react";
+import NotificationsList from "@/components/events/NotificationsList";
 
 interface RegistrationCardDetailProps {
   cardId: string;
@@ -118,6 +119,9 @@ export default function RegistrationCardDetail({cardId}: RegistrationCardDetailP
         </div>
       </DataSection>
       
+      <DataSection title="Нагадування">
+        <NotificationsList contentType="registrationcard" objectId={card.id}/>
+      </DataSection>
       <div className="flex justify-between">
         <RegistrationCardDeleteButton registrationCardId={card.id}/>
         

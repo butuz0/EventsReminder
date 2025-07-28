@@ -1,6 +1,6 @@
 from .factories import EventFactory
 from apps.profiles.tests.factories import UserWithProfileFactory
-from apps.notifications.emails import send_notification_email
+from apps.notifications.emails import send_event_notification_email
 from config.settings.local import SITE_NAME, DEFAULT_FROM_EMAIL
 from unittest.mock import patch
 import pytest
@@ -16,15 +16,15 @@ def test_send_notification_email(render_to_string, email_class):
     render_to_string.side_effect = ['HTML email', 'Text email']
     mock_email_instance = email_class.return_value
 
-    send_notification_email(user, event)
+    send_event_notification_email(user, event)
 
     assert render_to_string.call_count == 2
-    render_to_string.assert_any_call('notifications/notification_email.html', {
+    render_to_string.assert_any_call('notifications/event_notification_email.html', {
         'user': user,
         'event': event,
         'site_name': SITE_NAME
     })
-    render_to_string.assert_any_call('notifications/notification_email.txt', {
+    render_to_string.assert_any_call('notifications/event_notification_email.txt', {
         'user': user,
         'event': event,
         'site_name': SITE_NAME

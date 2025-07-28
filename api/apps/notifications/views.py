@@ -1,7 +1,4 @@
-from django.contrib.contenttypes.models import ContentType
-
 from apps.common.renderers import JSONRenderer
-from apps.events.models import Event
 from .models import Notification
 from .serializers import NotificationSerializer
 from .permissions import IsOwner
@@ -31,18 +28,17 @@ class BaseNotificationDetailAPIView(generics.ListAPIView):
     object_label = 'notifications'
 
 
-class NotificationByEventListAPIView(BaseNotificationDetailAPIView):
+class NotificationByObjectListAPIView(BaseNotificationDetailAPIView):
     """
-    API view to retrieve notifications by event_id.
+    API view to retrieve notifications for any allowed models instance by obj_id.
     """
 
     def get_queryset(self):
-        event_id = self.kwargs.get('event_id', None)
+        obj_id = self.kwargs.get('obj_id', None)
         user = self.request.user
         return (self.queryset
                 .filter(created_by=user,
-                        content_type=ContentType.objects.get_for_model(Event),
-                        object_id=event_id)
+                        object_id=obj_id)
                 .order_by('notification_datetime'))
 
 

@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from apps.events.models import Event
 from apps.registration_cards.models import RegistrationCard
 from .models import Notification
-from .emails import send_event_notification_email
+from .emails import send_event_notification_email, send_reg_card_notification_email
 from telegram_bot.utils.generate_reminder import generate_event_reminder_text
 from telegram_bot.utils.send_message import send_message
 from celery import shared_task
@@ -22,7 +22,7 @@ def send_notification_email_task(content_type_id, object_id, user_id, notificati
     if isinstance(obj, Event):
         send_event_notification_email(user, obj)
     elif isinstance(obj, RegistrationCard):
-        pass
+        send_reg_card_notification_email(user, obj)
 
     notification = Notification.objects.get(id=notification_id)
     notification.is_sent = True

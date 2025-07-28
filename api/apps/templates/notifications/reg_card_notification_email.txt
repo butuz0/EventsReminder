@@ -1,0 +1,18 @@
+Вітаємо, {{ user.full_name }},
+
+Це нагадування про те, що наближається дата завершення дії сертифіката електронного підпису.
+
+{{ reg_card.organization_name }}
+
+ПІБ заявника: {{ reg_card.full_name }}
+
+{% if reg_card.issue_date %}
+Дата видачі: {{ reg_card.issue_date|date:"d.m.Y" }}
+{% endif %}
+
+{% if reg_card.expiration_date %}
+Дата завершення дії: {{ reg_card.expiration_date|date:"d.m.Y" }}
+{% endif %}
+
+Ви можете переглянути деталі реєстраційної картки за посиланням:
+{{ domain }}/registration-cards/{{ reg_card.id }}/

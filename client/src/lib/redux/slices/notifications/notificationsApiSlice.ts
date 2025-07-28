@@ -19,8 +19,8 @@ export const eventsApiSlice = baseApiSlice.injectEndpoints({
       query: () => "/notifications/",
       providesTags: ["Notifications"],
     }),
-    eventNotifications: builder.query<NotificationsListResponse, string>({
-      query: (event_id) => `/notifications/event/${event_id}/`,
+    getObjectNotifications: builder.query<NotificationsListResponse, string>({
+      query: (obj_id) => `/notifications/object/${obj_id}/`,
       providesTags: ["Notifications"],
     }),
     deleteNotification: builder.mutation<void, number>({
@@ -36,6 +36,6 @@ export const eventsApiSlice = baseApiSlice.injectEndpoints({
 export const {
   useCreateNotificationMutation,
   useGetAllNotificationsQuery,
-  useEventNotificationsQuery,
+  useGetObjectNotificationsQuery,
   useDeleteNotificationMutation,
 } = eventsApiSlice;
