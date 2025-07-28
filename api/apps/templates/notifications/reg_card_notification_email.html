@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Нагадування про сертифікат - {{ reg_card.full_name }}
+{% endblock %}
+
+{% block content %}
+  <h2 style="color: #333;">🔔 Нагадування про сертифікат електронного підпису</h2>
+
+  <p>
+    Вітаємо, {{ user.full_name }},
+  </p>
+  <p>
+    Це нагадування про те, що наближається дата завершення дії сертифіката електронного підпису.
+  </p>
+
+  <hr style="margin: 20px 0;" />
+
+  <h3 style="color: #222;">🏢 {{ reg_card.organization_name }}</h3>
+
+  <p>
+    <strong>ПІБ заявника:</strong> {{ reg_card.full_name }}
+  </p>
+
+  {% if reg_card.issue_date %}
+    <p>
+      <strong>Дата видачі:</strong> {{ reg_card.issue_date|date:'d.m.Y' }}
+    </p>
+  {% endif %}
+
+  {% if reg_card.expiration_date %}
+    <p style="color: #b20000;">
+      <strong>Дата завершення дії:</strong> {{ reg_card.expiration_date|date:'d.m.Y' }}
+    </p>
+  {% endif %}
+
+  <hr style="margin: 20px 0;" />
+  <p style="font-size: 14px;">
+    Ви можете переглянути деталі реєстраційної картки за посиланням:
+    <br />
+    <a href="{{ domain }}/documents/registration-cards/{{ reg_card.id }}/"
+       target="_blank"
+    >
+        {{ domain }}/documents/registration-cards/{{ reg_card.id }}/
+    </a>
+  </p>
+{% endblock %}

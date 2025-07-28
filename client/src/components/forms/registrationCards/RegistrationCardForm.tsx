@@ -88,12 +88,13 @@ export default function RegistrationCardForm(
       if (cardId) {
         await updateCard({card_id: cardId, data: values}).unwrap();
         toast.success("Картку оновлено успішно");
+        router.push(`/documents/registration-cards/${cardId}/`);
       } else {
-        await createCard(values).unwrap();
+        const response = await createCard(values).unwrap();
         toast.success("Картку створено успішно");
+        router.push(`/documents/registration-cards/${response?.registration_cards?.id}/`);
       }
       form.reset();
-      router.push("/documents/");
     } catch (error) {
       toast.error(`Під час додавання реєстраційної картки сталась помилка: ${extractErrorMessage(error)}`);
     }

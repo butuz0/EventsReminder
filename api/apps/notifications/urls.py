@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     NotificationByUserListAPIView,
-    NotificationByEventListAPIView,
+    NotificationByObjectListAPIView,
     NotificationListCreateAPIView,
     NotificationDeleteAPIView
 )
@@ -9,6 +9,6 @@ from .views import (
 urlpatterns = [
     path('', NotificationByUserListAPIView.as_view(), name='user-notification'),
     path('create/', NotificationListCreateAPIView.as_view(), name='notifications-create'),
-    path('event/<uuid:event_id>/', NotificationByEventListAPIView.as_view(), name='event-notifications'),
+    path('object/<uuid:obj_id>/', NotificationByObjectListAPIView.as_view(), name='object-notifications'),
     path('delete/<int:id>/', NotificationDeleteAPIView.as_view(), name='notification-delete'),
 ]

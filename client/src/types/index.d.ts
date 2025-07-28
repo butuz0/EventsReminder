@@ -404,7 +404,7 @@ export interface CreateUpdateRegistrationCardData {
 
 export interface CreateRegistrationCardResponse {
   status_code: number,
-  registration_card: RegistrationCard
+  registration_cards: RegistrationCard
 }
 
 export interface RegistrationCardsListResponse {

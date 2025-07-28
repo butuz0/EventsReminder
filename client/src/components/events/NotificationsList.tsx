@@ -7,7 +7,7 @@ import React from "react";
 import InfoBlock from "@/components/shared/InfoBlock";
 import {
   useDeleteNotificationMutation,
-  useEventNotificationsQuery
+  useGetObjectNotificationsQuery
 } from "@/lib/redux/slices/notifications/notificationsApiSlice";
 import {toast} from "react-toastify";
 import NotificationCreateForm from "@/components/forms/notifications/NotificationCreateForm";
@@ -20,7 +20,7 @@ interface NotificationsListProps {
 
 
 export default function NotificationsList({contentType, objectId}: NotificationsListProps) {
-  const {data, refetch} = useEventNotificationsQuery(objectId);
+  const {data, refetch} = useGetObjectNotificationsQuery(objectId);
   const [deleteNotification] = useDeleteNotificationMutation();
   
   const notifications = data?.notifications.results;

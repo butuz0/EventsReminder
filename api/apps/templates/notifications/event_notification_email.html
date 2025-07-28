@@ -25,7 +25,7 @@
   {% endif %}
 
   <p>
-    <strong>Час події:</strong> {{ event.start_datetime|date:'l, d M Y H:i' }}
+    <strong>Час події:</strong> {{ event.start_datetime|date:'d.m.Y H:i' }}
   </p>
 
   {% if event.location %}
@@ -54,6 +54,9 @@
   <p style="font-size: 14px;">
     Ви можете переглянути повну інформацію про подію тут:
     <br />
-    <a href="{% url 'event-detail' event.id %}" target="_blank">{{ domain }}/events/{{ event.id }}/</a>
+    <a href="{{ domain }}/events/{{ event.id }}/"
+       target="_blank">
+        {{ domain }}/events/{{ event.id }}/
+    </a>
   </p>
 {% endblock %}
