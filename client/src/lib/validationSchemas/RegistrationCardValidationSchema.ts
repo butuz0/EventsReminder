@@ -62,12 +62,14 @@ export const RegistrationCardSchema = z.object({
     .string()
     .refine(val => !isNaN(Date.parse(val)), {
       message: "Невірний формат дати",
-    }),
+    })
+  .optional(),
   expiration_date: z
     .string()
     .refine(val => !isNaN(Date.parse(val)), {
       message: "Невірний формат дати",
-    }),
+    })
+  .optional(),
 }).refine((data) => {
     if (data.issue_date && data.expiration_date) {
       return data.expiration_date > data.issue_date;
