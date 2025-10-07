@@ -2,18 +2,10 @@ from django.urls import reverse
 from .factories import TeamFactory, InvitationFactory
 from apps.teams.models import Invitation
 from apps.users.tests.factories import UserFactory
-from rest_framework.test import APIClient
 from faker import Faker
 import pytest
 
 fake = Faker()
-
-
-@pytest.fixture
-def client(normal_user):
-    client = APIClient()
-    client.force_authenticate(user=normal_user)
-    return client
 
 
 @pytest.mark.django_db
@@ -32,7 +24,7 @@ def test_get_team_list(client, normal_user):
 def test_get_team_list_unauthorized(client, normal_user):
     TeamFactory(created_by=normal_user)
 
-    response = APIClient().get(reverse('team-list'))
+    response = client.get(reverse('team-list'))
 
     assert response.status_code == 401
     assert response.data['detail'] == 'Authentication credentials were not provided.'

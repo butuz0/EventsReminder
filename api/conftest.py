@@ -1,7 +1,5 @@
-from django.test import RequestFactory
-from django.contrib.sessions.middleware import SessionMiddleware
-from django.contrib.auth.middleware import AuthenticationMiddleware
 from apps.users.tests.factories import UserFactory
+from rest_framework.test import APIClient
 from pytest_factoryboy import register
 import pytest
 
@@ -21,9 +19,10 @@ def super_user(db, user_factory):
 
 
 @pytest.fixture
-def mock_request():
-    request = RequestFactory().get('/')
-    SessionMiddleware(lambda req: None).process_request(request)
-    AuthenticationMiddleware(lambda req: None).process_request(request)
-    request.session.save()
-    return request
+def client(normal_user):
+    def _auth_client(user=None):
+        client = APIClient()
+        client.force_authenticate(user=user or normal_user)
+        return client
+
+    return _auth_client

@@ -2,12 +2,11 @@ from django.urls import reverse
 from apps.units.models import Department
 from apps.units.serializers import DepartmentsSerializer
 from .factories import FacultyFactory, DepartmentFactory
-from rest_framework.test import APIClient
 import pytest
 
 
 @pytest.mark.django_db
-def test_departments_by_faculty():
+def test_departments_by_faculty(client):
     faculty = FacultyFactory()
     other_faculty = FacultyFactory()
 
@@ -15,7 +14,6 @@ def test_departments_by_faculty():
     DepartmentFactory(faculty=other_faculty)
 
     url = reverse('departments-by-faculty', kwargs={'faculty_id': faculty.id})
-    client = APIClient()
     response = client.get(url)
 
     assert response.status_code == 200

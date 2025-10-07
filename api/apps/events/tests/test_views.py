@@ -3,19 +3,11 @@ from django.utils import timezone
 from .factories import EventFactory, RecurringEventFactory
 from apps.events.models import Event, RecurringEvent
 from apps.users.tests.factories import UserFactory
-from rest_framework.test import APIClient
 from datetime import timedelta
 from faker import Faker
 import pytest
 
 fake = Faker()
-
-
-@pytest.fixture
-def client(normal_user):
-    client = APIClient()
-    client.force_authenticate(user=normal_user)
-    return client
 
 
 @pytest.mark.django_db
@@ -107,7 +99,8 @@ def test_event_leave_user_not_assigned(client, normal_user):
     )
 
     assert response.status_code == 403
-    assert response.data['detail'] == 'You cannot leave the event because you have never been assigned to it.Ви не можете відмовитись від події, оскільки вона Вам не призначена.'
+    assert response.data[
+               'detail'] == 'You cannot leave the event because you have never been assigned to it.Ви не можете відмовитись від події, оскільки вона Вам не призначена.'
 
 
 @pytest.mark.django_db

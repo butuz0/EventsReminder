@@ -4,20 +4,16 @@ from django.utils.timezone import now
 from apps.units.tests.factories import DepartmentFactory
 from apps.profiles.tests.factories import UserWithProfileFactory, ProfileFactory
 from apps.profiles.models import TelegramData, Profile
-from rest_framework.test import APIClient
 import pytest
 import hashlib
 import hmac
 
 
 @pytest.mark.django_db
-def test_profile_list_api_view(super_user):
+def test_profile_list_api_view(super_user, client):
     user = UserWithProfileFactory()
     ProfileFactory(user=super_user)
     other_profiles = ProfileFactory.create_batch(3)
-
-    client = APIClient()
-    client.force_authenticate(user=user)
 
     response = client.get(reverse('profile-list'))
     assert response.status_code == 200
@@ -29,10 +25,8 @@ def test_profile_list_api_view(super_user):
 
 
 @pytest.mark.django_db
-def test_profile_detail_view():
+def test_profile_detail_view(client):
     user = UserWithProfileFactory()
-    client = APIClient()
-    client.force_authenticate(user=user)
 
     response = client.get(reverse('profile-detail', kwargs={'user_id': user.id}))
 
@@ -41,10 +35,7 @@ def test_profile_detail_view():
 
 
 @pytest.mark.django_db
-def test_my_profile_view(normal_user):
-    client = APIClient()
-    client.force_authenticate(user=normal_user)
-
+def test_my_profile_view(normal_user, client):
     response = client.get(reverse('my-profile'))
 
     assert response.status_code == 200
@@ -52,7 +43,7 @@ def test_my_profile_view(normal_user):
 
 
 @pytest.mark.django_db
-def test_profile_update_view():
+def test_profile_update_view(client):
     dep1 = DepartmentFactory()
     dep2 = DepartmentFactory()
     user = UserWithProfileFactory(
@@ -60,9 +51,6 @@ def test_profile_update_view():
         profile__position='Old position',
         profile__department=dep1
     )
-
-    client = APIClient()
-    client.force_authenticate(user=user)
 
     data = {
         'first_name': 'New first name',
@@ -82,10 +70,8 @@ def test_profile_update_view():
 
 
 @pytest.mark.django_db
-def test_profile_setup_view_success(normal_user):
+def test_profile_setup_view_success(normal_user, client):
     department = DepartmentFactory()
-    client = APIClient()
-    client.force_authenticate(user=normal_user)
 
     data = {
         'position': 'New position',
@@ -103,10 +89,7 @@ def test_profile_setup_view_success(normal_user):
 
 
 @pytest.mark.django_db
-def test_profile_setup_view_fail(normal_user):
-    client = APIClient()
-    client.force_authenticate(user=normal_user)
-
+def test_profile_setup_view_fail(normal_user, client):
     data = {
         'position': 'New position',
         'department': 'Fail'
@@ -139,8 +122,7 @@ def get_telegram_auth_payload_with_hash(payload: dict | None = None) -> dict:
 
 
 @pytest.mark.django_db
-def test_telegram_auth_success():
-    client = APIClient()
+def test_telegram_auth_success(client):
     user = UserWithProfileFactory()
     client.force_authenticate(user=user)
 
@@ -154,8 +136,7 @@ def test_telegram_auth_success():
 
 
 @pytest.mark.django_db
-def test_telegram_auth_expired_date():
-    client = APIClient()
+def test_telegram_auth_expired_date(client):
     user = UserWithProfileFactory()
     client.force_authenticate(user=user)
 
@@ -170,8 +151,7 @@ def test_telegram_auth_expired_date():
 
 
 @pytest.mark.django_db
-def test_telegram_auth_no_hash():
-    client = APIClient()
+def test_telegram_auth_no_hash(client):
     user = UserWithProfileFactory()
     client.force_authenticate(user=user)
 
@@ -184,8 +164,7 @@ def test_telegram_auth_no_hash():
 
 
 @pytest.mark.django_db
-def test_telegram_auth_invalid_data():
-    client = APIClient()
+def test_telegram_auth_invalid_data(client):
     user = UserWithProfileFactory()
     client.force_authenticate(user=user)
 
@@ -198,9 +177,7 @@ def test_telegram_auth_invalid_data():
 
 
 @pytest.mark.django_db
-def test_telegram_auth_requires_authentication():
-    client = APIClient()
-
+def test_telegram_auth_requires_authentication(client):
     response = client.post(reverse('telegram-auth'), {}, format='json')
 
     assert response.status_code == 401

@@ -82,7 +82,8 @@ def test_recurring_event_serializer_end_before_event_start():
         serializer.is_valid(raise_exception=True)
 
     assert 'non_field_errors' in e.value.detail
-    assert 'Дата завершення повторення події повинна бути після моменту настання події.' in str(e.value.detail['non_field_errors'][0])
+    assert 'Дата завершення повторення події повинна бути після моменту настання події.' in str(
+        e.value.detail['non_field_errors'][0])
 
 
 @pytest.mark.django_db

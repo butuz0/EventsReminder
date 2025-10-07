@@ -1,15 +1,7 @@
 from django.urls import reverse
 from apps.notifications.tests.factories import NotificationFactory
 from apps.events.tests.factories import EventFactory
-from rest_framework.test import APIClient
 import pytest
-
-
-@pytest.fixture
-def client(normal_user):
-    client = APIClient()
-    client.force_authenticate(user=normal_user)
-    return client
 
 
 @pytest.mark.django_db
