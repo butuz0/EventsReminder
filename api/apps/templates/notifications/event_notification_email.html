@@ -25,7 +25,7 @@
   {% endif %}
 
   <p>
-    <strong>Час події:</strong> {{ event.start_datetime|date:'l, d M Y H:i' }}
+    <strong>Час події:</strong> {{ event.start_datetime|date:'d.m.Y H:i' }}
   </p>
 
   {% if event.location %}
