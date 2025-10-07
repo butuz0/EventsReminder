@@ -53,9 +53,9 @@ class Event(TimeStampedModel):
 
 
 class RecurringEvent(TimeStampedModel):
-    '''
+    """
     Extends Event model with additional fields for recurring events.
-    '''
+    """
 
     class RecurrenceRule(models.TextChoices):
         DAILY = 'd', _('Daily')
@@ -80,12 +80,12 @@ class RecurringEvent(TimeStampedModel):
         return f'{self.event.title} - {self.get_recurrence_rule_display()}'
 
     def calculate_next_occurrence(self) -> datetime | None:
-        '''
+        """
         Calculate the next occurrence of the event based on the recurrence rule.
         Returns None if:
             - recurrence is finished (next occurrence > end_datetime);
             - recurrence rule is unrecognized.
-        '''
+        """
         event_datetime = self.event.start_datetime
 
         if timezone.is_naive(event_datetime):

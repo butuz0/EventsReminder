@@ -33,7 +33,8 @@ class RecurringEventSerializer(serializers.ModelSerializer):
             event = self.context.get('event')  # if object is being created
 
         if event and data.get('recurrence_end_datetime') and data['recurrence_end_datetime'] < event.start_datetime:
-            raise serializers.ValidationError('Дата завершення повторення події повинна бути після моменту настання події.')
+            raise serializers.ValidationError(
+                'Дата завершення повторення події повинна бути після моменту настання події.')
         return data
 
     def create(self, validated_data: dict) -> RecurringEvent:

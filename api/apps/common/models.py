@@ -7,9 +7,9 @@ User = get_user_model()
 
 
 class TimeStampedModel(models.Model):
-    '''
+    """
     Abstract model which holds common fields for created models.
-    '''
+    """
     pkid = models.BigAutoField(primary_key=True, editable=False)
     id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     created_at = models.DateTimeField(verbose_name=_('Created At'), auto_now_add=True)

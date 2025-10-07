@@ -25,10 +25,10 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 
 class MyEventsListAPIView(generics.ListAPIView):
-    '''
+    """
     API view to retrieve a list of events created by
     or assigned to the authenticated user.
-    '''
+    """
     queryset = Event.objects.all().prefetch_related('tags', 'assigned_to')
     serializer_class = EventDetailSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrAssignedTo]
@@ -73,9 +73,9 @@ class EventUpdateAPIView(generics.UpdateAPIView):
 
 
 class EventDeleteAPIView(generics.DestroyAPIView):
-    '''
+    """
     API view to delete an event created by the user.
-    '''
+    """
     serializer_class = EventUpdateSerializer
     permission_classes = [IsAuthenticated, IsOwner]
     lookup_field = 'id'
@@ -85,9 +85,9 @@ class EventDeleteAPIView(generics.DestroyAPIView):
 
 
 class EventLeaveAPIView(APIView):
-    '''
-    API view to delete youself from assigned_to field of an event.
-    '''
+    """
+    API view to delete yourself from assigned_to field of an event.
+    """
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, id):

@@ -2,9 +2,9 @@ from rest_framework.request import Request
 
 
 class IsAdminPermissionMixin:
-    '''
+    """
     Mixin to allow admin users to access data.
-    '''
+    """
 
     def is_admin(self, request: Request) -> bool:
         user = request.user

@@ -1,6 +1,5 @@
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-
 from apps.registration_cards.models import RegistrationCard
 from config.settings.local import SITE_NAME, DEFAULT_FROM_EMAIL, DOMAIN
 from apps.events.models import Event

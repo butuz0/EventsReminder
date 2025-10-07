@@ -3,7 +3,7 @@ from aiogram import Bot
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.fsm.storage.base import StorageKey
 from aiogram.fsm.context import FSMContext
-from telegram_bot.handlers.states import VerificationStates
+from api.telegram_bot.handlers.states import VerificationStates
 import asyncio
 
 

@@ -8,7 +8,7 @@ COPY client/package.json client/yarn.lock* client/package-lock.json* client/pnpm
 
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f package-lock.json ]; then npm config set registry http://registry.npmjs.org/ && npm ci; \
   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i; \
   else echo "Lockfile not found." && exit 1; \
   fi
